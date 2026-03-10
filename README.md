@@ -20,6 +20,15 @@ The SAI AUROSY Telegram Mini App is a **client interface** for the SAI AUROSY ro
 - **API integration** — Communicates via platform REST/GraphQL APIs (direct or via Gateway)
 - **Telegram authentication** — Uses Telegram Web App init data; platform validates and issues sessions
 
+## Platform Integration
+
+This Mini App connects to the **SAI AUROSY** multi-robot workforce platform:
+
+- **Platform repo (prod):** https://github.com/Saitosar/SAI-AUROSY
+- **Local dev path:** `/Users/sarkhan/SAI-AUROSY`
+
+The app is an API consumer. It does not create scenarios, robots, or store items—the platform owns all business logic. Set `PLATFORM_API_URL` to your local or deployed platform for real integration; when unset, mock data is used for demo.
+
 ## Documentation
 
 - [Product Overview](docs/product/product-overview.md)

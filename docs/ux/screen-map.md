@@ -10,7 +10,8 @@
 | Robots | `/robots` | List and manage connected robots |
 | Store | `/store` | Browse and acquire robots |
 | Control Panel | `/control/:robotId` | View robot data and send commands |
-| Mall Guide | `/scenarios/mall-guide` | Run Mall Guide scenario |
+| Scripts | `/scripts` | Browse scripts by type (Behavioral, Speech, Hybrid) |
+| Mall Guide | `/scripts/mall-guide` | Run Mall Guide script |
 
 ### V2 Screens (Planned)
 
@@ -31,35 +32,38 @@ flowchart TB
         Dashboard[Dashboard /]
         Robots[Robots /robots]
         Store[Store /store]
-        MallGuide[Mall Guide /scenarios/mall-guide]
+        Scripts[Scripts /scripts]
     end
 
     subgraph Detail [Detail]
         ControlPanel[Control Panel /control/:robotId]
+        MallGuide[Mall Guide /scripts/mall-guide]
     end
 
     TelegramBot -->|"Opens Mini App"| Dashboard
     Dashboard --> Robots
     Dashboard --> Store
-    Dashboard --> MallGuide
+    Dashboard --> Scripts
     Robots -->|"Select robot"| ControlPanel
-    Robots --> MallGuide
+    Robots --> Scripts
     Store -->|"After acquire"| Robots
+    Scripts -->|"Open Mall Guide"| MallGuide
     MallGuide -->|"Select robot"| ControlPanel
     ControlPanel -->|"Back"| Robots
+    ControlPanel --> Scripts
     ControlPanel --> MallGuide
-    MallGuide --> ControlPanel
 ```
 
 ## Navigation Matrix
 
 | From | Reachable Screens |
 |------|-------------------|
-| **Dashboard** | Robots, Store, Mall Guide |
-| **Robots** | Dashboard, Store, Mall Guide (via tabs), Control Panel (select robot), Mall Guide (run scenario) |
-| **Store** | Dashboard, Robots, Mall Guide (via tabs), Robots (after acquire) |
-| **Mall Guide** | Dashboard, Robots, Store (via tabs), Control Panel (select robot) |
-| **Control Panel** | Robots, Mall Guide (via tabs or scenario shortcut) |
+| **Dashboard** | Robots, Store, Scripts |
+| **Robots** | Dashboard, Store, Scripts (via tabs), Control Panel (select robot), Scripts (run script) |
+| **Store** | Dashboard, Robots, Scripts (via tabs), Robots (after acquire) |
+| **Scripts** | Dashboard, Robots, Store (via tabs), Mall Guide (open script) |
+| **Mall Guide** | Scripts (back), Control Panel (select robot) |
+| **Control Panel** | Robots, Scripts (via tabs or scenario shortcut), Mall Guide |
 
 ## Tab Bar / Menu (V1)
 
@@ -68,9 +72,9 @@ Primary navigation (tab bar or bottom menu):
 - **Dashboard** — Home
 - **Robots** — My robots
 - **Store** — Robot Store
-- **Mall Guide** — Quick access to Mall Guide
+- **Scripts** — Browse and run scripts
 
-Control Panel is reached by selecting a robot from the Robots screen or from Mall Guide. It is a detail screen, not a tab.
+Control Panel is reached by selecting a robot from the Robots screen or from Mall Guide. Mall Guide is reached from Scripts. Both are detail screens, not tabs.
 
 ## Entry Points
 
@@ -87,7 +91,7 @@ Control Panel is reached by selecting a robot from the Robots screen or from Mal
 | Screen Type | Back Button | Action |
 |-------------|-------------|--------|
 | **Dashboard** | Hidden | Root screen; no back |
-| **Robots, Store, Mall Guide** | Hidden | Tab screens; switch via tabs |
+| **Robots, Store, Scripts** | Hidden | Tab screens; switch via tabs |
 | **Control Panel** | Visible | Back to Robots or Mall Guide (previous screen) |
 | **Store item detail** | Visible | Back to Store catalog |
 | **Modal / overlay** | Visible or in-app | Close modal |
@@ -97,7 +101,7 @@ Control Panel is reached by selecting a robot from the Robots screen or from Mal
 - Use `window.Telegram.WebApp.BackButton` when inside a detail screen (e.g., Control Panel)
 - Show Back Button when navigation stack depth > 1
 - Hide Back Button when at root or tab level
-- From Control Panel: back goes to Robots or Mall Guide depending on entry path
+- From Control Panel: back goes to Robots or Scripts/Mall Guide depending on entry path
 
 ## Screen Transitions (Simplified)
 
@@ -107,15 +111,18 @@ flowchart LR
         Dashboard
         Robots
         Store
-        MallGuide
+        Scripts
     end
     subgraph Detail [Detail]
         Control
+        MallGuide
     end
     Dashboard --> Robots
     Dashboard --> Store
-    Dashboard --> MallGuide
+    Dashboard --> Scripts
     Robots --> Control
+    Robots --> Scripts
+    Scripts --> MallGuide
     MallGuide --> Control
     Control --> Robots
     Control --> MallGuide

@@ -1,5 +1,7 @@
 # Integration with SAI AUROSY Platform
 
+See [Platform Reference](platform-reference.md) for platform project locations and integration principles. The Mini App does not create scenarios internally—the scenario engine runs on the platform. Mock data is used only when `PLATFORM_API_URL` is unset.
+
 ## Integration Pattern
 
 The Mini App acts as an **API consumer**. It sends HTTP requests (REST or GraphQL) to the SAI AUROSY platform—either directly or via the optional Mini App Gateway—and receives JSON responses. The platform is the single source of truth for all business data and robot state.

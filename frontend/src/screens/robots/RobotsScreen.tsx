@@ -164,13 +164,13 @@ export function RobotsScreen() {
                     </div>
                   </Link>
                   <Link
-                    to="/scenarios/mall-guide"
+                    to="/scripts"
                     state={{ selectedRobot: robot.id }}
-                    className="flex-1 py-2.5 bg-[#1f1f22] hover:bg-[#2a2a2e] text-white rounded-xl text-center border border-white/5 hover:border-[#39ff14]/30 transition-all font-medium text-sm group/guide"
+                    className="flex-1 py-2.5 bg-[#1f1f22] hover:bg-[#2a2a2e] text-white rounded-xl text-center border border-white/5 hover:border-[#39ff14]/30 transition-all font-medium text-sm group/scripts"
                   >
                     <div className="flex items-center justify-center gap-2">
-                      <Play className="w-4 h-4 text-[#a0a0a0] group-hover/guide:text-[#39ff14] transition-colors" />
-                      Guide
+                      <Play className="w-4 h-4 text-[#a0a0a0] group-hover/scripts:text-[#39ff14] transition-colors" />
+                      Scripts
                     </div>
                   </Link>
                 </div>

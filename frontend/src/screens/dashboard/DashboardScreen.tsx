@@ -45,16 +45,16 @@ export function DashboardScreen() {
             </div>
           </Link>
 
-          <Link to="/scenarios/mall-guide" className="block">
+          <Link to="/scripts" className="block">
             <div className="bg-[#111111]/80 backdrop-blur-sm border border-white/5 rounded-2xl p-6 hover:border-primary/30 transition-all group shadow-lg">
               <div className="flex flex-col gap-4">
                 <div className="w-10 h-10 bg-[#1f1f22] rounded-xl flex items-center justify-center border border-white/5 group-hover:border-primary/20 transition-colors">
                   <MapPin className="w-5 h-5 text-primary drop-shadow-[0_0_8px_rgba(0,229,255,0.6)]" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-[17px] text-white tracking-tight mb-1">Mall Guide Scenario</h3>
+                  <h3 className="font-semibold text-[17px] text-white tracking-tight mb-1">Scripts</h3>
                   <p className="text-[#a0a0a0] text-[13px] leading-relaxed">
-                    Deploy interactive wayfinding, automate patrols, and manage spatial data.
+                    Browse and run scripts on your robots. Behavioral, speech, and hybrid scenarios.
                   </p>
                 </div>
               </div>

@@ -21,12 +21,16 @@ import {
 } from "../platform/platform-mappers";
 import { PlatformClientService } from "../platform/platform-client.service";
 
+/**
+ * Fallback when PLATFORM_API_URL is unset. Scripts come from the platform;
+ * this mock is for local dev only. See docs/architecture/platform-reference.md.
+ */
 const MOCK_SCENARIOS: Scenario[] = [
   {
     id: "mall-guide",
     name: "Mall Guide",
     description: "Guide customers through the mall with predefined waypoints.",
-    type: "mall-guide",
+    type: "behavioral",
   },
 ];
 

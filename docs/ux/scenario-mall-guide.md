@@ -6,13 +6,14 @@ Run the Mall Guide scenario on a selected robot. Start, monitor progress, and st
 
 ## Screen Location
 
-- **Route:** `/scenarios/mall-guide`
-- **Access:** From Dashboard (tab/menu) or from Robots/Control Panel
+- **Route:** `/scripts/mall-guide`
+- **Access:** From Dashboard (Scripts card), Scripts list, Robots, Control Panel
 
 ## Actions
 
 | Action | Description | Outcome |
 |--------|-------------|---------|
+| Back | Return to Scripts screen | Navigates to `/scripts` |
 | Select robot | Choose robot to run scenario | Robot selected |
 | Start scenario | Launch Mall Guide on robot | Scenario starts; progress shown |
 | Monitor progress | View execution status | Status updates |
@@ -20,6 +21,7 @@ Run the Mall Guide scenario on a selected robot. Start, monitor progress, and st
 
 ## Layout
 
+- **Back button** — Returns to Scripts screen (in-app button and Telegram WebApp BackButton)
 - **Scenario card** — Mall Guide name, description, compatibility
 - **Robot selector** — Dropdown or list of user's robots
 - **Start/Stop button** — Primary CTA; changes to Stop when running
@@ -36,6 +38,8 @@ Run the Mall Guide scenario on a selected robot. Start, monitor progress, and st
 ## Wireframe (Conceptual)
 
 ```
++---------------------------+
+| ← Back                     |
 +---------------------------+
 | Mall Guide                |
 +---------------------------+

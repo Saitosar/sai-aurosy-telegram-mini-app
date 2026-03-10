@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { MapPin, Play, Square, ChevronDown, Bot } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { ArrowLeft, MapPin, Play, Square, ChevronDown, Bot } from "lucide-react";
 import type { Robot } from "shared";
 import { getRobots } from "../../api/robots";
 import {
@@ -14,7 +14,10 @@ const SCENARIO_ID = "mall-guide";
 
 export function MallGuideScreen() {
   const location = useLocation();
+  const navigate = useNavigate();
   const preselectedRobot = (location.state as { selectedRobot?: string })?.selectedRobot;
+
+  const handleBack = useCallback(() => navigate(-1), [navigate]);
 
   const [robots, setRobots] = useState<Robot[]>([]);
   const [loading, setLoading] = useState(true);
@@ -65,6 +68,28 @@ export function MallGuideScreen() {
       .catch(() => setRobots([]))
       .finally(() => setLoading(false));
   }, []);
+
+  useEffect(() => {
+    const tg = (window as unknown as {
+      Telegram?: {
+        WebApp?: {
+          BackButton?: {
+            show?: () => void;
+            hide?: () => void;
+            onClick?: (cb: () => void) => () => void;
+          };
+        };
+      };
+    }).Telegram?.WebApp;
+    if (tg?.BackButton) {
+      tg.BackButton.show?.();
+      const offClick = tg.BackButton.onClick?.(handleBack);
+      return () => {
+        offClick?.();
+        tg.BackButton?.hide?.();
+      };
+    }
+  }, [handleBack]);
 
   useEffect(() => {
     if (!executionId) return;
@@ -139,6 +164,13 @@ export function MallGuideScreen() {
     return (
       <div className="min-h-full pb-20">
         <div className="px-6 py-8">
+          <button
+            onClick={handleBack}
+            className="flex items-center gap-2 text-[#a0a0a0] mb-8 hover:text-white transition-colors"
+          >
+            <ArrowLeft className="w-5 h-5" />
+            <span className="font-medium text-[15px]">Back</span>
+          </button>
           <div className="flex items-center gap-4 mb-8">
             <Skeleton className="h-14 w-14 rounded-xl" />
             <div className="flex-1">
@@ -164,6 +196,13 @@ export function MallGuideScreen() {
   return (
     <div className="min-h-full pb-20">
       <div className="px-6 py-8">
+        <button
+          onClick={handleBack}
+          className="flex items-center gap-2 text-[#a0a0a0] mb-8 hover:text-white transition-colors"
+        >
+          <ArrowLeft className="w-5 h-5" />
+          <span className="font-medium text-[15px]">Back</span>
+        </button>
         <div className="flex items-center gap-4 mb-8">
           <div className="p-3.5 bg-[#1f1f22] border border-white/5 rounded-xl shadow-[0_0_15px_rgba(0,229,255,0.1)]">
             <MapPin className="w-7 h-7 text-primary drop-shadow-[0_0_8px_rgba(0,229,255,0.6)]" />

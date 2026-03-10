@@ -21,7 +21,7 @@ export function AppLayout() {
           <Link
             to="/"
             className={`flex flex-col items-center gap-1.5 px-4 py-2 rounded-xl transition-all ${
-              isActive("/") && !isActive("/robots") && !isActive("/store") && !isActive("/scenarios")
+              isActive("/") && !isActive("/robots") && !isActive("/store") && !isActive("/scripts")
                 ? "text-primary scale-110 drop-shadow-[0_0_8px_rgba(0,229,255,0.4)]"
                 : "text-[#666] hover:text-[#999]"
             }`}
@@ -55,15 +55,15 @@ export function AppLayout() {
           </Link>
 
           <Link
-            to="/scenarios/mall-guide"
+            to="/scripts"
             className={`flex flex-col items-center gap-1.5 px-4 py-2 rounded-xl transition-all ${
-              isActive("/scenarios")
+              isActive("/scripts")
                 ? "text-[#39ff14] scale-110 drop-shadow-[0_0_8px_rgba(57,255,20,0.5)]"
                 : "text-[#666] hover:text-[#999]"
             }`}
           >
             <MapPin className="w-[22px] h-[22px]" />
-            <span className="text-[10px] font-semibold tracking-wide uppercase">Guide</span>
+            <span className="text-[10px] font-semibold tracking-wide uppercase">Scripts</span>
           </Link>
         </div>
       </nav>

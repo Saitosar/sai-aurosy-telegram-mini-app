@@ -50,11 +50,12 @@ src/
 
 | Screen | Route | Purpose |
 |--------|-------|---------|
-| Dashboard | `/` | Entry point; quick links to robots, store, Mall Guide |
+| Dashboard | `/` | Entry point; quick links to robots, store, Scripts |
 | Robots | `/robots` | List and manage connected robots |
 | Store | `/store` | Browse and acquire robots |
 | Control Panel | `/control/:robotId` | View robot data and send commands |
-| Mall Guide | `/scenarios/mall-guide` | Run Mall Guide scenario |
+| Scripts | `/scripts` | Browse scripts by type |
+| Mall Guide | `/scripts/mall-guide` | Run Mall Guide script |
 
 ## API Client
 
