@@ -10,7 +10,8 @@
   body {
     @apply text-foreground;
     font-family: "Inter", sans-serif;
-    background:
+    background-color: var(--tg-theme-bg-color, #050508);
+    background-image:
       linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
       linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
       radial-gradient(ellipse 80% 50% at 50% -20%, rgba(0, 229, 255, 0.08), transparent),
@@ -80,7 +81,7 @@
 
 @layer components {
   .glass-card {
-    background: var(--glass-bg);
+    background: var(--tg-theme-secondary-bg-color, var(--glass-bg));
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
     border: 1px solid var(--glass-border-subtle);

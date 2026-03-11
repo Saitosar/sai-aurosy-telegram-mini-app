@@ -1,15 +1,7 @@
 import { useEffect, useState } from "react";
 import { login } from "../api/auth";
 import { setSessionTokens, clearSession, isAuthenticated } from "./session";
-
-/**
- * Reads initData from Telegram WebApp when available.
- * When not in Telegram (e.g. local dev), returns empty string - auth may use mock flow.
- */
-function getInitData(): string {
-  const tg = (window as unknown as { Telegram?: { WebApp?: { initData?: string } } }).Telegram?.WebApp;
-  return tg?.initData ?? "";
-}
+import { getInitData } from "../utils/telegram";
 
 /**
  * Telegram auth bootstrap hook.

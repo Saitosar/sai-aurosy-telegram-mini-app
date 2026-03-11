@@ -10,7 +10,8 @@
 | Robots | `/robots` | List and manage connected robots |
 | Store | `/store` | Browse and acquire robots |
 | TON Wallet | `/wallet` | Connect TON wallet, view address, mock actions |
-| Settings | `/settings` | App settings and preferences |
+| Settings | `/settings` | App settings menu: User Profile, Theme toggle, Language selector |
+| User Profile | `/settings/profile` | View Telegram user data when authenticated; login prompt when not |
 | Control Panel | `/control/:robotId` | View robot data and send commands |
 | Scripts | `/scripts` | Browse scripts by type (Behavioral, Speech, Hybrid) |
 | Mall Guide | `/scripts/mall-guide` | Run Mall Guide script |
@@ -43,6 +44,7 @@ flowchart TB
     subgraph Detail [Detail]
         ControlPanel[Control Panel /control/:robotId]
         MallGuide[Mall Guide /scripts/mall-guide]
+        UserProfile[User Profile /settings/profile]
     end
 
     TelegramBot -->|"Opens Mini App"| Dashboard
@@ -51,6 +53,7 @@ flowchart TB
     Dashboard --> Wallet
     Dashboard --> Scripts
     Dashboard --> Settings
+    Settings -->|"User Profile"| UserProfile
     Robots -->|"Select robot"| ControlPanel
     Robots --> Scripts
     Store -->|"After acquire"| Robots
@@ -70,7 +73,8 @@ flowchart TB
 | **Store** | Dashboard, Robots, Wallet, Scripts, Settings (via tabs), Robots (after acquire) |
 | **Wallet** | Dashboard, Robots, Store, Scripts, Settings (via tabs) |
 | **Scripts** | Dashboard, Robots, Store, Wallet, Settings (via tabs), Mall Guide (open script) |
-| **Settings** | Dashboard, Robots, Store, Wallet, Scripts (via tabs) |
+| **Settings** | Dashboard, Robots, Store, Wallet, Scripts (via tabs), User Profile |
+| **User Profile** | Settings (back) |
 | **Mall Guide** | Scripts (back), Control Panel (select robot) |
 | **Control Panel** | Robots, Scripts (via tabs or scenario shortcut), Mall Guide |
 | **Event Mode Demo** | Dashboard (back) |
@@ -84,7 +88,7 @@ Primary navigation (tab bar or bottom menu):
 - **Store** — Robot Store
 - **TON** — TON wallet connection and actions
 - **Scripts** — Browse and run scripts
-- **Settings** — App settings
+- **Settings** — App settings (User Profile, Theme toggle, Language selector)
 
 Control Panel is reached by selecting a robot from the Robots screen or from Mall Guide. Mall Guide is reached from Scripts. Both are detail screens, not tabs.
 
@@ -105,6 +109,7 @@ Control Panel is reached by selecting a robot from the Robots screen or from Mal
 |-------------|-------------|--------|
 | **Dashboard** | Hidden | Root screen; no back |
 | **Robots, Store, Wallet, Scripts, Settings** | Hidden | Tab screens; switch via tabs |
+| **User Profile** | Hidden | In-app back link to Settings |
 | **Control Panel** | Visible | Back to Robots or Mall Guide (previous screen) |
 | **Store item detail** | Visible | Back to Store catalog |
 | **Modal / overlay** | Visible or in-app | Close modal |
@@ -131,7 +136,9 @@ flowchart LR
     subgraph Detail [Detail]
         Control
         MallGuide
+        UserProfile[User Profile]
     end
+    Settings --> UserProfile
     subgraph Standalone [Standalone]
         Demo[Event Mode Demo /demo]
     end
