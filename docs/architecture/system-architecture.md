@@ -2,7 +2,7 @@
 
 ## Overview
 
-The SAI AUROSY Telegram Mini App is an **external client application** that runs inside Telegram. It provides a lightweight mobile interface for robot operations. The app communicates with the SAI AUROSY platform (optionally via a Mini App Gateway); the platform owns all business logic and robot connectivity.
+The SAI AUROSY Telegram Mini App is an **external client application** that runs inside Telegram. It provides a lightweight mobile interface for robot operations. The app communicates with the SAI AUROSY platform **via a NestJS backend** (Mini App Gateway) in `backend/`; the platform owns all business logic and robot connectivity.
 
 **V1 Scope:** Robot connection, Store, Control Panel, and Mall Guide scenario.
 
@@ -40,7 +40,7 @@ flowchart TB
 
 ## Container Diagram (C4 Level 2)
 
-Shows the main containers and how they communicate. The Mini App Gateway is optional.
+Shows the main containers and how they communicate. In this project, the Gateway is implemented as the **NestJS backend** in `backend/`.
 
 ```mermaid
 flowchart TB
@@ -48,8 +48,13 @@ flowchart TB
         MiniAppFrontend[Telegram Mini App Frontend]
     end
 
-    subgraph GatewayLayer [Gateway Layer - Optional]
-        MiniAppGateway[Mini App Gateway]
+    subgraph GatewayLayer [NestJS Backend - Mini App Gateway]
+        AuthCtrl[AuthController]
+        RobotsCtrl[RobotsController]
+        StoreCtrl[StoreController]
+        ScenariosCtrl[ScenariosController]
+        TelemetryCtrl[TelemetryController]
+        PlatformClient[PlatformClientService]
     end
 
     subgraph PlatformLayer [Platform Layer]
@@ -64,9 +69,17 @@ flowchart TB
         Robot2[Robot 2]
     end
 
-    MiniAppFrontend -->|"HTTPS"| MiniAppGateway
-    MiniAppFrontend -.->|"HTTPS direct"| PlatformAPI
-    MiniAppGateway -->|"HTTPS"| PlatformAPI
+    MiniAppFrontend -->|"VITE_API_BASE_URL"| AuthCtrl
+    MiniAppFrontend --> RobotsCtrl
+    MiniAppFrontend --> StoreCtrl
+    MiniAppFrontend --> ScenariosCtrl
+    MiniAppFrontend --> TelemetryCtrl
+    AuthCtrl --> PlatformClient
+    RobotsCtrl --> PlatformClient
+    StoreCtrl --> PlatformClient
+    ScenariosCtrl --> PlatformClient
+    TelemetryCtrl --> PlatformClient
+    PlatformClient -->|"PLATFORM_API_URL"| PlatformAPI
     PlatformAPI --> PlatformServices
     PlatformServices --> RobotGateway
     RobotGateway --> RobotAdapters
@@ -75,7 +88,7 @@ flowchart TB
 ```
 
 - **Telegram Mini App Frontend** — External client; UI, routing, API client, auth module
-- **Mini App Gateway** — Optional BFF/proxy; request forwarding, CORS, token handling; no business logic
+- **NestJS Backend** — Mini App Gateway; Auth, Robots, Store, Scenarios, Telemetry controllers; proxies to platform or serves mock data
 - **Platform API** — REST/GraphQL; auth, robots, store, scenarios, telemetry
 - **Platform Services** — Business logic, auth validation, scenario execution
 - **Robot Gateway** — Platform component that manages robot connections
@@ -83,8 +96,8 @@ flowchart TB
 
 ## Responsibility Matrix
 
-| Responsibility | Mini App Frontend | Mini App Gateway | SAI AUROSY Platform | Robot Adapters |
-|----------------|-------------------|------------------|---------------------|----------------|
+| Responsibility | Mini App Frontend | NestJS Backend (Gateway) | SAI AUROSY Platform | Robot Adapters |
+|----------------|-------------------|--------------------------|---------------------|----------------|
 | UI and routing | Yes | No | No | No |
 | API client | Yes | No | No | No |
 | Session storage | Yes | No | No | No |
@@ -105,16 +118,17 @@ flowchart TB
 
 - **UI** — Renders screens, handles user input
 - **Telegram integration** — Reads init data, adapts to theme/viewport
-- **API client** — Sends requests to platform API (via Gateway or direct) with session token
+- **API client** — Sends requests to NestJS backend (`VITE_API_BASE_URL`) with session token
 - **Session management** — Stores and refreshes session; handles auth errors
 - **No business logic** — Does not validate business rules, compute prices, or control robots
 
-### Mini App Gateway (Optional)
+### NestJS Backend (Mini App Gateway)
 
-- **Proxy** — Forwards requests to platform API
-- **CORS** — Resolves cross-origin restrictions when platform does not allow direct browser requests
-- **Token handling** — Optional server-side refresh; forwards auth headers
-- **No business logic** — No validation, persistence, or robot control
+- **Proxy** — Forwards requests to platform API when `PLATFORM_API_URL` is set
+- **Mock data** — Serves in-memory mock data when `PLATFORM_API_URL` is unset (demo mode)
+- **CORS** — Enables cross-origin requests from the frontend
+- **Path mapping** — Maps app paths to platform paths (e.g. `/commands` → platform `/command`)
+- **No business logic** — No validation, persistence, or robot control; platform is source of truth
 
 ### SAI AUROSY Platform
 
@@ -141,7 +155,7 @@ flowchart TB
 The app **never** connects to robots. All robot communication flows through the platform:
 
 ```
-Mini App → Gateway (optional) → Platform API → Platform Services → Robot Gateway → Robot Adapters → Robots
+Mini App → NestJS Backend (Gateway) → Platform API → Platform Services → Robot Gateway → Robot Adapters → Robots
 ```
 
 This keeps the app simple, secure, and aligned with platform policies. The platform is the **single source of truth**.
@@ -156,7 +170,7 @@ flowchart LR
         ApiClient[API Client]
         Auth[Auth Module]
     end
-    subgraph Platform [SAI AUROSY Platform]
+    subgraph Backend [NestJS Backend]
         AuthAPI[Auth API]
         RobotsAPI[Robots API]
         StoreAPI[Store API]
@@ -174,6 +188,8 @@ flowchart LR
     ApiClient --> ScenariosAPI
     ApiClient --> TelemetryAPI
 ```
+
+The API client calls the NestJS backend at `VITE_API_BASE_URL`. The backend proxies to the SAI AUROSY platform when `PLATFORM_API_URL` is set.
 
 ## Related Documentation
 

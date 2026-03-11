@@ -2,7 +2,9 @@
 
 ## Introduction
 
-The SAI AUROSY Telegram Mini App consumes the SAI AUROSY platform API. This document describes the API domains, endpoints, and patterns. Exact endpoint paths, request/response schemas, and base URLs are defined in the platform API documentation (TBD).
+The SAI AUROSY Telegram Mini App calls the **NestJS backend** at `VITE_API_BASE_URL`. The backend implements these endpoints and either proxies to the SAI AUROSY platform (when `PLATFORM_API_URL` is set) or serves mock data when unset. This document describes the API domains, endpoints, and patterns. Exact request/response schemas are defined in the shared DTOs and platform API documentation (TBD).
+
+**Path mapping:** When proxying to the platform, the backend maps paths where they differ. For example, the app uses `POST /robots/:id/commands` while the platform uses `POST /robots/:id/command` (singular); the backend translates between them.
 
 ## API Domains
 
@@ -19,7 +21,7 @@ The SAI AUROSY Telegram Mini App consumes the SAI AUROSY platform API. This docu
 | Operation | Method | Purpose |
 |-----------|--------|---------|
 | Login | `POST /auth/login` | Send Telegram init data; receive session token |
-| Refresh | `POST /auth/refresh` | Exchange refresh token for new session token |
+| Refresh | `POST /auth/refresh` | Exchange refresh token for new session token (Planned, TBD) |
 | Logout | `POST /auth/logout` | Invalidate session |
 
 **Login request:** `{ "initData": "<Telegram WebApp initData string>" }`
@@ -32,8 +34,8 @@ The SAI AUROSY Telegram Mini App consumes the SAI AUROSY platform API. This docu
 |-----------|--------|---------|
 | List | `GET /robots` | List user's robots |
 | Get | `GET /robots/:id` | Get robot details |
-| Connect | `POST /robots/connect` | Link robot to user (request body TBD) |
-| Disconnect | `POST /robots/:id/disconnect` | Unlink robot |
+| Connect | `POST /robots/connect` | Link robot to user (Planned, TBD) |
+| Disconnect | `POST /robots/:id/disconnect` | Unlink robot (Planned, TBD) |
 | Send command | `POST /robots/:id/commands` | Send command to robot |
 
 **Command request:** `{ "command": "<commandType>", "params": { ... } }` (TBD)
@@ -60,7 +62,7 @@ The SAI AUROSY Telegram Mini App consumes the SAI AUROSY platform API. This docu
 
 | Operation | Method | Purpose |
 |-----------|--------|---------|
-| Subscribe/Stream | `GET /telemetry/:robotId/stream` or WebSocket | Real-time robot status |
+| Subscribe/Stream | `GET /telemetry/:robotId/stream` | Real-time robot status (SSE; returns 501 when platform stream not available) |
 | Poll | `GET /telemetry/:robotId` | Current robot status (polling) |
 
 **Response:** Robot status, position, sensor data (schema TBD)
@@ -111,4 +113,4 @@ List endpoints may support:
 
 ## Platform API Documentation
 
-Full API documentation (OpenAPI/Swagger, base URLs, schemas) is maintained by the SAI AUROSY platform team. Reference that documentation for implementation details.
+Full API documentation (OpenAPI/Swagger, base URLs, schemas) is maintained by the SAI AUROSY platform team. Reference that documentation for implementation details. The NestJS backend in `backend/` implements the API surface described above; when `PLATFORM_API_URL` is set, it proxies requests to the platform.

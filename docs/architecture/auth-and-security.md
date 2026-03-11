@@ -121,6 +121,17 @@ The platform validates the session token on each API request. Expired or invalid
 | XSS | Sanitize user input; avoid eval; CSP |
 | Man-in-the-middle | HTTPS; certificate validation |
 
+## TON Wallet (Separate from Telegram Auth)
+
+The Mini App supports TON wallet connection via [TON Connect](https://docs.ton.org/develop/dapps/ton-connect/web). This is **independent** of Telegram authentication:
+
+- **Telegram auth** — Identifies the user to the SAI AUROSY platform (session tokens, API access)
+- **TON wallet** — Enables blockchain operations (payments, deposits, future on-chain features)
+
+The wallet connection uses `@tonconnect/ui-react` and follows TON Connect standards. Connection state is stored locally by the TON Connect SDK. No wallet address or keys are sent to the platform unless explicitly required by a future feature.
+
+See [TON Wallet Integration](../implementation/ton-wallet-integration.md) for setup and configuration.
+
 ## Token Refresh (TBD)
 
 If the platform supports refresh tokens:

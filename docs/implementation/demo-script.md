@@ -24,7 +24,7 @@ npm run dev
 ```
 
 - **Frontend:** http://localhost:5173
-- **Backend API:** http://localhost:3000
+- **Backend API:** http://localhost:3000 (or http://localhost:3001 if `PORT=3001` in `.env`)
 
 ## Demo Flow
 
@@ -81,6 +81,19 @@ npm run dev
 - With robot selected, tap **Open Control Panel**
 - **Expected:** Navigates to Control Panel with robot context; if scenario was running, shows "Active Scenario" with Stop Scenario option
 
+### 9. Store — Order (Optional)
+
+- Navigate to **Store** (tab or menu)
+- Browse robot catalog; tap **Order** on an item
+- **Expected:** Opens Telegram chat with sales contact (@Arif_Mammadov1) with pre-filled message including item name
+
+### 10. Event Mode Demo (Optional)
+
+- Navigate to **Event Mode Demo** from Dashboard
+- Tap **Start Event Mode Demo**
+- **Expected:** Map view (Magic City) with 3D GLB robot overlay; robot moves between waypoints and performs bounce animation; step labels (greets, invites, dance, music, photos, thanks); crowd avatars gather around
+- **Technical:** Robot model (`/robot_from_the_series_love_death_and_robots.glb`) with "Scene" animation; React Three Fiber; perspective camera; transparent canvas over 2D map
+
 ## Expected Outcomes Summary
 
 | Step | Outcome |
@@ -91,6 +104,8 @@ npm run dev
 | Stop command | Feedback (success/error) |
 | Start Mall Guide | Running status, progress |
 | Stop Mall Guide | Stopped/Completed, feedback |
+| Store Order | Opens Telegram chat with @Arif_Mammadov1 |
+| Event Mode Demo | 3D robot on map, step progression |
 
 ## Troubleshooting
 

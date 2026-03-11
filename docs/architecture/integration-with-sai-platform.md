@@ -1,8 +1,12 @@
 # Integration with SAI AUROSY Platform
 
+See [Platform Reference](platform-reference.md) for platform project locations and integration principles. The Mini App does not create scenarios internally—the scenario engine runs on the platform. Mock data is used only when `PLATFORM_API_URL` is unset.
+
 ## Integration Pattern
 
-The Mini App acts as an **API consumer**. It sends HTTP requests (REST or GraphQL) to the SAI AUROSY platform—either directly or via the optional Mini App Gateway—and receives JSON responses. The platform is the single source of truth for all business data and robot state.
+The Mini App acts as an **API consumer**. It sends HTTP requests to the **NestJS backend** (Mini App Gateway) at `VITE_API_BASE_URL`. The backend proxies requests to the SAI AUROSY platform when `PLATFORM_API_URL` is set, or serves mock data when unset. The platform is the single source of truth for all business data and robot state.
+
+**Path mapping:** The backend maps app paths to platform paths where they differ. For example, the app uses `POST /robots/:id/commands` while the SAI AUROSY platform uses `POST /robots/:id/command` (singular); the backend translates between them.
 
 ## Integration Boundaries
 
@@ -14,10 +18,10 @@ flowchart TB
         Session[Session Storage]
     end
 
-    subgraph Boundary2 [Boundary 2: Gateway - Optional]
+    subgraph Boundary2 [Boundary 2: NestJS Backend - Gateway]
         GatewayProxy[Request Proxy]
         CORS[CORS Handler]
-        TokenHandler[Token Handler]
+        MockData[Mock Data when PLATFORM_API_URL unset]
     end
 
     subgraph Boundary3 [Boundary 3: Platform API]
@@ -36,11 +40,9 @@ flowchart TB
 
     MiniAppUI --> ApiClient
     ApiClient --> Session
-    ApiClient -->|"HTTPS"| GatewayProxy
-    ApiClient -.->|"HTTPS direct"| AuthAPI
+    ApiClient -->|"VITE_API_BASE_URL"| GatewayProxy
     GatewayProxy --> CORS
-    GatewayProxy --> TokenHandler
-    GatewayProxy -->|"HTTPS"| AuthAPI
+    GatewayProxy -->|"PLATFORM_API_URL"| AuthAPI
     AuthAPI --> PlatformServices
     RobotsAPI --> PlatformServices
     StoreAPI --> PlatformServices
@@ -53,30 +55,30 @@ flowchart TB
 | Boundary | Components | Responsibility |
 |----------|------------|----------------|
 | **1. Mini App** | UI, API client, session | User interface, API calls, token storage |
-| **2. Gateway** | Proxy, CORS, token handler | Request forwarding, cross-origin, optional refresh |
+| **2. NestJS Backend** | Proxy, CORS, mock data | Request forwarding, path mapping, mock when platform unset |
 | **3. Platform API** | Auth, Robots, Store, Scenarios, Telemetry | API surface for all domains |
 | **4. Platform Internal** | Services, Robot Gateway, Adapters | Business logic, robot connectivity |
 
 ## Request Flow
 
-API requests follow one of two paths depending on whether the Gateway is deployed.
+In this project, the Mini App **always** calls the NestJS backend. The backend either proxies to the platform or serves mock data.
 
 ```mermaid
 flowchart LR
-    subgraph WithGateway [With Gateway]
-        App1[Mini App] --> GW[Gateway] --> API1[Platform API] --> Svc1[Platform Services] --> RG1[Robot Gateway] --> RA1[Robot Adapters] --> R1[Robots]
+    subgraph WithPlatform [PLATFORM_API_URL set]
+        App1[Mini App] --> Backend1[NestJS Backend] --> API1[Platform API] --> Svc1[Platform Services] --> RG1[Robot Gateway] --> RA1[Robot Adapters] --> R1[Robots]
     end
 
-    subgraph WithoutGateway [Without Gateway]
-        App2[Mini App] --> API2[Platform API] --> Svc2[Platform Services] --> RG2[Robot Gateway] --> RA2[Robot Adapters] --> R2[Robots]
+    subgraph DemoMode [PLATFORM_API_URL unset]
+        App2[Mini App] --> Backend2[NestJS Backend] --> Mock[Mock Data]
     end
 ```
 
-**Path with Gateway:** Mini App → Gateway → Platform API → Platform Services → Robot Gateway → Robot Adapters → Robots
+**With platform:** Mini App → NestJS Backend → Platform API → Platform Services → Robot Gateway → Robot Adapters → Robots
 
-**Path without Gateway:** Mini App → Platform API → Platform Services → Robot Gateway → Robot Adapters → Robots
+**Demo mode:** Mini App → NestJS Backend → mock data (no platform call)
 
-The Gateway only proxies requests; it does not implement business logic or persist data.
+The backend only proxies or serves mocks; it does not implement business logic or persist data.
 
 ## Telemetry Flow
 
@@ -85,9 +87,8 @@ Telemetry originates from robots and flows to the Mini App via the platform. The
 ```mermaid
 flowchart LR
     subgraph TelemetryFlow [Telemetry Flow]
-        Robot[Robot] --> Adapter[Robot Adapter] --> Platform[Platform Telemetry Service] --> API[Platform API] --> Gateway[Gateway]
-        Gateway --> MiniApp[Mini App]
-        API -.->|"Direct"| MiniApp
+        Robot[Robot] --> Adapter[Robot Adapter] --> Platform[Platform Telemetry Service] --> API[Platform API] --> Backend[NestJS Backend]
+        Backend --> MiniApp[Mini App]
     end
 ```
 
@@ -95,8 +96,8 @@ flowchart LR
 2. **Robot Adapter** — Receives robot-specific data; normalizes and forwards to platform
 3. **Platform Telemetry Service** — Aggregates, stores, and exposes via API (stream or poll)
 4. **Platform API** — Exposes `/telemetry/:robotId` or WebSocket stream
-5. **Gateway** — Passes through (if present); no transformation
-6. **Mini App** — Subscribes (WebSocket) or polls; displays status to user
+5. **NestJS Backend** — Proxies telemetry (or serves mock) to the Mini App
+6. **Mini App** — Polls backend; displays status to user
 
 ## Commands and Scenario Launch Flow
 
@@ -106,23 +107,23 @@ User actions (e.g., send command, start Mall Guide) flow through the platform to
 sequenceDiagram
     participant User
     participant MiniApp
-    participant Gateway
+    participant Backend as NestJS Backend
     participant Platform
     participant RobotGateway
     participant Adapter
     participant Robot
 
     User->>MiniApp: Tap Start Mall Guide
-    MiniApp->>Gateway: POST /scenarios/:id/run { robotId }
-    Gateway->>Platform: Forward request
+    MiniApp->>Backend: POST /scenarios/:id/run { robotId }
+    Backend->>Platform: Forward request
     Platform->>Platform: Validate user, robot, scenario
     Platform->>RobotGateway: Execute scenario on robot
     RobotGateway->>Adapter: Translate and send
     Adapter->>Robot: Robot-specific command
     Robot->>Adapter: Ack / telemetry
     Adapter->>Platform: Status update
-    Platform->>Gateway: 200 { executionId }
-    Gateway->>MiniApp: Response
+    Platform->>Backend: 200 { executionId }
+    Backend->>MiniApp: Response
     MiniApp->>User: Show running status
 ```
 
@@ -136,7 +137,7 @@ End-to-end sequence for launching and monitoring the Mall Guide scenario.
 sequenceDiagram
     participant User
     participant MiniApp
-    participant Gateway
+    participant Backend as NestJS Backend
     participant Platform
     participant ScenarioSvc
     participant RobotGateway
@@ -144,8 +145,8 @@ sequenceDiagram
     participant Robot
 
     User->>MiniApp: Select robot, tap Start
-    MiniApp->>Gateway: POST /scenarios/mall-guide/run { robotId }
-    Gateway->>Platform: Forward
+    MiniApp->>Backend: POST /scenarios/mall-guide/run { robotId }
+    Backend->>Platform: Forward
     Platform->>ScenarioSvc: Start Mall Guide
     ScenarioSvc->>Platform: Validate ownership, compatibility
     ScenarioSvc->>RobotGateway: Execute scenario
@@ -153,27 +154,29 @@ sequenceDiagram
     Adapter->>Robot: Start Mall Guide
     Robot->>Adapter: Running
     Adapter->>Platform: Telemetry
-    Platform->>Gateway: 201 { executionId }
-    Gateway->>MiniApp: Response
+    Platform->>Backend: 201 { executionId }
+    Backend->>MiniApp: Response
     MiniApp->>User: Status: Running
 
     loop Monitor
         Robot->>Adapter: Telemetry
         Adapter->>Platform: Update
-        MiniApp->>Gateway: GET /scenarios/.../executions/:id
-        Gateway->>Platform: Forward
-        Platform->>MiniApp: Status, progress
+        MiniApp->>Backend: GET /scenarios/.../executions/:id
+        Backend->>Platform: Forward
+        Platform->>Backend: Status, progress
+        Backend->>MiniApp: Response
         MiniApp->>User: Update UI
     end
 
     User->>MiniApp: Tap Stop
-    MiniApp->>Gateway: POST .../executions/:id/stop
-    Gateway->>Platform: Forward
+    MiniApp->>Backend: POST .../executions/:id/stop
+    Backend->>Platform: Forward
     Platform->>RobotGateway: Stop
     RobotGateway->>Adapter: Stop command
     Adapter->>Robot: Stop
     Robot->>Adapter: Stopped
-    Platform->>MiniApp: 200
+    Platform->>Backend: 200
+    Backend->>MiniApp: Response
     MiniApp->>User: Status: Stopped
 ```
 
@@ -181,7 +184,7 @@ sequenceDiagram
 
 See [Authentication and Security](auth-and-security.md) for the full Telegram authentication sequence with Bot and WebApp roles.
 
-Summary: User opens Mini App from Telegram → App reads `initData` → App sends to Platform (via Gateway or direct) → Platform validates HMAC → Platform issues session tokens → App stores and uses for API requests.
+Summary: User opens Mini App from Telegram → App reads `initData` → App sends to NestJS backend → Backend forwards to Platform (when `PLATFORM_API_URL` set) → Platform validates HMAC → Platform issues session tokens → App stores and uses for API requests.
 
 ## API Domains
 

@@ -1,5 +1,5 @@
 import { Outlet, Link, useLocation } from "react-router-dom";
-import { Home, Bot, Store, MapPin } from "lucide-react";
+import { Home, Bot, Store, MapPin, Wallet, Settings } from "lucide-react";
 
 export function AppLayout() {
   const location = useLocation();
@@ -9,6 +9,15 @@ export function AppLayout() {
     return location.pathname.startsWith(path);
   };
 
+  const navLinkClass = (active: boolean, scriptsStyle = false) =>
+    `flex flex-col items-center gap-1 px-2 py-2 rounded-xl transition-all min-w-0 flex-1 ${
+      active
+        ? scriptsStyle
+          ? "text-[#39ff14] scale-110 drop-shadow-[0_0_8px_rgba(57,255,20,0.5)]"
+          : "text-primary scale-110 drop-shadow-[0_0_8px_rgba(0,229,255,0.4)]"
+        : "text-[#666] hover:text-[#999]"
+    }`;
+
   return (
     <div className="flex flex-col h-screen text-foreground relative">
       <div className="absolute inset-0 z-[-1] pointer-events-none" />
@@ -16,54 +25,46 @@ export function AppLayout() {
         <Outlet />
       </main>
 
-      <nav className="border-t border-white/5 bg-[#0a0a0c]/90 backdrop-blur-md pb-safe">
-        <div className="flex items-center justify-around px-4 py-3">
+      <nav className="border-t border-white/10 bg-black/30 backdrop-blur-xl pb-safe">
+        <div className="flex items-center justify-between px-2 py-2 gap-1">
           <Link
             to="/"
-            className={`flex flex-col items-center gap-1.5 px-4 py-2 rounded-xl transition-all ${
-              isActive("/") && !isActive("/robots") && !isActive("/store") && !isActive("/scenarios")
-                ? "text-primary scale-110 drop-shadow-[0_0_8px_rgba(0,229,255,0.4)]"
-                : "text-[#666] hover:text-[#999]"
-            }`}
+            className={navLinkClass(
+              isActive("/") &&
+                !isActive("/robots") &&
+                !isActive("/store") &&
+                !isActive("/scripts") &&
+                !isActive("/wallet") &&
+                !isActive("/settings")
+            )}
           >
-            <Home className="w-[22px] h-[22px]" />
-            <span className="text-[10px] font-semibold tracking-wide uppercase">Home</span>
+            <Home className="w-5 h-5 shrink-0" />
+            <span className="text-[9px] font-semibold tracking-wide uppercase truncate">Home</span>
           </Link>
 
-          <Link
-            to="/robots"
-            className={`flex flex-col items-center gap-1.5 px-4 py-2 rounded-xl transition-all ${
-              isActive("/robots")
-                ? "text-primary scale-110 drop-shadow-[0_0_8px_rgba(0,229,255,0.4)]"
-                : "text-[#666] hover:text-[#999]"
-            }`}
-          >
-            <Bot className="w-[22px] h-[22px]" />
-            <span className="text-[10px] font-semibold tracking-wide uppercase">Robots</span>
+          <Link to="/robots" className={navLinkClass(isActive("/robots"))}>
+            <Bot className="w-5 h-5 shrink-0" />
+            <span className="text-[9px] font-semibold tracking-wide uppercase truncate">Robots</span>
           </Link>
 
-          <Link
-            to="/store"
-            className={`flex flex-col items-center gap-1.5 px-4 py-2 rounded-xl transition-all ${
-              isActive("/store")
-                ? "text-primary scale-110 drop-shadow-[0_0_8px_rgba(0,229,255,0.4)]"
-                : "text-[#666] hover:text-[#999]"
-            }`}
-          >
-            <Store className="w-[22px] h-[22px]" />
-            <span className="text-[10px] font-semibold tracking-wide uppercase">Store</span>
+          <Link to="/store" className={navLinkClass(isActive("/store"))}>
+            <Store className="w-5 h-5 shrink-0" />
+            <span className="text-[9px] font-semibold tracking-wide uppercase truncate">Store</span>
           </Link>
 
-          <Link
-            to="/scenarios/mall-guide"
-            className={`flex flex-col items-center gap-1.5 px-4 py-2 rounded-xl transition-all ${
-              isActive("/scenarios")
-                ? "text-[#39ff14] scale-110 drop-shadow-[0_0_8px_rgba(57,255,20,0.5)]"
-                : "text-[#666] hover:text-[#999]"
-            }`}
-          >
-            <MapPin className="w-[22px] h-[22px]" />
-            <span className="text-[10px] font-semibold tracking-wide uppercase">Guide</span>
+          <Link to="/wallet" className={navLinkClass(isActive("/wallet"))}>
+            <Wallet className="w-5 h-5 shrink-0" />
+            <span className="text-[9px] font-semibold tracking-wide uppercase truncate">TON</span>
+          </Link>
+
+          <Link to="/scripts" className={navLinkClass(isActive("/scripts"), true)}>
+            <MapPin className="w-5 h-5 shrink-0" />
+            <span className="text-[9px] font-semibold tracking-wide uppercase truncate">Scripts</span>
+          </Link>
+
+          <Link to="/settings" className={navLinkClass(isActive("/settings"))}>
+            <Settings className="w-5 h-5 shrink-0" />
+            <span className="text-[9px] font-semibold tracking-wide uppercase truncate">Settings</span>
           </Link>
         </div>
       </nav>

@@ -1,7 +1,11 @@
 import { RouterProvider } from "react-router-dom";
+import { TonConnectUIProvider } from "@tonconnect/ui-react";
 import { TelegramProvider } from "./components/layout/TelegramProvider";
 import { useTelegramAuth } from "./auth/useTelegramAuth";
 import { router } from "./routes";
+
+const manifestUrl = `${window.location.origin}/tonconnect-manifest.json`;
+const twaReturnUrl = import.meta.env.VITE_TWA_RETURN_URL ?? window.location.href;
 
 function AppContent() {
   const { isReady } = useTelegramAuth();
@@ -19,8 +23,13 @@ function AppContent() {
 
 export default function App() {
   return (
-    <TelegramProvider>
-      <AppContent />
-    </TelegramProvider>
+    <TonConnectUIProvider
+      manifestUrl={manifestUrl}
+      actionsConfiguration={{ twaReturnUrl }}
+    >
+      <TelegramProvider>
+        <AppContent />
+      </TelegramProvider>
+    </TonConnectUIProvider>
   );
 }

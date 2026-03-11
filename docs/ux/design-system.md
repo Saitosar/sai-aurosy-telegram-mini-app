@@ -1,6 +1,6 @@
 # Design System
 
-Design tokens and UI patterns for the SAI AUROSY Telegram Mini App. Aligned with the Figma reference in `figma_design/design_pattern/`.
+Design tokens and UI patterns for the SAI AUROSY Telegram Mini App. Design tokens are defined in `frontend/src/styles/theme.css`.
 
 ## Theme
 

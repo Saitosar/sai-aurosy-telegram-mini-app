@@ -15,10 +15,19 @@ The SAI AUROSY Telegram Mini App is a **client interface** for the SAI AUROSY ro
 
 ## Architecture
 
-- **External client** — Mini App runs inside Telegram; optional Gateway may proxy requests
+- **External client** — Mini App runs inside Telegram; NestJS backend acts as Gateway (BFF)
 - **Platform as backend** — All business logic lives in the SAI AUROSY platform
-- **API integration** — Communicates via platform REST/GraphQL APIs (direct or via Gateway)
-- **Telegram authentication** — Uses Telegram Web App init data; platform validates and issues sessions
+- **API integration** — Frontend calls NestJS backend at `VITE_API_BASE_URL`; backend proxies to platform or serves mock data
+- **Telegram authentication** — Uses Telegram Web App init data; backend forwards to platform for validation
+
+## Platform Integration
+
+This Mini App connects to the **SAI AUROSY** multi-robot workforce platform:
+
+- **Platform repo (prod):** https://github.com/Saitosar/SAI-AUROSY
+- **Local dev path:** `/Users/sarkhan/SAI-AUROSY`
+
+The app is an API consumer. It does not create scenarios, robots, or store items—the platform owns all business logic. Set `PLATFORM_API_URL` to your local or deployed platform for real integration; when unset, mock data is used for demo.
 
 ## Documentation
 
@@ -48,8 +57,8 @@ Copy the example env file and adjust if needed:
 cp .env.example .env
 ```
 
-- `VITE_API_BASE_URL` — API base URL for the frontend (must match backend port, e.g. `http://localhost:3001`)
-- `PORT` — Backend port (default: `3000`; use `3001` if 3000 is occupied)
+- `VITE_API_BASE_URL` — API base URL for the frontend; must match backend (e.g. `http://localhost:3001`)
+- `PORT` — Backend port (default: `3000`; `.env.example` uses `3001` if port 3000 is occupied). Ensure `VITE_API_BASE_URL` and `PORT` match.
 
 ### 3. Run locally
 
@@ -72,7 +81,7 @@ npm run dev:frontend
 ### 4. Access
 
 - **Frontend:** http://localhost:5173
-- **Backend API:** http://localhost:3000 (or 3001 if `PORT=3001` in `.env`)
+- **Backend API:** http://localhost:3000 (or http://localhost:3001 if `PORT=3001` in `.env`)
 
 ### 5. Telegram testing
 
@@ -88,7 +97,7 @@ For local development without Telegram, the app runs with mock data and skips au
 
 ```
 ├── frontend/     # React + Vite + Tailwind
-├── backend/      # NestJS mock API + Gateway placeholder
+├── backend/      # NestJS API + Gateway (proxies to platform or serves mock)
 ├── shared/       # Shared DTOs
 └── docs/         # Documentation
 ```

@@ -42,6 +42,13 @@
   --sidebar-accent-foreground: #fafafa;
   --sidebar-border: #27272a;
   --sidebar-ring: #00e5ff;
+
+  /* Spaceship control panel - glass tokens */
+  --glass-bg: rgba(255, 255, 255, 0.04);
+  --glass-bg-elevated: rgba(255, 255, 255, 0.07);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --glass-border-subtle: rgba(255, 255, 255, 0.08);
+  --glass-glow: rgba(0, 229, 255, 0.15);
 }
 
 .dark {
@@ -81,6 +88,13 @@
   --sidebar-accent-foreground: #fafafa;
   --sidebar-border: #27272a;
   --sidebar-ring: #00e5ff;
+
+  /* Spaceship control panel - glass tokens */
+  --glass-bg: rgba(255, 255, 255, 0.04);
+  --glass-bg-elevated: rgba(255, 255, 255, 0.07);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --glass-border-subtle: rgba(255, 255, 255, 0.08);
+  --glass-glow: rgba(0, 229, 255, 0.15);
 }
 
 @theme inline {

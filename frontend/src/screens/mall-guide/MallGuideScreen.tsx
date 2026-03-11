@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { MapPin, Play, Square, ChevronDown, Bot } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { ArrowLeft, MapPin, Play, Square, ChevronDown, Bot } from "lucide-react";
 import type { Robot } from "shared";
 import { getRobots } from "../../api/robots";
 import {
@@ -14,7 +14,10 @@ const SCENARIO_ID = "mall-guide";
 
 export function MallGuideScreen() {
   const location = useLocation();
+  const navigate = useNavigate();
   const preselectedRobot = (location.state as { selectedRobot?: string })?.selectedRobot;
+
+  const handleBack = useCallback(() => navigate(-1), [navigate]);
 
   const [robots, setRobots] = useState<Robot[]>([]);
   const [loading, setLoading] = useState(true);
@@ -65,6 +68,28 @@ export function MallGuideScreen() {
       .catch(() => setRobots([]))
       .finally(() => setLoading(false));
   }, []);
+
+  useEffect(() => {
+    const tg = (window as unknown as {
+      Telegram?: {
+        WebApp?: {
+          BackButton?: {
+            show?: () => void;
+            hide?: () => void;
+            onClick?: (cb: () => void) => () => void;
+          };
+        };
+      };
+    }).Telegram?.WebApp;
+    if (tg?.BackButton) {
+      tg.BackButton.show?.();
+      const offClick = tg.BackButton.onClick?.(handleBack);
+      return () => {
+        offClick?.();
+        tg.BackButton?.hide?.();
+      };
+    }
+  }, [handleBack]);
 
   useEffect(() => {
     if (!executionId) return;
@@ -139,6 +164,13 @@ export function MallGuideScreen() {
     return (
       <div className="min-h-full pb-20">
         <div className="px-6 py-8">
+          <button
+            onClick={handleBack}
+            className="flex items-center gap-2 text-[#a0a0a0] mb-8 hover:text-white transition-colors"
+          >
+            <ArrowLeft className="w-5 h-5" />
+            <span className="font-medium text-[15px]">Back</span>
+          </button>
           <div className="flex items-center gap-4 mb-8">
             <Skeleton className="h-14 w-14 rounded-xl" />
             <div className="flex-1">
@@ -146,13 +178,13 @@ export function MallGuideScreen() {
               <Skeleton className="h-4 w-48" />
             </div>
           </div>
-          <div className="bg-[#111111]/80 backdrop-blur-sm border border-white/5 rounded-2xl p-6 mb-6 shadow-lg">
+          <div className="glass-card rounded-2xl p-6 mb-6">
             <Skeleton className="h-4 w-16 mb-3" />
             <Skeleton className="h-4 w-full mb-2" />
             <Skeleton className="h-4 w-full mb-2" />
             <Skeleton className="h-4 w-3/4" />
           </div>
-          <div className="bg-[#111111]/80 backdrop-blur-sm border border-white/5 rounded-2xl p-6 shadow-lg">
+          <div className="glass-card rounded-2xl p-6">
             <Skeleton className="h-4 w-24 mb-4" />
             <Skeleton className="h-12 w-full rounded-xl" />
           </div>
@@ -164,8 +196,15 @@ export function MallGuideScreen() {
   return (
     <div className="min-h-full pb-20">
       <div className="px-6 py-8">
+        <button
+          onClick={handleBack}
+          className="flex items-center gap-2 text-[#a0a0a0] mb-8 hover:text-white transition-colors"
+        >
+          <ArrowLeft className="w-5 h-5" />
+          <span className="font-medium text-[15px]">Back</span>
+        </button>
         <div className="flex items-center gap-4 mb-8">
-          <div className="p-3.5 bg-[#1f1f22] border border-white/5 rounded-xl shadow-[0_0_15px_rgba(0,229,255,0.1)]">
+          <div className="glass-icon-container p-3.5 rounded-xl shadow-[0_0_15px_rgba(0,229,255,0.1)]">
             <MapPin className="w-7 h-7 text-primary drop-shadow-[0_0_8px_rgba(0,229,255,0.6)]" />
           </div>
           <div>
@@ -174,7 +213,7 @@ export function MallGuideScreen() {
           </div>
         </div>
 
-        <div className="bg-[#111111]/80 backdrop-blur-sm border border-white/5 rounded-2xl p-6 mb-6 shadow-lg">
+        <div className="glass-card rounded-2xl p-6 mb-6">
           <h3 className="text-[13px] font-semibold text-white uppercase tracking-wider mb-3">About</h3>
           <p className="text-[#a0a0a0] leading-relaxed text-[14px]">
             Guide customers through the mall with predefined waypoints. The robot will navigate between key locations
@@ -182,13 +221,13 @@ export function MallGuideScreen() {
           </p>
         </div>
 
-        <div className="bg-[#111111]/80 backdrop-blur-sm border border-white/5 rounded-2xl p-6 mb-6 shadow-lg">
+        <div className="glass-card rounded-2xl p-6 mb-6">
           <h3 className="text-[13px] font-semibold text-white uppercase tracking-wider mb-4">Select Robot</h3>
           <div className="relative">
             <button
               onClick={() => setShowDropdown(!showDropdown)}
               disabled={loading}
-              className="w-full px-4 py-3.5 bg-[#1f1f22] border border-white/5 rounded-xl flex items-center justify-between text-white hover:border-white/10 transition-colors shadow-inner disabled:opacity-50"
+              className="glass-icon-container w-full px-4 py-3.5 rounded-xl flex items-center justify-between text-white hover:border-white/10 transition-colors disabled:opacity-50"
             >
               {selectedRobotData ? (
                 <div className="flex items-center gap-3">
@@ -208,7 +247,7 @@ export function MallGuideScreen() {
             </button>
 
             {showDropdown && (
-              <div className="absolute top-[calc(100%+8px)] left-0 right-0 bg-[#1f1f22] border border-white/10 rounded-xl overflow-hidden z-20 shadow-[0_10px_40px_rgba(0,0,0,0.5)]">
+              <div className="absolute top-[calc(100%+8px)] left-0 right-0 glass-card-elevated rounded-xl overflow-hidden z-20 shadow-[0_10px_40px_rgba(0,0,0,0.5)]">
                 {robots.map((robot) => (
                   <button
                     key={robot.id}
@@ -255,7 +294,7 @@ export function MallGuideScreen() {
                     ? "bg-amber-500/10 border border-amber-500/30"
                     : finalStatus?.status === "completed"
                       ? "bg-[#39ff14]/10 border border-[#39ff14]/40 shadow-[0_0_20px_rgba(57,255,20,0.15)]"
-                      : "bg-[#111111]/80 border border-primary/30 shadow-[0_0_20px_rgba(0,229,255,0.1)]"
+                      : "glass-card border-primary/30 shadow-[0_0_20px_rgba(0,229,255,0.1)]"
             }`}
           >
             {isRunning && (
@@ -280,7 +319,7 @@ export function MallGuideScreen() {
                 Waypoint {currentWaypoint}/{totalWaypoints}
               </span>
             </div>
-            <div className="w-full bg-[#1f1f22] rounded-full h-2.5 relative z-10 overflow-hidden border border-white/5">
+            <div className="glass-icon-container w-full rounded-full h-2.5 relative z-10 overflow-hidden">
               <div
                 className={`h-full rounded-full transition-all duration-500 ${
                   finalStatus?.status === "error"
@@ -301,7 +340,7 @@ export function MallGuideScreen() {
         )}
 
         {!isRunning && !finalStatus && (
-          <div className="mb-8 p-4 bg-[#111111]/80 border border-white/5 rounded-2xl">
+          <div className="mb-8 glass-card rounded-2xl p-4">
             <p className="text-[#a0a0a0] text-sm font-medium">Ready to start</p>
           </div>
         )}
@@ -334,7 +373,7 @@ export function MallGuideScreen() {
                   ? { executionId, scenarioId: SCENARIO_ID }
                   : { selectedRobot }
               }
-              className="block w-full py-4 bg-[#1f1f22] hover:bg-[#2a2a2e] border border-white/5 text-white font-semibold text-[16px] rounded-xl text-center transition-all"
+              className="glass-button-secondary block w-full py-4 hover:bg-white/10 text-white font-semibold text-[16px] rounded-xl text-center transition-all"
             >
               Open Control Panel
             </Link>

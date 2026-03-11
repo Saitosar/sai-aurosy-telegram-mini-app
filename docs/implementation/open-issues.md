@@ -2,6 +2,8 @@
 
 Items pending platform support, documentation, or future implementation.
 
+**Implemented:** The NestJS backend in `backend/` is implemented and acts as the Mini App Gateway. It proxies requests to the platform when `PLATFORM_API_URL` is set, or serves mock data when unset. Robot connect/disconnect endpoints (`POST /robots/connect`, `POST /robots/:id/disconnect`) are not implemented; see [API Overview](../api/api-overview.md).
+
 ## Platform Integration
 
 ### Platform OpenAPI

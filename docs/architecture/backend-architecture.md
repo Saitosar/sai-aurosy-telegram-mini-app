@@ -1,10 +1,18 @@
 # Backend Architecture
 
-## No Dedicated App Backend
+## NestJS Backend as Gateway
 
-The SAI AUROSY Telegram Mini App **does not have its own business-logic backend**. All backend logic—authentication, business rules, robot control, store, scenarios—lives in the **SAI AUROSY platform**.
+This project includes a **NestJS backend** in `backend/` that implements the **Mini App Gateway** (BFF/proxy). The frontend **always** calls this backend; it never talks directly to the SAI AUROSY platform.
 
-An optional **Mini App Gateway** (BFF/proxy) may be deployed as infrastructure. It does not implement business logic or persist data; it only proxies requests and handles cross-cutting concerns (CORS, token refresh, routing).
+The backend does **not** implement business logic or persist data. All business logic—authentication, robot control, store, scenarios—lives in the **SAI AUROSY platform**. The backend:
+
+- **Proxies** requests to the platform when `PLATFORM_API_URL` is set
+- **Serves mock data** when `PLATFORM_API_URL` is unset (demo mode)
+- Handles CORS, request forwarding, and auth header passthrough
+
+```
+Mini App → NestJS Backend (Gateway) → Platform API
+```
 
 ## Gateway vs Platform
 
@@ -44,18 +52,16 @@ flowchart TB
 | **Mini App Gateway** | Proxy, CORS, token handling, env routing | No | No |
 | **SAI AUROSY Platform** | Auth, robots, store, scenarios, telemetry | Yes | Yes |
 
-## When Gateway Is Used
+## Gateway in This Project
 
-The Gateway is **optional**. Use it when:
+In this project, the Gateway is **required**. The frontend uses `VITE_API_BASE_URL` to call the NestJS backend; there is no direct Mini App → Platform path. The backend:
 
-| Scenario | Reason |
-|----------|--------|
-| **CORS restrictions** | Platform API does not allow direct browser requests from the Mini App origin |
-| **Server-side token refresh** | Refresh flow requires a server-side step (e.g., secure cookie, token rotation) |
-| **Multi-environment routing** | Different API URLs per environment (dev, staging, prod); Gateway routes to correct platform instance |
-| **Request logging / rate limiting** | Centralized request logging or rate limiting per client |
-
-When the Gateway is not used, the Mini App talks directly to the Platform API.
+| Scenario | Behavior |
+|----------|----------|
+| **`PLATFORM_API_URL` unset** | Returns mock data (auth, robots, store, scenarios, telemetry) for demo |
+| **`PLATFORM_API_URL` set** | Proxies requests to the platform; passes through responses and errors |
+| **CORS** | Backend enables CORS so the frontend can call it from any origin |
+| **Path mapping** | Maps app paths to platform paths where needed (e.g. `/commands` → platform `/command`) |
 
 ## Gateway Responsibilities
 
@@ -91,15 +97,14 @@ The platform is the single source of truth for users, robots, scenarios, and sto
 ```mermaid
 flowchart LR
     App[Telegram Mini App]
-    Gateway[Mini App Gateway]
+    Backend[NestJS Backend - Gateway]
     Platform[SAI AUROSY Platform]
-    App -->|"HTTPS"| Gateway
-    App -.->|"HTTPS direct"| Platform
-    Gateway -->|"HTTPS"| Platform
+    App -->|"VITE_API_BASE_URL"| Backend
+    Backend -->|"PLATFORM_API_URL"| Platform
 ```
 
-- **With Gateway:** Mini App → Gateway → Platform
-- **Without Gateway:** Mini App → Platform
+- **Always:** Mini App → NestJS Backend → Platform (when `PLATFORM_API_URL` is set)
+- **Demo mode:** Mini App → NestJS Backend → mock data (when `PLATFORM_API_URL` is unset)
 
 ## Summary
 
@@ -110,5 +115,5 @@ flowchart LR
 | Robot control | Platform |
 | Data persistence | Platform |
 | API | Platform |
-| Request proxy, CORS, token handling | Gateway (optional) |
+| Request proxy, CORS, token handling | NestJS Backend (Gateway) |
 | UI, routing, API client | App (frontend only) |

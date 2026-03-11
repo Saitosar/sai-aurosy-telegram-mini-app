@@ -158,40 +158,40 @@ export function ControlScreen() {
           <span className="font-medium text-[15px]">Back</span>
         </button>
 
-        <div className="bg-[#111111]/80 backdrop-blur-sm border border-white/5 rounded-2xl p-6 mb-6 shadow-lg relative overflow-hidden">
+        <div className="bg-primary/10 border border-primary/20 rounded-2xl p-6 mb-6 shadow-[0_0_15px_rgba(0,229,255,0.1)] relative overflow-hidden">
           {displayRobot.status === "online" && (
             <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl" />
           )}
           <div className="flex items-start justify-between relative z-10">
             <div className="flex items-start gap-4">
-              <div className="p-3.5 bg-[#1f1f22] rounded-xl border border-white/5">
+              <div className="p-3.5 rounded-xl bg-primary/10 border border-primary/20 shadow-[0_0_8px_rgba(0,229,255,0.15)]">
                 <Bot
-                  className={`w-7 h-7 ${displayRobot.status === "online" ? "text-primary drop-shadow-[0_0_8px_rgba(0,229,255,0.6)]" : "text-[#666]"}`}
+                  className={`w-7 h-7 drop-shadow-[0_0_4px_rgba(0,229,255,0.4)] ${displayRobot.status === "online" ? "text-primary" : "text-primary/60"}`}
                 />
               </div>
               <div>
                 <div className="flex items-center gap-3 mb-1">
-                  <h2 className="text-xl font-bold tracking-tight text-white">{displayRobot.name}</h2>
-                  <div className="flex items-center gap-2 px-2 py-0.5 bg-black/40 rounded-full border border-white/5">
+                  <h2 className="text-xl font-bold tracking-tight text-primary/95 drop-shadow-[0_0_6px_rgba(0,229,255,0.3)]">{displayRobot.name}</h2>
+                  <div className="flex items-center gap-2 px-2 py-0.5 rounded-full bg-primary/10 border border-primary/20 shadow-[0_0_6px_rgba(0,229,255,0.1)]">
                     <div className={`w-2 h-2 rounded-full ${getStatusColor(displayRobot.status)}`} />
-                    <span className="text-[11px] font-semibold text-[#a0a0a0] uppercase tracking-wider">
+                    <span className="text-[11px] font-semibold text-primary/80 uppercase tracking-wider">
                       {displayRobot.status}
                     </span>
                   </div>
                 </div>
-                <p className="text-[#a0a0a0] text-sm font-medium">{displayRobot.model}</p>
+                <p className="text-primary/70 text-sm font-medium">{displayRobot.model}</p>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="bg-[#111111]/80 backdrop-blur-sm border border-white/5 rounded-2xl p-6 mb-6 shadow-lg">
+        <div className="bg-primary/10 border border-primary/20 rounded-2xl p-6 mb-6 shadow-[0_0_15px_rgba(0,229,255,0.1)]">
           <div className="flex items-center justify-between mb-5">
-            <h3 className="text-[13px] font-semibold text-white uppercase tracking-wider">Telemetry</h3>
+            <h3 className="text-[13px] font-semibold text-primary/95 uppercase tracking-wider">Telemetry</h3>
             {lastUpdated && (
               <span
                 className={`text-[11px] font-medium ${
-                  isStale ? "text-amber-500" : "text-[#a0a0a0]"
+                  isStale ? "text-amber-500" : "text-primary/70"
                 }`}
                 title={lastUpdated.toLocaleTimeString()}
               >
@@ -201,31 +201,31 @@ export function ControlScreen() {
           </div>
           <div className="space-y-5">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3 text-[#a0a0a0]">
-                <div className="p-2 bg-black/40 rounded-lg border border-white/5">
-                  <MapPin className="w-4 h-4 text-primary" />
+              <div className="flex items-center gap-3 text-primary/80">
+                <div className="p-2 rounded-lg bg-primary/10 border border-primary/20 shadow-[0_0_6px_rgba(0,229,255,0.1)]">
+                  <MapPin className="w-4 h-4 text-primary drop-shadow-[0_0_4px_rgba(0,229,255,0.4)]" />
                 </div>
                 <span className="font-medium text-[15px]">Position</span>
               </div>
-              <span className="font-mono text-white text-[15px] bg-[#1f1f22] px-3 py-1 rounded-lg border border-white/5">
+              <span className="font-mono text-primary/95 text-[15px] px-3 py-1 rounded-lg bg-primary/10 border border-primary/20 shadow-[0_0_6px_rgba(0,229,255,0.1)]">
                 X: {position.x}, Y: {position.y}
               </span>
             </div>
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3 text-[#a0a0a0]">
-                <div className="p-2 bg-black/40 rounded-lg border border-white/5">
-                  <Battery className="w-4 h-4 text-primary" />
+              <div className="flex items-center gap-3 text-primary/80">
+                <div className="p-2 rounded-lg bg-primary/10 border border-primary/20 shadow-[0_0_6px_rgba(0,229,255,0.1)]">
+                  <Battery className="w-4 h-4 text-primary drop-shadow-[0_0_4px_rgba(0,229,255,0.4)]" />
                 </div>
                 <span className="font-medium text-[15px]">Battery</span>
               </div>
               <div className="flex items-center gap-3">
-                <div className="w-24 bg-[#1f1f22] rounded-full h-2 overflow-hidden border border-white/5">
+                <div className="w-24 rounded-full h-2 overflow-hidden bg-primary/10 border border-primary/20">
                   <div
                     className={`h-full rounded-full ${battery > 80 ? "bg-[#39ff14] shadow-[0_0_8px_rgba(57,255,20,0.6)]" : battery > 20 ? "bg-primary shadow-[0_0_8px_rgba(0,229,255,0.6)]" : "bg-red-500"}`}
                     style={{ width: `${battery}%` }}
                   />
                 </div>
-                <span className="font-mono text-white text-[15px] bg-[#1f1f22] px-3 py-1 rounded-lg border border-white/5">
+                <span className="font-mono text-primary/95 text-[15px] px-3 py-1 rounded-lg bg-primary/10 border border-primary/20 shadow-[0_0_6px_rgba(0,229,255,0.1)]">
                   {battery}%
                 </span>
               </div>
@@ -233,8 +233,8 @@ export function ControlScreen() {
           </div>
         </div>
 
-        <div className="bg-[#111111]/80 backdrop-blur-sm border border-white/5 rounded-2xl p-6 mb-6 shadow-lg">
-          <h3 className="text-[13px] font-semibold text-white uppercase tracking-wider mb-5">Commands</h3>
+        <div className="bg-primary/10 border border-primary/20 rounded-2xl p-6 mb-6 shadow-[0_0_15px_rgba(0,229,255,0.1)]">
+          <h3 className="text-[13px] font-semibold text-primary/95 uppercase tracking-wider mb-5">Commands</h3>
           {(commandError || commandSuccess) && (
             <div
               className={`mb-4 px-4 py-2 rounded-xl text-sm font-medium ${
@@ -256,15 +256,15 @@ export function ControlScreen() {
             <button
               onClick={handleGoHome}
               disabled={commandPending}
-              className="px-4 py-3.5 bg-[#1f1f22] hover:bg-[#2a2a2e] border border-white/5 text-white rounded-xl flex items-center justify-center gap-2 transition-all font-semibold disabled:opacity-50"
+              className="px-4 py-3.5 bg-primary/10 border border-primary/20 text-primary/95 hover:bg-primary/20 hover:border-primary/40 rounded-xl flex items-center justify-center gap-2 transition-all font-semibold disabled:opacity-50 shadow-[0_0_8px_rgba(0,229,255,0.1)]"
             >
-              <Home className="w-4 h-4 text-primary" />
+              <Home className="w-4 h-4 text-primary drop-shadow-[0_0_4px_rgba(0,229,255,0.5)]" />
               Go Home
             </button>
             <button
               disabled
               title="Coming when platform supports custom commands"
-              className="px-4 py-3.5 bg-[#1f1f22] hover:bg-[#2a2a2e] border border-white/5 text-white rounded-xl flex items-center justify-center gap-2 col-span-2 transition-all font-semibold opacity-50 cursor-not-allowed"
+              className="px-4 py-3.5 bg-primary/10 border border-primary/20 text-primary/95 rounded-xl flex items-center justify-center gap-2 col-span-2 transition-all font-semibold opacity-50 cursor-not-allowed shadow-[0_0_8px_rgba(0,229,255,0.1)]"
             >
               <Zap className="w-4 h-4 text-primary" />
               Custom Command
@@ -273,9 +273,9 @@ export function ControlScreen() {
         </div>
 
         {displayScenario ? (
-          <div className="bg-primary/10 backdrop-blur-sm border border-primary/30 rounded-2xl p-6 mb-6 shadow-[0_0_20px_rgba(0,229,255,0.1)]">
+          <div className="bg-primary/10 border border-primary/30 rounded-2xl p-6 mb-6 shadow-[0_0_20px_rgba(0,229,255,0.15)]">
             <h3 className="text-[13px] font-semibold text-primary uppercase tracking-wider mb-2">Active Scenario</h3>
-            <p className="text-white font-medium mb-5 flex items-center gap-2">
+            <p className="text-primary/95 font-medium mb-5 flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_rgba(0,229,255,0.8)] animate-pulse" />
               Running: {displayScenario}
             </p>
@@ -290,11 +290,11 @@ export function ControlScreen() {
             </button>
           </div>
         ) : showScenarioStopped ? (
-          <div className="bg-[#111111]/80 backdrop-blur-sm border border-white/5 rounded-2xl p-6 mb-6 shadow-lg">
-            <h3 className="text-[13px] font-semibold text-white uppercase tracking-wider mb-2">Scenario</h3>
-            <p className="text-[#a0a0a0] mb-5 text-[14px]">Scenario stopped</p>
+          <div className="bg-primary/10 border border-primary/20 rounded-2xl p-6 mb-6 shadow-[0_0_15px_rgba(0,229,255,0.1)]">
+            <h3 className="text-[13px] font-semibold text-primary/95 uppercase tracking-wider mb-2">Scenario</h3>
+            <p className="text-primary/70 mb-5 text-[14px]">Scenario stopped</p>
             <Link
-              to="/scenarios/mall-guide"
+              to="/scripts/mall-guide"
               state={{ selectedRobot: robotId }}
               className="block w-full px-4 py-4 bg-primary text-black rounded-xl text-center font-bold hover:bg-[#33e8ff] transition-all shadow-[0_0_15px_rgba(0,229,255,0.3)] hover:shadow-[0_0_25px_rgba(0,229,255,0.5)]"
             >
@@ -302,11 +302,11 @@ export function ControlScreen() {
             </Link>
           </div>
         ) : (
-          <div className="bg-[#111111]/80 backdrop-blur-sm border border-white/5 rounded-2xl p-6 shadow-lg">
-            <h3 className="text-[13px] font-semibold text-white uppercase tracking-wider mb-2">Start Scenario</h3>
-            <p className="text-[#a0a0a0] mb-5 text-[14px]">Launch the Mall Guide scenario on this robot</p>
+          <div className="bg-primary/10 border border-primary/20 rounded-2xl p-6 shadow-[0_0_15px_rgba(0,229,255,0.1)]">
+            <h3 className="text-[13px] font-semibold text-primary/95 uppercase tracking-wider mb-2">Start Scenario</h3>
+            <p className="text-primary/70 mb-5 text-[14px]">Launch the Mall Guide scenario on this robot</p>
             <Link
-              to="/scenarios/mall-guide"
+              to="/scripts/mall-guide"
               state={{ selectedRobot: robotId }}
               className="block w-full px-4 py-4 bg-primary text-black rounded-xl text-center font-bold hover:bg-[#33e8ff] transition-all shadow-[0_0_15px_rgba(0,229,255,0.3)] hover:shadow-[0_0_25px_rgba(0,229,255,0.5)]"
             >
