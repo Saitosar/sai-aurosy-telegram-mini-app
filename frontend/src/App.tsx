@@ -1,6 +1,8 @@
 import { RouterProvider } from "react-router-dom";
 import { TonConnectUIProvider } from "@tonconnect/ui-react";
 import { TelegramProvider } from "./components/layout/TelegramProvider";
+import { ThemeProvider } from "./contexts/ThemeContext";
+import { LocaleProvider } from "./contexts/LocaleContext";
 import { useTelegramAuth } from "./auth/useTelegramAuth";
 import { router } from "./routes";
 
@@ -27,9 +29,13 @@ export default function App() {
       manifestUrl={manifestUrl}
       actionsConfiguration={{ twaReturnUrl }}
     >
-      <TelegramProvider>
-        <AppContent />
-      </TelegramProvider>
+      <ThemeProvider>
+        <LocaleProvider>
+          <TelegramProvider>
+            <AppContent />
+          </TelegramProvider>
+        </LocaleProvider>
+      </ThemeProvider>
     </TonConnectUIProvider>
   );
 }

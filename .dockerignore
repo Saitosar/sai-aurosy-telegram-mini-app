@@ -1,0 +1,10 @@
+node_modules
+*/node_modules
+frontend
+docs
+*.md
+.env
+.git
+.gitignore
+backend/dist
+shared/dist

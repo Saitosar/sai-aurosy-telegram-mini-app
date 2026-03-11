@@ -39,7 +39,7 @@ See [Screen Map](../ux/screen-map.md) for navigation structure and screen transi
 ```
 src/
 ├── main.tsx              # Entry point; mounts App
-├── App.tsx               # TonConnectUIProvider, TelegramProvider, RouterProvider
+├── App.tsx               # TonConnectUIProvider, ThemeProvider, LocaleProvider, TelegramProvider, RouterProvider
 ├── routes.tsx            # React Router config
 ├── components/           # Reusable UI components
 │   ├── layout/           # AppLayout, TelegramProvider
@@ -57,7 +57,9 @@ src/
 │   └── demo/             # Event Mode Demo
 ├── api/                  # API client, endpoints (auth, robots, store, scenarios, telemetry)
 ├── auth/                 # useTelegramAuth, session
+├── contexts/             # ThemeContext, LocaleContext
 ├── hooks/                # useTelemetry, useDemo, useRobotPath
+├── utils/                # telegram.ts (getTelegramUser, getInitData, isInTelegram)
 └── styles/               # theme.css, fonts.css
 ```
 
@@ -69,7 +71,8 @@ src/
 | Robots | `/robots` | List and manage connected robots |
 | Store | `/store` | Browse and acquire robots |
 | TON Wallet | `/wallet` | Connect TON wallet, view address, mock actions |
-| Settings | `/settings` | App settings and preferences |
+| Settings | `/settings` | App settings menu: User Profile, Theme toggle, Language selector |
+| User Profile | `/settings/profile` | View Telegram user data when authenticated; login prompt when not |
 | Control Panel | `/control/:robotId` | View robot data and send commands |
 | Scripts | `/scripts` | Browse scripts by type |
 | Mall Guide | `/scripts/mall-guide` | Run Mall Guide script |
@@ -109,6 +112,8 @@ The client always uses the NestJS backend as the API base. The backend proxies t
 
 - `window.Telegram.WebApp.themeParams` — Colors for header, background, text
 - Apply to app theme for consistent look with Telegram
+- **Theme toggle (mock)** — Settings screen has Light/Dark toggle; preference stored in localStorage; may be overridden by Telegram themeParams in production
+- **Locale selector (mock)** — Settings screen has language dropdown (en, uz, az, ar-AE, tr, ru); selection persisted for future i18n; app text does not change yet
 
 ### Viewport
 
