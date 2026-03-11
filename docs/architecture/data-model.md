@@ -24,8 +24,8 @@ The app deals with the following entities. All are sourced from the SAI AUROSY p
 
 ### StoreItem
 
-- **Source:** Platform API (`/store/items`)
-- **Attributes:** ID, type (robot or scenario), name, description, price (if applicable)
+- **Source:** V1: in-memory mock in backend; V2: Platform API (`/store/items`)
+- **Attributes:** ID, type (robot or scenario), name, description, model, specs, imageUrl, price (if applicable)
 - **Relationship:** User acquires items; acquired items become robots or scenarios in user's account
 
 ### Telemetry
@@ -76,7 +76,7 @@ erDiagram
 | User profile | Platform | No (session only) |
 | Robots | Platform API | No (fetched on demand) |
 | Scenarios | Platform API | No |
-| Store catalog | Platform API | No |
+| Store catalog | Backend mock (V1); Platform API (V2) | No |
 | Telemetry | Platform API / stream | No (display only) |
 
 ## Local State (App-Only)

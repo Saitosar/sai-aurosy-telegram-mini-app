@@ -15,9 +15,9 @@ Browse the robot catalog and acquire robots to add to the user's fleet. View det
 |--------|-------------|---------|
 | Browse catalog | View available robots | Grid or list of store items |
 | Filter | Filter by type, model (TBD) | Filtered list |
-| View details | Open item detail view | Modal or detail screen |
-| Order | Open Telegram chat with sales contact | Chat with @Arif_Mammadov1 |
-| Acquire | Add robot to fleet | Robot added; confirmation shown |
+| View details | Open item detail modal | Modal overlay (no separate route) |
+| **Order** (primary) | Open Telegram chat with sales contact | Chat with @Arif_Mammadov1; pre-filled message |
+| **Acquire** (secondary) | Add robot to fleet | In modal; robot added; confirmation shown |
 
 ## Layout
 
@@ -29,8 +29,7 @@ Browse the robot catalog and acquire robots to add to the user's fleet. View det
 - **Card interactions** — Two distinct actions:
   - Tap image/name/description → opens detail modal
   - Tap Order → opens Telegram chat directly (no modal)
-- **Detail modal/screen** — Full description, specs, compatibility, product image, model tag, Order button
-- **Acquire button** — Secondary CTA to add robot to fleet (in modal)
+- **Detail modal** — Modal overlay (no separate route); full description, specs, compatibility, product image, model tag, Order button, Acquire button
 - **Empty/loading states** — Skeleton or placeholder while loading
 
 ## Expected Outcomes
@@ -65,7 +64,7 @@ The store displays robots from mock data. As of the latest update, the catalog i
 | Model Z    Model W       |
 | [Order]    [Order]       |
 +---------------------------+
-| [Dashboard] [Robots] [Store] [TON] [Scripts] [Settings] |
+| [Home] [Robots] [Store] [TON] [Scripts] [Settings] |
 +---------------------------+
 ```
 

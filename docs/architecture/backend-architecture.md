@@ -28,7 +28,7 @@ flowchart TB
     subgraph Platform [SAI AUROSY Platform]
         AuthAPI[Auth API]
         RobotsAPI[Robots API]
-        StoreAPI[Store API]
+        StoreAPI[Store API - V2 Marketplace]
         ScenariosAPI[Scenarios API]
         TelemetryAPI[Telemetry API]
         BusinessLogic[Business Logic]
@@ -59,7 +59,7 @@ In this project, the Gateway is **required**. The frontend uses `VITE_API_BASE_U
 | Scenario | Behavior |
 |----------|----------|
 | **`PLATFORM_API_URL` unset** | Returns mock data (auth, robots, store, scenarios, telemetry) for demo |
-| **`PLATFORM_API_URL` set** | Proxies requests to the platform; passes through responses and errors |
+| **`PLATFORM_API_URL` set** | Proxies auth, robots, scenarios, telemetry to platform; Store remains mock |
 | **CORS** | Backend enables CORS so the frontend can call it from any origin |
 | **Path mapping** | Maps app paths to platform paths where needed (e.g. `/commands` → platform `/command`) |
 
@@ -86,7 +86,7 @@ The SAI AUROSY platform provides:
 
 - **Auth API** — Validates Telegram init data; issues sessions
 - **Robots API** — Robot CRUD, connection, commands
-- **Store API** — Catalog, acquisition
+- **Store API** — V2 / Marketplace (Phase 3.4); V1 uses backend mock only
 - **Scenarios API** — List, run, status
 - **Telemetry API** — Robot status and telemetry
 

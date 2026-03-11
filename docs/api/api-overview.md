@@ -42,6 +42,8 @@ The SAI AUROSY Telegram Mini App calls the **NestJS backend** at `VITE_API_BASE_
 
 ## Store
 
+**V1:** Store is always mock. The platform has no Store API (Marketplace Phase 3.4). All endpoints are served by the backend mock; no proxying to platform.
+
 | Operation | Method | Purpose |
 |-----------|--------|---------|
 | List items | `GET /store/items` | Browse catalog |

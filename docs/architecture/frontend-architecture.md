@@ -67,7 +67,7 @@ src/
 
 | Screen | Route | Purpose |
 |--------|-------|---------|
-| Dashboard | `/` | Entry point; quick links to robots, store, Scripts |
+| Dashboard (Home) | `/` | Entry point; tab label "Home"; quick links to robots, store, Scripts |
 | Robots | `/robots` | List and manage connected robots |
 | Store | `/store` | Browse and acquire robots |
 | TON Wallet | `/wallet` | Connect TON wallet, view address, mock actions |

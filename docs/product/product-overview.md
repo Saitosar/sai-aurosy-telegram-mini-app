@@ -41,7 +41,7 @@ flowchart LR
 
 1. **Robot Connection** — View and manage robots linked to the user's platform account
 2. **Mall Guide Scenario** — Single scenario: launch, monitor, and stop Mall Guide
-3. **Robot Store** — Browse and acquire robots from the platform store
+3. **Robot Store** — Browse and acquire robots (V1: mock catalog; real Store API in V2 Marketplace)
 4. **Control Panel** — View robot data and send commands
 
 ## V2 Scope (Planned)

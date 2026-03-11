@@ -83,7 +83,7 @@ flowchart TB
 
 Primary navigation (tab bar or bottom menu):
 
-- **Dashboard** — Home
+- **Home** — Dashboard (route `/`)
 - **Robots** — My robots
 - **Store** — Robot Store
 - **TON** — TON wallet connection and actions
@@ -100,6 +100,7 @@ Control Panel is reached by selecting a robot from the Robots screen or from Mal
 | **Bot commands** | Dashboard or specific screen | Inline buttons may open app (TBD) |
 | **Deep link** | Specific screen (e.g., `/robots`, `/store`) | TBD; direct link to screen |
 | **Event Mode Demo** | `/demo` | Standalone route; no tab bar; reached from Dashboard link |
+| **Redirect** | `/scripts/mall-guide` | `/scenarios/mall-guide` redirects to `/scripts/mall-guide` |
 
 ## Back Navigation
 
@@ -111,7 +112,7 @@ Control Panel is reached by selecting a robot from the Robots screen or from Mal
 | **Robots, Store, Wallet, Scripts, Settings** | Hidden | Tab screens; switch via tabs |
 | **User Profile** | Hidden | In-app back link to Settings |
 | **Control Panel** | Visible | Back to Robots or Mall Guide (previous screen) |
-| **Store item detail** | Visible | Back to Store catalog |
+| **Store item detail** | In-app | Modal overlay on Store screen; no separate route; close via in-app button |
 | **Modal / overlay** | Visible or in-app | Close modal |
 
 ### Navigation Rules
