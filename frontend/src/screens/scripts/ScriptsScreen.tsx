@@ -58,7 +58,7 @@ export function ScriptsScreen() {
             {[1, 2, 3].map((i) => (
               <div key={i} className="space-y-3">
                 <Skeleton className="h-4 w-24" />
-                <div className="bg-[#111111]/80 border border-white/5 rounded-2xl p-6">
+                <div className="glass-card rounded-2xl p-6">
                   <Skeleton className="h-12 w-12 rounded-xl mb-4" />
                   <Skeleton className="h-5 w-3/4 mb-2" />
                   <Skeleton className="h-4 w-full" />
@@ -90,7 +90,7 @@ export function ScriptsScreen() {
               <section key={type}>
                 <h2 className="text-[13px] font-semibold text-white uppercase tracking-wider mb-4"> {label}</h2>
                 {items.length === 0 ? (
-                  <div className="bg-[#111111]/80 backdrop-blur-sm border border-white/5 rounded-2xl p-6 text-center">
+                  <div className="glass-card rounded-2xl p-6 text-center">
                     <p className="text-[#666] text-sm">No scripts yet</p>
                   </div>
                 ) : (
@@ -102,10 +102,10 @@ export function ScriptsScreen() {
                       return (
                         <div
                           key={script.id}
-                          className="bg-[#111111]/80 backdrop-blur-sm border border-white/5 rounded-2xl p-6 shadow-lg hover:border-white/10 transition-colors"
+                          className="glass-card rounded-2xl p-6 hover:border-primary/20 hover:shadow-[0_0_20px_rgba(0,229,255,0.06)] transition-colors"
                         >
                           <div className="flex items-start gap-4">
-                            <div className="p-3 bg-[#1f1f22] border border-white/5 rounded-xl shrink-0">
+                            <div className="glass-icon-container p-3 rounded-xl shrink-0">
                               <IconComponent className="w-6 h-6 text-primary" />
                             </div>
                             <div className="flex-1 min-w-0">
@@ -120,7 +120,7 @@ export function ScriptsScreen() {
                                   Open
                                 </Link>
                               ) : (
-                                <span className="mt-4 inline-block px-4 py-2.5 bg-white/5 text-[#666] rounded-xl text-sm font-medium cursor-not-allowed">
+                                <span className="mt-4 inline-block px-4 py-2.5 glass-button-secondary text-[#666] rounded-xl text-sm font-medium cursor-not-allowed">
                                   Coming soon
                                 </span>
                               )}
@@ -137,11 +137,11 @@ export function ScriptsScreen() {
 
           <section>
             <div
-              className="bg-[#111111]/80 backdrop-blur-sm border border-white/5 rounded-2xl p-6 border-dashed opacity-60 cursor-not-allowed"
+              className="glass-card rounded-2xl p-6 border-dashed opacity-60 cursor-not-allowed"
               title="В разработке"
             >
               <div className="flex items-center gap-4">
-                <div className="p-3 bg-[#1f1f22] border border-white/5 rounded-xl shrink-0">
+                <div className="glass-icon-container p-3 rounded-xl shrink-0">
                   <Plus className="w-6 h-6 text-[#666]" />
                 </div>
                 <div>

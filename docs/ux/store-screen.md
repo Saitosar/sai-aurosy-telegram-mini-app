@@ -21,10 +21,16 @@ Browse the robot catalog and acquire robots to add to the user's fleet. View det
 
 ## Layout
 
-- **Grid or list** — Store items (robots) with image (or placeholder icon), name, short description (2-line clamp)
-- **Detail modal/screen** — Full description, specs, compatibility, product image
-- **Order button** — Primary CTA; opens Telegram chat with sales contact (@Arif_Mammadov1)
-- **Acquire button** — Secondary CTA to add robot to fleet
+- **Grid or list** — Store items (robots) with:
+  - Image (or placeholder icon)
+  - Model tag (badge) — shown under image, above name
+  - Name, short description (1-line clamp)
+  - **Order** CTA button — primary action; opens Telegram chat with sales contact (@Arif_Mammadov1), includes item name in pre-filled message
+- **Card interactions** — Two distinct actions:
+  - Tap image/name/description → opens detail modal
+  - Tap Order → opens Telegram chat directly (no modal)
+- **Detail modal/screen** — Full description, specs, compatibility, product image, model tag, Order button
+- **Acquire button** — Secondary CTA to add robot to fleet (in modal)
 - **Empty/loading states** — Skeleton or placeholder while loading
 
 ## Expected Outcomes
@@ -53,18 +59,19 @@ The store displays robots from mock data. As of the latest update, the catalog i
 +---------------------------+
 | [Robot A]  [Robot B]      |
 | Model X    Model Y       |
+| [Order]    [Order]       |
 +---------------------------+
 | [Robot C]  [Robot D]      |
 | Model Z    Model W       |
+| [Order]    [Order]       |
 +---------------------------+
-|                           |
-| [Dashboard] [Robots] [Mall]|
+| [Dashboard] [Robots] [Store] [TON] [Scripts] [Settings] |
 +---------------------------+
 ```
 
 **Detail view (modal or full screen):**
-- Product image, name, description
+- Product image, name, model tag, description
 - Specs, compatibility
-- [Order] button — opens Telegram chat with @Arif_Mammadov1
+- [Order] button — opens Telegram chat with @Arif_Mammadov1 (pre-filled with item name)
 - [Acquire Robot] button
 - [Back] to catalog

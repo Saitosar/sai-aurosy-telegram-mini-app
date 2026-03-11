@@ -44,7 +44,7 @@ export function RobotsScreen() {
             {[1, 2, 3].map((i) => (
               <div
                 key={i}
-                className="bg-[#111111]/80 backdrop-blur-sm border border-white/5 rounded-2xl p-5"
+                className="bg-primary/10 border border-primary/20 rounded-2xl p-5 shadow-[0_0_15px_rgba(0,229,255,0.1)]"
               >
                 <div className="flex items-start justify-between mb-5">
                   <div className="flex items-start gap-4">
@@ -100,12 +100,12 @@ export function RobotsScreen() {
         </div>
 
         {robots.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-20 text-center bg-[#111111]/50 border border-white/5 rounded-3xl backdrop-blur-sm">
-            <div className="w-16 h-16 bg-[#1f1f22] rounded-2xl flex items-center justify-center mb-6 border border-white/5">
-              <Bot className="w-8 h-8 text-[#555]" />
+          <div className="flex flex-col items-center justify-center py-20 text-center bg-primary/10 border border-primary/20 rounded-3xl shadow-[0_0_15px_rgba(0,229,255,0.1)]">
+            <div className="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 bg-primary/10 border border-primary/20 shadow-[0_0_12px_rgba(0,229,255,0.15)]">
+              <Bot className="w-8 h-8 text-primary/70 drop-shadow-[0_0_6px_rgba(0,229,255,0.4)]" />
             </div>
-            <h3 className="mb-2 text-white font-semibold">No robots deployed</h3>
-            <p className="text-[#a0a0a0] mb-8 max-w-[200px] text-sm">
+            <h3 className="mb-2 font-semibold text-primary/95 drop-shadow-[0_0_6px_rgba(0,229,255,0.3)]">No robots deployed</h3>
+            <p className="text-primary/70 mb-8 max-w-[200px] text-sm">
               Connect your first unit or browse models in the Store.
             </p>
             <Link
@@ -120,35 +120,35 @@ export function RobotsScreen() {
             {robots.map((robot) => (
               <div
                 key={robot.id}
-                className="bg-[#111111]/80 backdrop-blur-sm border border-white/5 rounded-2xl p-5 hover:border-white/10 transition-all group shadow-lg relative overflow-hidden"
+                className="bg-primary/10 border border-primary/20 rounded-2xl p-5 shadow-[0_0_15px_rgba(0,229,255,0.1)] hover:bg-primary/15 hover:border-primary/40 hover:shadow-[0_0_25px_rgba(0,229,255,0.2)] transition-all group relative overflow-hidden"
               >
                 {robot.status === "online" && (
                   <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl" />
                 )}
                 <div className="flex items-start justify-between mb-5 relative z-10">
                   <div className="flex items-start gap-4">
-                    <div className="p-3 bg-[#1f1f22] rounded-xl border border-white/5">
+                    <div className="p-3 rounded-xl bg-primary/10 border border-primary/20 shadow-[0_0_8px_rgba(0,229,255,0.15)] group-hover:bg-primary/15 group-hover:border-primary/30 transition-colors">
                       <Bot
-                        className={`w-6 h-6 ${robot.status === "online" ? "text-primary drop-shadow-[0_0_5px_rgba(0,229,255,0.5)]" : "text-[#666]"}`}
+                        className={`w-6 h-6 drop-shadow-[0_0_4px_rgba(0,229,255,0.4)] ${robot.status === "online" ? "text-primary" : "text-primary/60"}`}
                       />
                     </div>
                     <div>
                       <div className="flex items-center gap-2 mb-1">
-                        <h3 className="font-semibold text-white tracking-tight text-[17px]">{robot.name}</h3>
+                        <h3 className="font-semibold text-primary/95 tracking-tight text-[17px] drop-shadow-[0_0_6px_rgba(0,229,255,0.3)]">{robot.name}</h3>
                       </div>
-                      <p className="text-[13px] text-[#a0a0a0] font-medium">{robot.model}</p>
+                      <p className="text-[13px] text-primary/70 font-medium">{robot.model}</p>
                       {robot.scenario && (
-                        <div className="inline-flex items-center gap-1.5 mt-2 px-2 py-0.5 bg-primary/10 border border-primary/20 rounded-md">
-                          <span className="text-[11px] font-semibold text-primary uppercase tracking-wider">
+                        <div className="inline-flex items-center gap-1.5 mt-2 px-2 py-0.5 bg-primary/10 border border-primary/20 rounded-md shadow-[0_0_6px_rgba(0,229,255,0.1)]">
+                          <span className="text-[11px] font-semibold text-primary uppercase tracking-wider drop-shadow-[0_0_4px_rgba(0,229,255,0.4)]">
                             Running: {robot.scenario}
                           </span>
                         </div>
                       )}
                     </div>
                   </div>
-                  <div className="flex items-center gap-2 px-2.5 py-1 bg-black/40 rounded-full border border-white/5">
+                  <div className="flex items-center gap-2 px-2.5 py-1 rounded-full bg-primary/10 border border-primary/20 shadow-[0_0_6px_rgba(0,229,255,0.1)]">
                     <div className={`w-2 h-2 rounded-full ${getStatusColor(robot.status)}`} />
-                    <span className="text-[11px] text-[#a0a0a0] font-medium uppercase tracking-wider">
+                    <span className="text-[11px] text-primary/80 font-medium uppercase tracking-wider">
                       {getStatusText(robot.status)}
                     </span>
                   </div>
@@ -156,20 +156,20 @@ export function RobotsScreen() {
                 <div className="flex gap-3 relative z-10">
                   <Link
                     to={`/control/${robot.id}`}
-                    className="flex-1 py-2.5 bg-white/5 hover:bg-white/10 text-white rounded-xl text-center border border-white/5 transition-colors font-medium text-sm"
+                    className="flex-1 py-2.5 rounded-xl text-center transition-all font-medium text-sm bg-primary/10 border border-primary/20 text-primary/95 hover:bg-primary/20 hover:border-primary/40 shadow-[0_0_8px_rgba(0,229,255,0.1)] hover:shadow-[0_0_12px_rgba(0,229,255,0.2)]"
                   >
                     <div className="flex items-center justify-center gap-2">
-                      <Power className="w-4 h-4 text-primary" />
+                      <Power className="w-4 h-4 text-primary drop-shadow-[0_0_4px_rgba(0,229,255,0.5)]" />
                       Control
                     </div>
                   </Link>
                   <Link
                     to="/scripts"
                     state={{ selectedRobot: robot.id }}
-                    className="flex-1 py-2.5 bg-[#1f1f22] hover:bg-[#2a2a2e] text-white rounded-xl text-center border border-white/5 hover:border-[#39ff14]/30 transition-all font-medium text-sm group/scripts"
+                    className="flex-1 py-2.5 rounded-xl text-center transition-all font-medium text-sm bg-primary/10 border border-primary/20 text-primary/95 hover:bg-primary/20 hover:border-primary/40 hover:border-[#39ff14]/40 shadow-[0_0_8px_rgba(0,229,255,0.1)] hover:shadow-[0_0_12px_rgba(57,255,20,0.2)] group/scripts"
                   >
                     <div className="flex items-center justify-center gap-2">
-                      <Play className="w-4 h-4 text-[#a0a0a0] group-hover/scripts:text-[#39ff14] transition-colors" />
+                      <Play className="w-4 h-4 text-primary/80 drop-shadow-[0_0_4px_rgba(0,229,255,0.3)] group-hover/scripts:text-[#39ff14] group-hover/scripts:drop-shadow-[0_0_6px_rgba(57,255,20,0.6)] transition-all" />
                       Scripts
                     </div>
                   </Link>

@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Bot, MessageCircle, X } from "lucide-react";
 import type { StoreItem } from "shared";
-import { getStoreItems, acquireItem } from "../../api/store";
+import { getStoreItems } from "../../api/store";
 import { Skeleton } from "../../components/ui/Skeleton";
 
 const ORDER_TELEGRAM_USERNAME = "Arif_Mammadov1";
 
-function openOrderChat() {
-  const url = `https://t.me/${ORDER_TELEGRAM_USERNAME}`;
+function openOrderChat(item?: StoreItem) {
+  const text = item ? `Hi! I'm interested in ${item.name}` : undefined;
+  const url = text
+    ? `https://t.me/${ORDER_TELEGRAM_USERNAME}?text=${encodeURIComponent(text)}`
+    : `https://t.me/${ORDER_TELEGRAM_USERNAME}`;
   const tg = (window as unknown as { Telegram?: { WebApp?: { openTelegramLink?: (url: string) => void } } })
     .Telegram?.WebApp;
   if (tg?.openTelegramLink) {
@@ -19,12 +21,9 @@ function openOrderChat() {
 }
 
 export function StoreScreen() {
-  const navigate = useNavigate();
   const [storeItems, setStoreItems] = useState<StoreItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedItem, setSelectedItem] = useState<StoreItem | null>(null);
-  const [acquiring, setAcquiring] = useState(false);
-  const [acquireError, setAcquireError] = useState<string | null>(null);
 
   useEffect(() => {
     getStoreItems()
@@ -32,20 +31,6 @@ export function StoreScreen() {
       .catch(() => setStoreItems([]))
       .finally(() => setLoading(false));
   }, []);
-
-  const handleAcquire = async (item: StoreItem) => {
-    setAcquireError(null);
-    setAcquiring(true);
-    try {
-      await acquireItem(item.id);
-      setSelectedItem(null);
-      navigate("/robots");
-    } catch (err) {
-      setAcquireError(err instanceof Error ? err.message : "Failed to acquire");
-    } finally {
-      setAcquiring(false);
-    }
-  };
 
   if (loading) {
     return (
@@ -56,12 +41,13 @@ export function StoreScreen() {
             {[1, 2, 3, 4].map((i) => (
               <div
                 key={i}
-                className="bg-[#111111]/80 backdrop-blur-sm border border-white/5 rounded-2xl p-4 flex flex-col"
+                className="glass-card rounded-2xl p-4 flex flex-col"
               >
-                <Skeleton className="aspect-square rounded-xl mb-4" />
+                <Skeleton className="aspect-square rounded-xl mb-2" />
+                <Skeleton className="h-5 w-16 mb-2" />
                 <Skeleton className="h-5 w-3/4 mb-2" />
                 <Skeleton className="h-4 w-full" />
-                <Skeleton className="h-4 w-2/3 mt-2" />
+                <Skeleton className="h-10 w-full mt-3 rounded-xl" />
               </div>
             ))}
           </div>
@@ -77,28 +63,54 @@ export function StoreScreen() {
 
         <div className="grid grid-cols-2 gap-4">
           {storeItems.map((item) => (
-            <button
+            <div
               key={item.id}
-              onClick={() => setSelectedItem(item)}
-              className="bg-[#111111]/80 backdrop-blur-sm border border-white/5 rounded-2xl p-4 hover:border-primary/30 transition-all text-left group shadow-lg flex flex-col h-full"
+              role="group"
+              className="glass-card rounded-2xl p-4 hover:border-primary/30 hover:shadow-[0_0_20px_rgba(0,229,255,0.08)] transition-all flex flex-col h-full"
             >
-              <div className="aspect-square bg-[#1f1f22] border border-white/5 rounded-xl mb-4 group-hover:border-primary/20 transition-colors relative overflow-hidden">
-                <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity" />
-                {item.imageUrl ? (
-                  <img
-                    src={item.imageUrl}
-                    alt={item.name}
-                    className="absolute inset-0 w-full h-full object-contain transition-transform group-hover:scale-105"
-                  />
-                ) : (
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <Bot className="w-12 h-12 text-primary drop-shadow-[0_0_8px_rgba(0,229,255,0.4)] transition-transform group-hover:scale-110" />
+              <button
+                type="button"
+                onClick={() => setSelectedItem(item)}
+                className="text-left group flex flex-col flex-1 min-w-0"
+              >
+                <div className="glass-icon-container aspect-square rounded-xl mb-2 group-hover:border-primary/20 transition-colors relative overflow-hidden">
+                  <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  {item.imageUrl ? (
+                    <img
+                      src={item.imageUrl}
+                      alt={item.name}
+                      className="absolute inset-0 w-full h-full object-contain transition-transform group-hover:scale-105"
+                    />
+                  ) : (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <Bot className="w-12 h-12 text-primary drop-shadow-[0_0_8px_rgba(0,229,255,0.4)] transition-transform group-hover:scale-110" />
+                    </div>
+                  )}
+                </div>
+                {item.model && (
+                  <div className="mb-2">
+                    <span className="glass-icon-container inline-flex items-center px-2 py-0.5 border-[#39ff14]/30 rounded-md shadow-[0_0_8px_rgba(57,255,20,0.1)]">
+                      <span className="text-[11px] font-semibold text-[#39ff14] uppercase tracking-wider">
+                        {item.model}
+                      </span>
+                    </span>
                   </div>
                 )}
-              </div>
-              <h4 className="font-semibold text-white tracking-tight mb-1 text-[15px]">{item.name}</h4>
-              <p className="text-[12px] text-[#a0a0a0] line-clamp-2 leading-relaxed mt-auto min-h-[2.5rem]">{item.description}</p>
-            </button>
+                <h4 className="font-semibold text-white tracking-tight mb-1 text-[15px]">{item.name}</h4>
+                <p className="text-[12px] text-[#a0a0a0] line-clamp-1 leading-relaxed">{item.description}</p>
+              </button>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  openOrderChat(item);
+                }}
+                className="w-full mt-3 py-2.5 bg-primary text-black font-bold text-[14px] rounded-xl hover:bg-[#33e8ff] transition-all shadow-[0_0_20px_rgba(0,229,255,0.3)] hover:shadow-[0_0_30px_rgba(0,229,255,0.5)] flex items-center justify-center gap-2"
+              >
+                <MessageCircle className="w-4 h-4" />
+                Order
+              </button>
+            </div>
           ))}
         </div>
       </div>
@@ -106,17 +118,17 @@ export function StoreScreen() {
       {selectedItem && (
         <div
           className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-end justify-center z-50 transition-opacity"
-          onClick={() => !acquiring && setSelectedItem(null)}
+          onClick={() => setSelectedItem(null)}
         >
           <div
-            className="bg-[#0a0a0c] w-full max-w-2xl rounded-t-[2rem] p-6 max-h-[85vh] overflow-y-auto border-t border-white/10 shadow-[0_-10px_40px_rgba(0,0,0,0.5)]"
+            className="w-full max-w-2xl rounded-t-[2rem] p-6 max-h-[85vh] overflow-y-auto border-t border-white/10 bg-[#0a0a0c]/95 backdrop-blur-xl shadow-[0_-10px_40px_rgba(0,0,0,0.5)]"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-start justify-between mb-6">
               <div className="flex-1">
                 <h2 className="text-2xl font-bold text-white tracking-tight mb-1">{selectedItem.name}</h2>
                 {selectedItem.model && (
-                  <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-[#1f1f22] border border-[#39ff14]/30 rounded-md shadow-[0_0_8px_rgba(57,255,20,0.1)]">
+                  <div className="glass-icon-container inline-flex items-center gap-1.5 px-2.5 py-1 border-[#39ff14]/30 rounded-md shadow-[0_0_8px_rgba(57,255,20,0.1)]">
                     <span className="text-[12px] font-semibold text-[#39ff14] uppercase tracking-wider">
                       {selectedItem.model}
                     </span>
@@ -124,15 +136,14 @@ export function StoreScreen() {
                 )}
               </div>
               <button
-                onClick={() => !acquiring && setSelectedItem(null)}
-                disabled={acquiring}
-                className="p-2 bg-white/5 hover:bg-white/10 rounded-full transition-colors text-white disabled:opacity-50"
+                onClick={() => setSelectedItem(null)}
+                className="glass-button-secondary p-2 hover:bg-white/10 rounded-full transition-colors text-white"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <div className="aspect-video bg-gradient-to-br from-[#1f1f22] to-[#111111] border border-white/5 rounded-2xl mb-8 relative overflow-hidden">
+            <div className="aspect-video glass-icon-container rounded-2xl mb-8 relative overflow-hidden">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,229,255,0.1)_0%,transparent_70%)]" />
               {selectedItem.imageUrl ? (
                 <img
@@ -166,26 +177,13 @@ export function StoreScreen() {
               </div>
             )}
 
-            {acquireError && (
-              <div className="mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded-xl text-red-400 text-sm">
-                {acquireError}
-              </div>
-            )}
-
             <div className="flex flex-col gap-3">
               <button
-                onClick={openOrderChat}
+                onClick={() => openOrderChat(selectedItem)}
                 className="w-full py-4 bg-primary text-black font-bold text-[16px] rounded-xl hover:bg-[#33e8ff] transition-all shadow-[0_0_20px_rgba(0,229,255,0.3)] hover:shadow-[0_0_30px_rgba(0,229,255,0.5)] flex items-center justify-center gap-2"
               >
                 <MessageCircle className="w-5 h-5" />
                 Order
-              </button>
-              <button
-                onClick={() => handleAcquire(selectedItem)}
-                disabled={acquiring}
-                className="w-full py-4 bg-white/5 hover:bg-white/10 text-white font-semibold text-[16px] rounded-xl border border-white/10 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {acquiring ? "Acquiring..." : "Acquire Robot"}
               </button>
             </div>
           </div>
