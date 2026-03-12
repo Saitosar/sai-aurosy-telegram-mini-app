@@ -19,7 +19,7 @@ Design tokens and UI patterns for the SAI AUROSY Telegram Mini App. Design token
 | `--border` | `#27272a` | Borders |
 | `--ring` | `#00e5ff` | Focus rings |
 
-Additional tokens: `--popover`, `--accent`, `--input`, `--input-background`, `--switch-background`, `--chart-1` through `--chart-5`, `--sidebar-*`.
+Additional tokens: `--popover`, `--accent`, `--input`, `--input-background`, `--switch-background`, `--chart-1` through `--chart-5`, `--sidebar-*`, `--toxic` (#39ff14, neon green for Busy status, Scripts accent).
 
 ### Typography
 
@@ -57,9 +57,9 @@ background-attachment: fixed;
 
 | Status | Color | Glow |
 |--------|-------|------|
-| Online | `--primary` (cyan) | `shadow-[0_0_8px_rgba(0,229,255,0.8)]` |
+| Online | `--primary` (#00e5ff, cyan) | `shadow-[0_0_8px_rgba(0,229,255,0.8)]` |
 | Offline | `#333` | — |
-| Busy | `yellow-400` | `shadow-[0_0_8px_rgba(250,204,21,0.8)]` |
+| Busy | `--toxic` (#39ff14, neon green) | `shadow-[0_0_8px_rgba(57,255,20,0.8)]` |
 
 ## Components
 

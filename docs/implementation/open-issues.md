@@ -47,8 +47,8 @@ Items pending platform support, documentation, or future implementation.
 ### Store / Marketplace
 
 - **Status:** Mock only in V1
-- **Detail:** SAI AUROSY Marketplace is Phase 3.4. No store API in current platform.
-- **Current:** In-memory mock items; acquire returns success
+- **Detail:** SAI AUROSY Marketplace is Phase 3.4. Platform Store API is not implemented.
+- **Current:** Store is always mock; backend serves in-memory `MOCK_ITEMS`; acquire returns `{ success: true }`; no proxying to platform
 
 ## Enhancements
 

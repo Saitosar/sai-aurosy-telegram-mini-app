@@ -27,7 +27,7 @@ flowchart TB
     subgraph Boundary3 [Boundary 3: Platform API]
         AuthAPI[Auth API]
         RobotsAPI[Robots API]
-        StoreAPI[Store API]
+        StoreAPI[Store API - V2 Marketplace]
         ScenariosAPI[Scenarios API]
         TelemetryAPI[Telemetry API]
     end
@@ -45,7 +45,7 @@ flowchart TB
     GatewayProxy -->|"PLATFORM_API_URL"| AuthAPI
     AuthAPI --> PlatformServices
     RobotsAPI --> PlatformServices
-    StoreAPI --> PlatformServices
+    StoreAPI -.->|"V1: mock only"| PlatformServices
     ScenariosAPI --> PlatformServices
     TelemetryAPI --> PlatformServices
     PlatformServices --> RobotGateway
@@ -56,7 +56,7 @@ flowchart TB
 |----------|------------|----------------|
 | **1. Mini App** | UI, API client, session | User interface, API calls, token storage |
 | **2. NestJS Backend** | Proxy, CORS, mock data | Request forwarding, path mapping, mock when platform unset |
-| **3. Platform API** | Auth, Robots, Store, Scenarios, Telemetry | API surface for all domains |
+| **3. Platform API** | Auth, Robots, Scenarios, Telemetry; Store (V2 Marketplace) | API surface; Store in V1 is backend mock only |
 | **4. Platform Internal** | Services, Robot Gateway, Adapters | Business logic, robot connectivity |
 
 ## Request Flow
@@ -145,8 +145,8 @@ sequenceDiagram
     participant Robot
 
     User->>MiniApp: Select robot, tap Start
-    MiniApp->>Backend: POST /scenarios/mall-guide/run { robotId }
-    Backend->>Platform: Forward
+    MiniApp->>Backend: POST /scenarios/:id/run { robotId } (id=mall-guide)
+    Backend->>Platform: POST /api/v1/tasks { robot_id, scenario_id }
     Platform->>ScenarioSvc: Start Mall Guide
     ScenarioSvc->>Platform: Validate ownership, compatibility
     ScenarioSvc->>RobotGateway: Execute scenario
@@ -161,8 +161,8 @@ sequenceDiagram
     loop Monitor
         Robot->>Adapter: Telemetry
         Adapter->>Platform: Update
-        MiniApp->>Backend: GET /scenarios/.../executions/:id
-        Backend->>Platform: Forward
+        MiniApp->>Backend: GET /scenarios/:id/executions/:executionId
+        Backend->>Platform: GET /api/v1/tasks/:executionId
         Platform->>Backend: Status, progress
         Backend->>MiniApp: Response
         MiniApp->>User: Update UI
@@ -170,7 +170,7 @@ sequenceDiagram
 
     User->>MiniApp: Tap Stop
     MiniApp->>Backend: POST .../executions/:id/stop
-    Backend->>Platform: Forward
+    Backend->>Platform: POST /api/v1/tasks/:id/cancel
     Platform->>RobotGateway: Stop
     RobotGateway->>Adapter: Stop command
     Adapter->>Robot: Stop
@@ -192,7 +192,7 @@ Summary: User opens Mini App from Telegram → App reads `initData` → App send
 |--------|---------|
 | **Auth** | Login (init data), refresh, logout |
 | **Robots** | List, get, connect, disconnect, commands |
-| **Store** | List items, acquire |
+| **Store** | List items, acquire (V1: backend mock only; platform Store API not implemented) |
 | **Scenarios** | List, get, run (Mall Guide), status |
 | **Telemetry** | Subscribe/stream or poll robot status |
 
