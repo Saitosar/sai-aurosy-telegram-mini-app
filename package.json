@@ -8,6 +8,8 @@
     "shared"
   ],
   "scripts": {
+    "predev": "node scripts/generate-tonconnect-manifest.js",
+    "prebuild": "node scripts/generate-tonconnect-manifest.js",
     "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
     "dev:clean": "lsof -ti:3001 -ti:3000 2>/dev/null | xargs kill -9 2>/dev/null; sleep 2; npm run dev",
     "dev:frontend": "npm run dev -w frontend",
@@ -18,7 +20,8 @@
     "build:backend": "npm run build -w backend"
   },
   "devDependencies": {
-    "concurrently": "^9.1.0"
+    "concurrently": "^9.1.0",
+    "dotenv": "^16.4.5"
   },
   "engines": {
     "node": ">=18"
