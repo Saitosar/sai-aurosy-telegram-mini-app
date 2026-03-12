@@ -1,7 +1,12 @@
 const fs = require("fs");
 const path = require("path");
 
-require("dotenv").config({ path: path.join(__dirname, "..", ".env") });
+const root = path.join(__dirname, "..");
+require("dotenv").config({ path: path.join(root, ".env") });
+const envProduction = path.join(root, ".env.production");
+if (fs.existsSync(envProduction)) {
+  require("dotenv").config({ path: envProduction });
+}
 
 const appUrl = process.env.VITE_APP_URL || "http://localhost:5173";
 const manifest = {
