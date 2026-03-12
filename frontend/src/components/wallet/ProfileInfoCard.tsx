@@ -1,12 +1,16 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { User, Wallet, Copy, LogOut } from "lucide-react";
+import { User, Wallet, Copy, LogOut, Eye, EyeOff } from "lucide-react";
 import { useTonAddress, useTonConnectModal, useTonConnectUI } from "@tonconnect/ui-react";
 import { getTelegramUser } from "../../utils/telegram";
 
 function truncateAddress(address: string, start = 6, end = 4): string {
   if (address.length <= start + end) return address;
   return `${address.slice(0, start)}...${address.slice(-end)}`;
+}
+
+function maskedAddress(): string {
+  return "••••••••••••••••••••";
 }
 
 function formatBalance(nanoton: string): string {
@@ -20,11 +24,16 @@ export function ProfileInfoCard() {
   const [tonConnectUI] = useTonConnectUI();
   const [copied, setCopied] = useState(false);
   const [balance, setBalance] = useState<string | null>(null);
+  const [addressVisible, setAddressVisible] = useState(false);
 
   const user = getTelegramUser();
   const displayName = user
     ? [user.first_name, user.last_name].filter(Boolean).join(" ") || user.username || "User"
     : "User";
+
+  useEffect(() => {
+    setAddressVisible(false);
+  }, [address]);
 
   useEffect(() => {
     if (!address) {
@@ -102,15 +111,28 @@ export function ProfileInfoCard() {
             )}
             <div className="flex items-center gap-2 p-3 rounded-xl glass-button-secondary">
               <code className="flex-1 text-sm font-mono text-[#a0a0a0] truncate tabular-nums">
-                {truncateAddress(address)}
+                {addressVisible ? truncateAddress(address) : maskedAddress()}
               </code>
               <button
-                onClick={handleCopy}
+                onClick={() => setAddressVisible(!addressVisible)}
                 className="p-2 rounded-lg hover:bg-white/10 transition-colors text-[#a0a0a0] hover:text-white"
-                title="Copy address"
+                title={addressVisible ? "Hide address" : "Show address"}
               >
-                <Copy className="w-4 h-4" />
+                {addressVisible ? (
+                  <EyeOff className="w-4 h-4" />
+                ) : (
+                  <Eye className="w-4 h-4" />
+                )}
               </button>
+              {addressVisible && (
+                <button
+                  onClick={handleCopy}
+                  className="p-2 rounded-lg hover:bg-white/10 transition-colors text-[#a0a0a0] hover:text-white"
+                  title="Copy address"
+                >
+                  <Copy className="w-4 h-4" />
+                </button>
+              )}
             </div>
             {copied && (
               <p className="text-xs text-primary font-medium">Copied!</p>
