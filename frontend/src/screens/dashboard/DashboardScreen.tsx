@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Store, Sparkles, ChevronRight } from "lucide-react";
-import { TonWalletSection } from "../../components/wallet/TonWalletSection";
+import { ProfileInfoCard } from "../../components/wallet/ProfileInfoCard";
 
 export function DashboardScreen() {
   return (
@@ -16,6 +16,8 @@ export function DashboardScreen() {
         </div>
 
         <div className="space-y-4">
+          <ProfileInfoCard />
+
           <Link to="/demo" className="block group">
             <div className="glass-card rounded-2xl p-6 border-toxic/30 hover:border-toxic/50 hover:shadow-[0_0_20px_rgba(57,255,20,0.1)] hover:scale-[1.02] transition-all relative">
               <span className="absolute top-3 right-12 text-[10px] font-bold uppercase tracking-wider text-toxic bg-toxic/10 px-2 py-0.5 rounded">
@@ -56,8 +58,6 @@ export function DashboardScreen() {
               </div>
             </div>
           </Link>
-
-          <TonWalletSection />
         </div>
       </div>
     </div>

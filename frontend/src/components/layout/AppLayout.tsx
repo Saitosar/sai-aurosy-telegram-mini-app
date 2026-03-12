@@ -1,5 +1,5 @@
 import { Outlet, Link, useLocation } from "react-router-dom";
-import { Home, Bot, Store, MapPin, Wallet, Settings } from "lucide-react";
+import { Home, Bot, Store, MapPin, ImageIcon, Settings } from "lucide-react";
 
 export function AppLayout() {
   const location = useLocation();
@@ -53,8 +53,8 @@ export function AppLayout() {
           </Link>
 
           <Link to="/wallet" className={navLinkClass(isActive("/wallet"))}>
-            <Wallet className="w-5 h-5 shrink-0" />
-            <span className="text-[9px] font-semibold tracking-wide uppercase truncate">TON</span>
+            <ImageIcon className="w-5 h-5 shrink-0" />
+            <span className="text-[9px] font-semibold tracking-wide uppercase truncate">NFT</span>
           </Link>
 
           <Link to="/scripts" className={navLinkClass(isActive("/scripts"), true)}>
