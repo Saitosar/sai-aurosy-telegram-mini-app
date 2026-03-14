@@ -8,8 +8,10 @@ import {
   MapPin,
   Route,
   GitBranch,
+  Trash2,
 } from "lucide-react";
 import { useStorePositions } from "./useStorePositions";
+import { haptic } from "../../utils/haptic";
 import { StoreMarkers } from "./StoreMarkers";
 import { PathOverlay } from "./PathOverlay";
 import type { StoredCalibration } from "./calibrationStorage";
@@ -37,6 +39,7 @@ export function MallGuideCalibrationScreen() {
     removePathSegment,
     clearPathSegments,
     resetToDefaults,
+    clearAllCalibration,
     exportJson,
     importJson,
   } = useStorePositions();
@@ -148,38 +151,62 @@ export function MallGuideCalibrationScreen() {
       </header>
 
       <div className="p-4 space-y-4">
-        <div
-          ref={mapRef}
-          className="relative aspect-[4/3] max-h-[85vh] rounded-xl overflow-hidden cursor-crosshair bg-cover bg-center"
-          style={{ backgroundImage: "url(/city-mall-floorplan.png)" }}
-          onClick={handleMapClick}
-        >
-          <div className="absolute inset-0 bg-black/20" />
-          <StoreMarkers targetStore={null} showAllStores />
-          <PathOverlay
-            path={
-              mode === "waypoints" && routeStore && stores[routeStore]
-                ? [reception, ...(routes[routeStore] ?? []), stores[routeStore]]
-                : undefined
-            }
-            segments={mode === "wayGraph" ? pathSegments : undefined}
-          />
-          {clickedPos && mode === "store" && (
-            <div
-              className="absolute w-4 h-4 -translate-x-1/2 -translate-y-1/2 rounded-full bg-toxic border-2 border-white animate-pulse"
-              style={{ left: `${clickedPos.left}%`, top: `${clickedPos.top}%` }}
+        <div className="flex justify-center">
+          <div
+            ref={mapRef}
+            className="relative inline-block max-w-full max-h-[70vh] cursor-crosshair rounded-xl overflow-hidden touch-none"
+            onClick={handleMapClick}
+          >
+            <img
+              src="/city-mall-floorplan.png"
+              alt="City Mall floor plan"
+              className="block max-w-full max-h-[70vh] w-auto h-auto object-contain"
             />
-          )}
-          {segmentFrom && mode === "wayGraph" && (
-            <div
-              className="absolute w-4 h-4 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary border-2 border-white animate-pulse"
-              style={{ left: `${segmentFrom.left}%`, top: `${segmentFrom.top}%` }}
-              title="Начало сегмента — кликните для конца"
+            <div className="absolute inset-0 bg-black/20" />
+            <StoreMarkers targetStore={null} showAllStores />
+            <PathOverlay
+              path={
+                mode === "waypoints" && routeStore && stores[routeStore]
+                  ? [reception, ...(routes[routeStore] ?? []), stores[routeStore]]
+                  : undefined
+              }
+              segments={mode === "wayGraph" ? pathSegments : undefined}
             />
-          )}
+            {clickedPos && mode === "store" && (
+              <div
+                className="absolute w-4 h-4 -translate-x-1/2 -translate-y-1/2 rounded-full bg-toxic border-2 border-white animate-pulse pointer-events-none"
+                style={{ left: `${clickedPos.left}%`, top: `${clickedPos.top}%` }}
+              />
+            )}
+            {segmentFrom && mode === "wayGraph" && (
+              <div
+                className="absolute w-4 h-4 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary border-2 border-white animate-pulse pointer-events-none"
+                style={{ left: `${segmentFrom.left}%`, top: `${segmentFrom.top}%` }}
+                title="Начало сегмента — кликните для конца"
+              />
+            )}
+          </div>
         </div>
 
         <div className="glass-card rounded-2xl p-4 space-y-4">
+          <button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              haptic.impact("medium");
+              clearAllCalibration();
+              setClickedPos(null);
+              setSegmentFrom(null);
+              setStoreName("");
+              setRouteStore("");
+              haptic.success();
+            }}
+            className="w-full py-3 rounded-xl bg-red-500/20 text-red-400 hover:bg-red-500/30 border border-red-500/30 font-medium text-sm flex items-center justify-center gap-2 transition-colors"
+          >
+            <Trash2 className="w-4 h-4" />
+            Сбросить все точки калибровки
+          </button>
           <div className="flex items-center justify-between">
             <span className="text-xs text-white/60">Режим пути в симуляции:</span>
             <div className="flex gap-1">

@@ -52,29 +52,26 @@ export function MallGuideSimulationView({ onBack }: MallGuideSimulationViewProps
   return (
     <div className="fixed inset-0 z-40 flex flex-col bg-background">
       <div className="relative flex-1 min-h-0 flex items-center justify-center overflow-hidden">
-        {/* Map: aspect 1024/558, fits viewport — full map visible on mobile (no crop) */}
-        <div
-          className="relative shrink-0 w-full max-h-full landscape:h-full landscape:max-w-full landscape:w-auto bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: "url(/city-mall-floorplan.png)",
-            aspectRatio: "1024/558",
-            opacity: 0.95,
-          }}
-        >
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_50%,transparent_0%,rgba(0,0,0,0.25)_100%)]" />
-
-            <StoreMarkers targetStore={targetStore} showAllStores={showAllStores} />
-            {pathOverlay && (
-              <PathOverlay path={pathOverlay} className="opacity-60" />
-            )}
-            <MallGuideRobotStage
-              phase={phase}
-              targetStore={targetStore}
-              guidingDurationMs={guidingDurationMs}
-              returningDurationMs={returningDurationMs}
-              onGuidingComplete={onGuidingComplete}
-              onReturningComplete={onReturningComplete}
-            />
+        {/* Map: object-contain = full map visible + max size on any device */}
+        <div className="relative inline-block max-w-full max-h-full">
+          <img
+            src="/city-mall-floorplan.png"
+            alt="City Mall floor plan"
+            className="block max-w-full max-h-full w-auto h-auto object-contain opacity-95"
+          />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_50%,transparent_0%,rgba(0,0,0,0.25)_100%)]" />
+          <StoreMarkers targetStore={targetStore} showAllStores={showAllStores} />
+          {pathOverlay && (
+            <PathOverlay path={pathOverlay} className="opacity-60" />
+          )}
+          <MallGuideRobotStage
+            phase={phase}
+            targetStore={targetStore}
+            guidingDurationMs={guidingDurationMs}
+            returningDurationMs={returningDurationMs}
+            onGuidingComplete={onGuidingComplete}
+            onReturningComplete={onReturningComplete}
+          />
         </div>
 
         <button
