@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useCallback, useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { MapPin, Mic, Layers, Plus } from "lucide-react";
 import type { Scenario } from "shared";
 import { getScenarios } from "../../api/scenarios";
+import { haptic } from "../../utils/haptic";
 import { ScreenHeader } from "../../components/ui/ScreenHeader";
 import { Skeleton } from "../../components/ui/Skeleton";
 
@@ -28,7 +29,13 @@ function getGroupForType(type: string): string {
 
 export function ScriptsScreen() {
   const location = useLocation();
+  const navigate = useNavigate();
   const preselectedRobot = (location.state as { selectedRobot?: string } | undefined)?.selectedRobot;
+
+  const handleBack = useCallback(() => {
+    haptic.impact("light");
+    navigate(-1);
+  }, [navigate]);
 
   const [scenarios, setScenarios] = useState<Scenario[]>([]);
   const [loading, setLoading] = useState(true);
@@ -80,6 +87,7 @@ export function ScriptsScreen() {
         <ScreenHeader
           title="Scripts"
           subtitle="Browse and run scripts on your robots. Behavioral, speech, and hybrid scenarios."
+          onBack={handleBack}
           className="mb-8"
         />
 

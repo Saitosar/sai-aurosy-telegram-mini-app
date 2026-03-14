@@ -1,5 +1,47 @@
 # Changelog
 
+## NFT Marketplace MVP (Read-Only) (2025-03)
+
+### Summary
+
+Implemented a Read-Only NFT marketplace inside the Telegram Mini App. Users browse NFTs from whitelisted TON collections; the Buy action redirects to Getgems.io. No blockchain transactions or wallet signing in-app.
+
+### Changes
+
+**Backend**
+- New NFT module: `NftController`, `NftService` with TonAPI proxy
+- Endpoints: `GET /nft/collections`, `GET /nft/collections/:address`, `GET /nft/collections/:address/items`, `GET /nft/items/:address`
+- 5-minute in-memory cache; collection whitelist validation; scam filtering
+
+**Frontend**
+- `NFTMarketplaceScreen` at `/nft` with collection selector and grid
+- Components: `NFTCard`, `CollectionGrid`, `BuyButton`, `NFTDetailSheet`
+- API client: `api/nft.ts` with `buildGetgemsUrl`, `formatPriceNanoton`
+- Dashboard: NFT Marketplace card links to `/nft`; added TON Wallet card for `/wallet`
+
+**Documentation**
+- `docs/architecture/nft-marketplace-architecture.md`
+- `docs/implementation/nft-marketplace-api.md`
+- Updated `docs/ux/screen-map.md`, `docs/architecture/frontend-architecture.md`
+
+### Files Added
+
+- `backend/src/nft/nft.module.ts`, `nft.controller.ts`, `nft.service.ts`, `nft.types.ts`
+- `frontend/src/api/nft.ts`
+- `frontend/src/components/nft/NFTCard.tsx`, `CollectionGrid.tsx`, `BuyButton.tsx`, `NFTDetailSheet.tsx`
+- `frontend/src/screens/nft/NFTMarketplaceScreen.tsx`
+- `docs/architecture/nft-marketplace-architecture.md`
+- `docs/implementation/nft-marketplace-api.md`
+
+### Files Modified
+
+- `backend/src/app.module.ts`, `.env.example`
+- `frontend/src/routes.tsx`, `frontend/src/screens/dashboard/DashboardScreen.tsx`
+- `docs/ux/screen-map.md`, `docs/architecture/frontend-architecture.md`
+- `docs/CHANGELOG.md`
+
+---
+
 ## iOS 26 Typography Update (2025-03)
 
 ### Summary

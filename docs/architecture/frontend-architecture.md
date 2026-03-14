@@ -44,10 +44,12 @@ src/
 ├── components/           # Reusable UI components
 │   ├── layout/           # AppLayout, TelegramProvider
 │   ├── ui/               # Skeleton, utils.ts (cn)
+│   ├── nft/              # NFTCard, CollectionGrid, BuyButton, NFTDetailSheet
 │   └── wallet/           # TonWalletSection, MockActions
 ├── screens/              # Screen-level components
 │   ├── dashboard/
 │   ├── robots/
+│   ├── nft/
 │   ├── store/
 │   ├── control/
 │   ├── scripts/
@@ -67,10 +69,11 @@ src/
 
 | Screen | Route | Purpose |
 |--------|-------|---------|
-| Dashboard (Home) | `/` | Entry point; tab label "Home"; cards link to Event Mode Demo, Store, Scripts, NFT |
+| Dashboard (Home) | `/` | Entry point; tab label "Home"; cards link to Event Mode Demo, Store, Scripts, NFT Marketplace, TON Wallet |
 | Robots | `/robots` | List and manage connected robots |
 | Store | `/store` | Browse and acquire robots |
 | TON Wallet | `/wallet` | Connect TON wallet, view address, mock actions |
+| NFT Marketplace | `/nft` | Browse NFTs from whitelisted collections; Buy redirects to Getgems |
 | Settings | `/settings` | App settings menu: User Profile, Theme toggle, Language selector |
 | User Profile | `/settings/profile` | View Telegram user data when authenticated; login prompt when not |
 | Control Panel | `/control/:robotId` | View robot data and send commands |
@@ -83,7 +86,7 @@ src/
 
 - **Base URL** — `VITE_API_BASE_URL` points to the NestJS backend (e.g. `http://localhost:3001`)
 - **Auth header injection** — Attach `Authorization: Bearer <token>` to all authenticated requests
-- **Endpoint modules** — `auth`, `robots`, `store`, `scenarios`, `telemetry`
+- **Endpoint modules** — `auth`, `robots`, `store`, `nft`, `scenarios`, `telemetry`
 - **Error handling** — Map status codes to user-facing messages
 - **No business logic** — Only request/response handling; no validation or computation
 
