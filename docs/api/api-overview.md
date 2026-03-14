@@ -15,6 +15,7 @@ The SAI AUROSY Telegram Mini App calls the **NestJS backend** at `VITE_API_BASE_
 | **Store** | List items, acquire |
 | **Scenarios** | List, get, run, status |
 | **Telemetry** | Robot status and telemetry |
+| **Mall Guide Calibration** | Get/save mall floor plan calibration (global, persisted on backend) |
 
 ## Auth
 
@@ -59,6 +60,19 @@ The SAI AUROSY Telegram Mini App calls the **NestJS backend** at `VITE_API_BASE_
 | Run | `POST /scenarios/:id/run` | Start scenario on robot `{ "robotId": "..." }` |
 | Status | `GET /scenarios/:id/executions/:executionId` | Execution status |
 | Stop | `POST /scenarios/:id/executions/:executionId/stop` | Stop execution |
+
+## Mall Guide Calibration
+
+Calibration is stored on the backend (JSON file) so all users and devices see the same mall guide configuration. No platform proxying.
+
+| Operation | Method | Purpose |
+|-----------|--------|---------|
+| Get | `GET /mall-guide/calibration` | Get current calibration (or defaults if none persisted) |
+| Save | `PUT /mall-guide/calibration` | Save calibration to backend |
+
+**Get response:** `{ "data": StoredCalibration, "persisted": boolean }` — `persisted` is `true` when data was read from file, `false` when defaults were returned.
+
+**Put request:** `StoredCalibration` (reception, stores, pathMode, routes, pathSegments)
 
 ## Telemetry
 
