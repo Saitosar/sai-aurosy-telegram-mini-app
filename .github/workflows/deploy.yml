@@ -11,11 +11,10 @@ jobs:
     steps:
       - name: Deploy via SSH
         env:
-          SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+          SSH_KEY_B64: ${{ secrets.VPS_SSH_KEY }}
         run: |
-          printf '%s\n' "$SSH_KEY" > /tmp/deploy_key
+          echo "$SSH_KEY_B64" | base64 -d > /tmp/deploy_key
           chmod 600 /tmp/deploy_key
-          ssh-keygen -l -f /tmp/deploy_key
-          ssh -i /tmp/deploy_key -o StrictHostKeyChecking=no -v root@91.98.72.220 \
+          ssh -i /tmp/deploy_key -o StrictHostKeyChecking=no root@91.98.72.220 \
             "cd /opt/sai-aurosy && git pull origin main && docker compose -f docker-compose.prod.yml up -d --build"
           rm /tmp/deploy_key
