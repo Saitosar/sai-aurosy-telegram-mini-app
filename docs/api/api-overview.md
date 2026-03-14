@@ -74,6 +74,8 @@ Calibration is stored on the backend (JSON file) so all users and devices see th
 
 **Put request:** `StoredCalibration` (reception, stores, pathMode, routes, pathSegments)
 
+**Put response:** `204 No Content`
+
 ## Telemetry
 
 | Operation | Method | Purpose |

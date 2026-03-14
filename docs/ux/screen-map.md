@@ -15,6 +15,7 @@
 | Control Panel | `/control/:robotId` | View robot data and send commands |
 | Scripts | `/scripts` | Browse scripts by type (Behavioral, Speech, Hybrid) |
 | Mall Guide | `/scripts/mall-guide` | Run Mall Guide script |
+| Mall Guide Calibration | `/scripts/mall-guide/calibration` | Calibrate mall floor plan |
 | Event Mode Demo | `/demo` | 3D robot demo on map overlay (standalone, outside main layout) |
 
 ### V2 Screens (Planned)
@@ -44,6 +45,7 @@ flowchart TB
     subgraph Detail [Detail]
         ControlPanel[Control Panel /control/:robotId]
         MallGuide[Mall Guide /scripts/mall-guide]
+        MallGuideCal[Mall Guide Calibration /scripts/mall-guide/calibration]
         UserProfile[User Profile /settings/profile]
     end
 
@@ -58,6 +60,8 @@ flowchart TB
     Robots --> Scripts
     Store -->|"After acquire"| Robots
     Scripts -->|"Open Mall Guide"| MallGuide
+    MallGuide -->|"Calibration"| MallGuideCal
+    MallGuideCal -->|"Back"| MallGuide
     MallGuide -->|"Select robot"| ControlPanel
     ControlPanel -->|"Back"| Robots
     ControlPanel --> Scripts
@@ -75,7 +79,8 @@ flowchart TB
 | **Scripts** | Dashboard, Robots, Store, Wallet, Settings (via tabs), Mall Guide (open script) |
 | **Settings** | Dashboard, Robots, Store, Wallet, Scripts (via tabs), User Profile |
 | **User Profile** | Settings (back) |
-| **Mall Guide** | Scripts (back), Control Panel (select robot) |
+| **Mall Guide** | Scripts (back), Mall Guide Calibration, Control Panel (select robot) |
+| **Mall Guide Calibration** | Mall Guide (back) |
 | **Control Panel** | Robots, Scripts (via tabs or scenario shortcut), Mall Guide |
 | **Event Mode Demo** | Dashboard (back) |
 
@@ -90,7 +95,7 @@ Primary navigation (tab bar or bottom menu):
 - **Scripts** — Browse and run scripts
 - **Settings** — App settings (User Profile, Theme toggle, Language selector)
 
-Control Panel is reached by selecting a robot from the Robots screen or from Mall Guide. Mall Guide is reached from Scripts. Both are detail screens, not tabs.
+Control Panel is reached by selecting a robot from the Robots screen or from Mall Guide. Mall Guide is reached from Scripts; Mall Guide Calibration is a sub-screen of Mall Guide. All are detail screens, not tabs.
 
 ## Entry Points
 
@@ -113,6 +118,7 @@ Control Panel is reached by selecting a robot from the Robots screen or from Mal
 | **User Profile** | Hidden | In-app back link to Settings |
 | **Control Panel** | Visible | Back to Robots or Mall Guide (previous screen) |
 | **Store item detail** | In-app | Modal overlay on Store screen; no separate route; close via in-app button |
+| **Mall Guide Calibration** | Visible or in-app | Back to Mall Guide |
 | **Modal / overlay** | Visible or in-app | Close modal |
 
 ### Navigation Rules
@@ -137,6 +143,7 @@ flowchart LR
     subgraph Detail [Detail]
         Control
         MallGuide
+        MallGuideCal[Mall Guide Calibration]
         UserProfile[User Profile]
     end
     Settings --> UserProfile
@@ -152,6 +159,8 @@ flowchart LR
     Robots --> Control
     Robots --> Scripts
     Scripts --> MallGuide
+    MallGuide --> MallGuideCal
+    MallGuideCal --> MallGuide
     MallGuide --> Control
     Control --> Robots
     Control --> MallGuide
