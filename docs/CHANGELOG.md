@@ -1,5 +1,35 @@
 # Changelog
 
+## Bottom Navigation Redesign (2025-03)
+
+### Summary
+
+Reduced the tab bar from 6 to 4 items to improve mobile UX. NFT and Scripts are now reached via cards on the Home dashboard instead of dedicated tabs.
+
+### Changes
+
+**Tab Bar**
+- Removed NFT and Scripts from the bottom navigation
+- Tab bar now shows: Home | Robots | Store | Settings
+
+**Dashboard (Home)**
+- Added Scripts card — links to `/scripts` (browse and run scenarios)
+- Added NFT card — links to `/wallet` (NFT collection)
+- Card order: ProfileInfoCard, Event Mode Demo, Store, Scripts, NFT
+
+**Routes**
+- `/wallet` and `/scripts` routes unchanged; reachable from Home cards or deep links
+- When on Wallet or Scripts, user returns via Back Button or by tapping Home tab
+
+### Files Modified
+
+- `frontend/src/components/layout/AppLayout.tsx`
+- `frontend/src/screens/dashboard/DashboardScreen.tsx`
+- `docs/ux/screen-map.md`
+- `docs/architecture/frontend-architecture.md`
+
+---
+
 ## Design Refresh: Apple-Style Premium UI (2025-03)
 
 ### Summary

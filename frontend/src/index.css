@@ -9,7 +9,7 @@
 
   body {
     @apply text-foreground;
-    font-family: "Inter", sans-serif;
+    font-family: "Geist Variable", sans-serif;
     background-color: var(--tg-theme-bg-color, var(--background));
   }
 
@@ -24,7 +24,7 @@
   label,
   button,
   input {
-    font-family: "Inter", sans-serif;
+    font-family: "Geist Variable", sans-serif;
   }
 
   h1 {

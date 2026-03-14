@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Store, Sparkles, ChevronRight } from "lucide-react";
+import { Store, Sparkles, ChevronRight, ImageIcon, MapPin } from "lucide-react";
 import { ProfileInfoCard } from "../../components/wallet/ProfileInfoCard";
 
 export function DashboardScreen() {
@@ -53,6 +53,44 @@ export function DashboardScreen() {
                   </h3>
                   <p className="text-[var(--tg-theme-hint-color,#a1a1aa)] text-[13px] leading-relaxed">
                     Add robots to your fleet — browse and get started
+                  </p>
+                </div>
+              </div>
+            </div>
+          </Link>
+
+          <Link to="/scripts" className="block group">
+            <div className="glass-card rounded-2xl p-6 hover:bg-muted/30 transition-all relative">
+              <ChevronRight className="absolute top-4 right-4 w-5 h-5 text-muted-foreground group-hover:text-foreground transition-colors" />
+              <div className="flex flex-col items-center text-center gap-3">
+                <div className="w-16 h-16 rounded-2xl flex items-center justify-center bg-muted border border-border transition-colors">
+                  <MapPin className="w-8 h-8 text-muted-foreground" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-[17px] text-[var(--tg-theme-text-color,#fafafa)] tracking-tight mb-1">
+                    Scripts
+                  </h3>
+                  <p className="text-[var(--tg-theme-hint-color,#a1a1aa)] text-[13px] leading-relaxed">
+                    Browse and run scripts — behavioral, speech, Mall Guide
+                  </p>
+                </div>
+              </div>
+            </div>
+          </Link>
+
+          <Link to="/wallet" className="block group">
+            <div className="glass-card rounded-2xl p-6 hover:bg-muted/30 transition-all relative">
+              <ChevronRight className="absolute top-4 right-4 w-5 h-5 text-muted-foreground group-hover:text-foreground transition-colors" />
+              <div className="flex flex-col items-center text-center gap-3">
+                <div className="w-16 h-16 rounded-2xl flex items-center justify-center bg-muted border border-border transition-colors">
+                  <ImageIcon className="w-8 h-8 text-muted-foreground" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-[17px] text-[var(--tg-theme-text-color,#fafafa)] tracking-tight mb-1">
+                    NFT
+                  </h3>
+                  <p className="text-[var(--tg-theme-hint-color,#a1a1aa)] text-[13px] leading-relaxed">
+                    View your NFT collection and robot assets
                   </p>
                 </div>
               </div>
