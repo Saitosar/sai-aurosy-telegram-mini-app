@@ -22,7 +22,7 @@ export function EventModeDemoScreen() {
   const finalMessageRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    useGLTF.preload("/robot_from_the_series_love_death_and_robots.glb");
+    useGLTF.preload("/animated_robot_sdc.glb");
   }, []);
 
   useEffect(() => {
