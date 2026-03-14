@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Bot, MessageCircle, X } from "lucide-react";
+import { Bot, X } from "lucide-react";
 import type { StoreItem } from "shared";
 import { getStoreItems } from "../../api/store";
 import { haptic } from "../../utils/haptic";
@@ -130,7 +130,6 @@ export function StoreScreen() {
                   className="flex-1 min-h-[44px] py-3 bg-primary text-primary-foreground font-medium text-sm rounded-2xl hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
                   whileTap={{ scale: 0.98 }}
                 >
-                  <MessageCircle className="w-4 h-4 max-[400px]:hidden shrink-0" />
                   Order
                 </motion.button>
               </div>
@@ -225,7 +224,6 @@ export function StoreScreen() {
                 className="w-full min-h-[44px] py-4 bg-primary text-primary-foreground font-medium text-base rounded-2xl hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
                 whileTap={{ scale: 0.98 }}
               >
-                <MessageCircle className="w-5 h-5 max-[400px]:hidden shrink-0" />
                 Order
               </motion.button>
             </div>
