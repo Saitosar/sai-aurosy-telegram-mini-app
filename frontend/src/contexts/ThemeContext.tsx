@@ -21,6 +21,11 @@ const ThemeContext = createContext<ThemeContextValue | null>(null);
 
 function loadTheme(): Theme {
   try {
+    const tg = (window as unknown as { Telegram?: { WebApp?: { colorScheme?: string } } })
+      .Telegram?.WebApp;
+    const scheme = tg?.colorScheme;
+    if (scheme === "light" || scheme === "dark") return scheme;
+
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored === "light" || stored === "dark") return stored;
   } catch {

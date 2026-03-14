@@ -21,20 +21,30 @@ export function AppLayout() {
   return (
     <div className="flex flex-col h-screen text-foreground relative">
       <div className="absolute inset-0 z-[-1] pointer-events-none" />
-      <main className="flex-1 overflow-y-auto pb-[var(--tab-bar-spacer)]">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={location.key}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="min-h-full"
-          >
-            <Outlet />
-          </motion.div>
-        </AnimatePresence>
-      </main>
+      <div className="flex-1 flex flex-col min-h-0 relative">
+        <div
+          className="scroll-edge-top absolute top-0 left-0 right-0 h-12 z-10 pointer-events-none"
+          aria-hidden
+        />
+        <main className="flex-1 overflow-y-auto pb-[var(--tab-bar-spacer)]">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={location.key}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="min-h-full"
+            >
+              <Outlet />
+            </motion.div>
+          </AnimatePresence>
+        </main>
+        <div
+          className="scroll-edge-bottom absolute bottom-0 left-0 right-0 h-12 z-10 pointer-events-none"
+          aria-hidden
+        />
+      </div>
 
       <nav className="fixed inset-x-4 sm:inset-x-6 bottom-[calc(12px+env(safe-area-inset-bottom))] glass-card rounded-3xl z-10">
         <div className="flex items-center justify-between gap-2 px-2 sm:px-3 py-4">

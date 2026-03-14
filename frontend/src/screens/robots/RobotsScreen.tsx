@@ -7,6 +7,7 @@ import { getRobots } from "../../api/robots";
 import { haptic } from "../../utils/haptic";
 import { Skeleton } from "../../components/ui/Skeleton";
 import { EmptyState } from "../../components/ui/EmptyState";
+import { ScreenHeader } from "../../components/ui/ScreenHeader";
 import { useOnboardingProgress } from "../../hooks/useOnboardingProgress";
 
 export function RobotsScreen() {
@@ -106,16 +107,20 @@ export function RobotsScreen() {
     <div className="min-h-full relative">
       <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent pointer-events-none" />
       <div className="relative z-10 px-4 sm:px-6 py-8">
-        <div className="mb-8 flex items-center justify-between">
-          <h1 className="text-2xl font-semibold tracking-tight text-foreground">My Robots</h1>
-          <motion.button
-            onClick={() => haptic.impact("light")}
-            className="p-2.5 min-h-[44px] min-w-[44px] flex items-center justify-center glass-button-secondary text-primary rounded-2xl hover:bg-muted/50 transition-colors touch-target"
-            whileTap={{ scale: 0.98 }}
-          >
-            <Plus className="w-5 h-5" />
-          </motion.button>
-        </div>
+        <ScreenHeader
+          title="My Robots"
+          subtitle="Connect and control your fleet"
+          rightSlot={
+            <motion.button
+              onClick={() => haptic.impact("light")}
+              className="p-2.5 min-h-[44px] min-w-[44px] flex items-center justify-center glass-button-secondary text-primary rounded-2xl hover:bg-muted/50 transition-colors touch-target"
+              whileTap={{ scale: 0.98 }}
+            >
+              <Plus className="w-5 h-5" />
+            </motion.button>
+          }
+          className="mb-8"
+        />
 
         {robots.length === 0 ? (
           <EmptyState

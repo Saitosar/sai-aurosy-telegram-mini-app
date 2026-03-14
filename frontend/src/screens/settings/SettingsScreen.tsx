@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { User, Sun, Moon, Globe, ChevronRight, MapPin } from "lucide-react";
+import { ScreenHeader } from "../../components/ui/ScreenHeader";
 import { useTheme } from "../../contexts/ThemeContext";
 import { useLocale, LOCALES } from "../../contexts/LocaleContext";
 
@@ -12,7 +13,11 @@ export function SettingsScreen() {
     <div className="min-h-full pb-20 relative">
       <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent pointer-events-none" />
       <div className="relative z-10 px-4 sm:px-6 py-8">
-        <h1 className="mb-6 text-2xl font-semibold tracking-tight text-foreground">Settings</h1>
+        <ScreenHeader
+          title="Settings"
+          subtitle="App preferences and profile"
+          className="mb-6"
+        />
 
         <div className="glass-card rounded-3xl overflow-hidden">
           <motion.div
@@ -22,7 +27,7 @@ export function SettingsScreen() {
           >
           <Link
             to="/settings/profile"
-            className="flex items-center gap-4 p-4 sm:p-5 hover:bg-white/5 transition-colors"
+            className="flex items-center gap-4 p-4 sm:p-5 hover:bg-muted/50 transition-colors"
           >
             <div className="glass-icon-container w-10 h-10 rounded-2xl flex items-center justify-center shrink-0">
               <User className="w-5 h-5 text-primary" />
@@ -84,7 +89,7 @@ export function SettingsScreen() {
             </h3>
             <Link
               to="/scripts/mall-guide/calibration"
-              className="flex items-center gap-4 p-4 sm:p-5 hover:bg-white/5 transition-colors"
+              className="flex items-center gap-4 p-4 sm:p-5 hover:bg-muted/50 transition-colors"
             >
               <div className="glass-icon-container w-10 h-10 rounded-2xl flex items-center justify-center shrink-0">
                 <MapPin className="w-5 h-5 text-primary" />

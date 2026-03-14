@@ -10,8 +10,16 @@
   <body>
     <script>
       (function () {
-        var t = localStorage.getItem("app-theme");
-        document.documentElement.classList.toggle("dark", t !== "light");
+        var tg = window.Telegram?.WebApp;
+        var scheme = tg?.colorScheme;
+        var isDark;
+        if (scheme === "light" || scheme === "dark") {
+          isDark = scheme === "dark";
+        } else {
+          var t = localStorage.getItem("app-theme");
+          isDark = t !== "light";
+        }
+        document.documentElement.classList.toggle("dark", isDark);
       })();
     </script>
     <div id="root"></div>

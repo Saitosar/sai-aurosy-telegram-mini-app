@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { Bot, X } from "lucide-react";
+import { BottomSheet } from "../../components/ui/BottomSheet";
 import type { StoreItem } from "shared";
 import { getStoreItems } from "../../api/store";
 import { haptic } from "../../utils/haptic";
+import { ScreenHeader } from "../../components/ui/ScreenHeader";
 import { Skeleton } from "../../components/ui/Skeleton";
 import { useOnboardingProgress } from "../../hooks/useOnboardingProgress";
 
@@ -68,7 +70,11 @@ export function StoreScreen() {
     <div className="min-h-full pb-20 relative">
       <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent pointer-events-none" />
       <div className="relative z-10 px-4 sm:px-6 py-8">
-        <h1 className="mb-6 text-2xl font-semibold tracking-tight text-foreground">Robot Store</h1>
+        <ScreenHeader
+          title="Robot Store"
+          subtitle="Browse and order robots"
+          className="mb-6"
+        />
 
         <div className="grid grid-cols-2 gap-4 sm:gap-6">
           {storeItems.map((item, i) => (
@@ -138,26 +144,12 @@ export function StoreScreen() {
         </div>
       </div>
 
-      <AnimatePresence>
+      <BottomSheet
+        open={!!selectedItem}
+        onClose={() => setSelectedItem(null)}
+      >
         {selectedItem && (
-          <motion.div
-            key="modal-backdrop"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-end justify-center z-50"
-            onClick={() => setSelectedItem(null)}
-          >
-            <motion.div
-              key="modal-sheet"
-              initial={{ y: "100%" }}
-              animate={{ y: 0 }}
-              exit={{ y: "100%" }}
-              transition={{ type: "tween", duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-              className="w-full max-w-2xl rounded-t-[2rem] p-4 sm:p-6 max-h-[85vh] overflow-y-auto border-t border-border bg-background/95 backdrop-blur-xl"
-              onClick={(e) => e.stopPropagation()}
-            >
+          <>
             <div className="flex items-start justify-between mb-6">
               <div className="flex-1">
                 <h2 className="text-2xl font-semibold text-foreground tracking-tight mb-1">{selectedItem.name}</h2>
@@ -174,7 +166,7 @@ export function StoreScreen() {
                   haptic.impact("light");
                   setSelectedItem(null);
                 }}
-                className="glass-button-secondary p-2 min-h-[44px] min-w-[44px] flex items-center justify-center hover:bg-white/10 rounded-full transition-colors text-white touch-target"
+                className="glass-button-secondary p-2 min-h-[44px] min-w-[44px] flex items-center justify-center hover:bg-muted/50 rounded-full transition-colors text-foreground touch-target"
                 whileTap={{ scale: 0.98 }}
               >
                 <X className="w-5 h-5" />
@@ -227,10 +219,9 @@ export function StoreScreen() {
                 Order
               </motion.button>
             </div>
-          </motion.div>
-        </motion.div>
+          </>
         )}
-      </AnimatePresence>
+      </BottomSheet>
     </div>
   );
 }

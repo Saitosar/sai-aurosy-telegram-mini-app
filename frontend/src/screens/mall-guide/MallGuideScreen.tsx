@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, MapPin, Play, Square, ChevronDown, Bot } from "lucide-react";
+import { Play, Square, ChevronDown, Bot } from "lucide-react";
 import type { Robot } from "shared";
 import { getRobots } from "../../api/robots";
 import { haptic } from "../../utils/haptic";
@@ -10,6 +10,7 @@ import {
   getExecutionStatus,
   stopExecution,
 } from "../../api/scenarios";
+import { ScreenHeader } from "../../components/ui/ScreenHeader";
 import { Skeleton } from "../../components/ui/Skeleton";
 import { MallGuideSimulationView } from "./MallGuideSimulationView";
 
@@ -190,14 +191,12 @@ export function MallGuideScreen() {
     return (
       <div className="min-h-full pb-20">
         <div className="px-4 sm:px-6 py-8">
-          <motion.button
-            onClick={handleBack}
-            className="flex items-center justify-center text-muted-foreground mb-8 hover:text-foreground transition-colors min-h-[44px] min-w-[44px] touch-target"
-            whileTap={{ scale: 0.98 }}
-            aria-label="Back"
-          >
-            <ArrowLeft className="w-5 h-5" />
-          </motion.button>
+          <ScreenHeader
+            title="Mall Guide"
+            subtitle="Customer guidance scenario"
+            onBack={handleBack}
+            className="mb-8"
+          />
           <div className="flex items-center gap-4 mb-8">
             <Skeleton className="h-14 w-14 rounded-2xl" />
             <div className="flex-1">
@@ -239,23 +238,12 @@ export function MallGuideScreen() {
 
       {!isSimulationActive && (
       <div className="relative z-10 px-4 sm:px-6 py-8">
-        <motion.button
-          onClick={handleBack}
-          className="flex items-center justify-center text-muted-foreground mb-8 hover:text-foreground transition-colors min-h-[44px] min-w-[44px] touch-target"
-          whileTap={{ scale: 0.98 }}
-          aria-label="Back"
-        >
-          <ArrowLeft className="w-5 h-5" />
-        </motion.button>
-        <div className="flex items-center gap-4 mb-8">
-          <div className="glass-icon-container p-3.5 rounded-2xl">
-            <MapPin className="w-7 h-7 text-primary" />
-          </div>
-          <div>
-            <h1 className="text-2xl font-semibold tracking-tight text-foreground mb-0.5">Mall Guide</h1>
-            <p className="text-muted-foreground text-sm font-medium">Customer guidance scenario</p>
-          </div>
-        </div>
+        <ScreenHeader
+          title="Mall Guide"
+          subtitle="Customer guidance scenario"
+          onBack={handleBack}
+          className="mb-8"
+        />
 
         <div className="glass-card rounded-3xl p-6 mb-6">
           <h3 className="text-[13px] font-semibold text-foreground mb-3">About</h3>
