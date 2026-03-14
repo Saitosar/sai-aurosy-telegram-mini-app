@@ -1,4 +1,8 @@
+import { useCallback } from "react";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import { ScreenHeader } from "../../components/ui/ScreenHeader";
+import { haptic } from "../../utils/haptic";
 
 const MOCK_NFTS = [
   {
@@ -25,11 +29,22 @@ const MOCK_NFTS = [
 ];
 
 export function WalletScreen() {
+  const navigate = useNavigate();
+  const handleBack = useCallback(() => {
+    haptic.impact("light");
+    navigate(-1);
+  }, [navigate]);
+
   return (
     <div className="min-h-full pb-20 relative">
       <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent pointer-events-none" />
       <div className="relative z-10 px-4 sm:px-6 py-8">
-        <h1 className="mb-6 text-2xl font-semibold tracking-tight text-foreground">NFT</h1>
+        <ScreenHeader
+          title="TON Wallet"
+          subtitle="Connect wallet and view address"
+          onBack={handleBack}
+          className="mb-6"
+        />
         <div className="space-y-4">
           {MOCK_NFTS.map((nft, i) => (
             <motion.div

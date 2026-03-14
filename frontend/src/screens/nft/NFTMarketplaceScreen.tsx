@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import type { NftItem } from "../../api/nft";
 import {
   getNftCollection,
@@ -8,9 +9,16 @@ import {
 import { CollectionGrid } from "../../components/nft/CollectionGrid";
 import { NFTDetailSheet } from "../../components/nft/NFTDetailSheet";
 import { ScreenHeader } from "../../components/ui/ScreenHeader";
+import { haptic } from "../../utils/haptic";
 
 export function NFTMarketplaceScreen() {
+  const navigate = useNavigate();
   const [collections, setCollections] = useState<string[]>([]);
+
+  const handleBack = useCallback(() => {
+    haptic.impact("light");
+    navigate(-1);
+  }, [navigate]);
   const [selectedCollection, setSelectedCollection] = useState<string | null>(null);
   const [collectionName, setCollectionName] = useState<string>("");
   const [items, setItems] = useState<NftItem[]>([]);
@@ -53,6 +61,7 @@ export function NFTMarketplaceScreen() {
         <ScreenHeader
           title="NFT Marketplace"
           subtitle={collectionName || "Browse NFTs"}
+          onBack={handleBack}
           className="mb-6"
         />
 
