@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, MapPin, Play, Square, ChevronDown, Bot } from "lucide-react";
 import type { Robot } from "shared";
 import { getRobots } from "../../api/robots";
+import { haptic } from "../../utils/haptic";
 import {
   runScenario,
   getExecutionStatus,
@@ -19,7 +20,10 @@ export function MallGuideScreen() {
   const navigate = useNavigate();
   const preselectedRobot = (location.state as { selectedRobot?: string })?.selectedRobot;
 
-  const handleBack = useCallback(() => navigate(-1), [navigate]);
+  const handleBack = useCallback(() => {
+    haptic.impact("light");
+    navigate(-1);
+  }, [navigate]);
 
   const [robots, setRobots] = useState<Robot[]>([]);
   const [isSimulationActive, setIsSimulationActive] = useState(false);
@@ -79,7 +83,8 @@ export function MallGuideScreen() {
           BackButton?: {
             show?: () => void;
             hide?: () => void;
-            onClick?: (cb: () => void) => () => void;
+            onClick?: (cb: () => void) => void;
+            offClick?: (cb: () => void) => void;
           };
         };
       };
@@ -93,9 +98,9 @@ export function MallGuideScreen() {
           handleBack();
         }
       };
-      const offClick = tg.BackButton.onClick?.(onBackPress);
+      tg.BackButton.onClick?.(onBackPress);
       return () => {
-        offClick?.();
+        tg.BackButton?.offClick?.(onBackPress);
         tg.BackButton?.hide?.();
       };
     }
@@ -135,9 +140,11 @@ export function MallGuideScreen() {
       setStartError("Please select a robot first");
       return;
     }
+    haptic.impact("medium");
     setStartError(null);
     try {
       const exec = await runScenario(SCENARIO_ID, { robotId: selectedRobot });
+      haptic.success();
       setExecutionId(exec.id);
       setExecutionStatus({
         status: exec.status,
@@ -146,6 +153,7 @@ export function MallGuideScreen() {
         progress: exec.progress ?? 0,
       });
     } catch (err) {
+      haptic.error();
       setStartError(err instanceof Error ? err.message : "Failed to start scenario");
     }
     setIsSimulationActive(true);
@@ -157,15 +165,18 @@ export function MallGuideScreen() {
 
   const handleStop = async () => {
     if (!executionId || !executionStatus) return;
+    haptic.impact("medium");
     const waypoint = executionStatus.currentWaypoint ?? 0;
     const total = executionStatus.totalWaypoints ?? 5;
     try {
       await stopExecution(SCENARIO_ID, executionId);
+      haptic.success();
       setFinalStatus({ status: "stopped", currentWaypoint: waypoint, totalWaypoints: total });
       setExecutionId(null);
       setExecutionStatus(null);
       setTimeout(() => setFinalStatus(null), 2500);
     } catch {
+      haptic.error();
       setFinalStatus({ status: "error", currentWaypoint: waypoint, totalWaypoints: total });
       setExecutionId(null);
       setExecutionStatus(null);
@@ -282,6 +293,7 @@ export function MallGuideScreen() {
                   <button
                     key={robot.id}
                     onClick={() => {
+                      haptic.selection();
                       setSelectedRobot(robot.id);
                       setShowDropdown(false);
                     }}
@@ -403,6 +415,7 @@ export function MallGuideScreen() {
                   ? { executionId, scenarioId: SCENARIO_ID }
                   : { selectedRobot }
               }
+              onClick={() => haptic.impact("light")}
               className="glass-button-secondary block w-full py-4 hover:bg-white/10 text-white font-semibold text-[16px] rounded-xl text-center transition-all"
             >
               Open Control Panel

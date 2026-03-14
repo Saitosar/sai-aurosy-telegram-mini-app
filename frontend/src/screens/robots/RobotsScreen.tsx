@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Bot, Plus, Power, Play } from "lucide-react";
 import type { Robot } from "shared";
 import { getRobots } from "../../api/robots";
+import { haptic } from "../../utils/haptic";
 import { Skeleton } from "../../components/ui/Skeleton";
 
 export function RobotsScreen() {
@@ -72,19 +73,20 @@ export function RobotsScreen() {
     return (
       <div className="min-h-full flex flex-col items-center justify-center px-6">
         <p className="text-red-400 text-sm mb-4">{error}</p>
-        <button
-          onClick={() => {
-            setError(null);
-            setLoading(true);
-            getRobots()
-              .then(setRobots)
-              .catch((err) => setError(err instanceof Error ? err.message : "Failed to load robots"))
-              .finally(() => setLoading(false));
-          }}
-          className="px-4 py-2 bg-primary/20 text-primary rounded-lg text-sm font-medium"
-        >
-          Retry
-        </button>
+          <button
+            onClick={() => {
+              haptic.impact("light");
+              setError(null);
+              setLoading(true);
+              getRobots()
+                .then(setRobots)
+                .catch((err) => setError(err instanceof Error ? err.message : "Failed to load robots"))
+                .finally(() => setLoading(false));
+            }}
+            className="px-4 py-2 bg-primary/20 text-primary rounded-lg text-sm font-medium"
+          >
+            Retry
+          </button>
       </div>
     );
   }
@@ -94,7 +96,10 @@ export function RobotsScreen() {
       <div className="px-6 py-8">
         <div className="mb-8 flex items-center justify-between">
           <h1 className="text-2xl font-bold tracking-tight text-white">My Robots</h1>
-          <button className="p-2.5 bg-primary/10 border border-primary/20 text-primary hover:bg-primary/20 hover:border-primary/40 rounded-xl transition-all shadow-[0_0_15px_rgba(0,229,255,0.1)]">
+          <button
+            onClick={() => haptic.impact("light")}
+            className="p-2.5 bg-primary/10 border border-primary/20 text-primary hover:bg-primary/20 hover:border-primary/40 rounded-xl transition-all shadow-[0_0_15px_rgba(0,229,255,0.1)]"
+          >
             <Plus className="w-5 h-5" />
           </button>
         </div>
@@ -110,6 +115,7 @@ export function RobotsScreen() {
             </p>
             <Link
               to="/store"
+              onClick={() => haptic.impact("light")}
               className="px-6 py-3 bg-primary/10 border border-primary/20 text-primary font-semibold rounded-xl hover:bg-primary/20 transition-all shadow-[0_0_15px_rgba(0,229,255,0.15)]"
             >
               Browse Store
@@ -156,6 +162,7 @@ export function RobotsScreen() {
                 <div className="flex gap-3 relative z-10">
                   <Link
                     to={`/control/${robot.id}`}
+                    onClick={() => haptic.impact("light")}
                     className="flex-1 py-2.5 rounded-xl text-center transition-all font-medium text-sm bg-primary/10 border border-primary/20 text-primary/95 hover:bg-primary/20 hover:border-primary/40 shadow-[0_0_8px_rgba(0,229,255,0.1)] hover:shadow-[0_0_12px_rgba(0,229,255,0.2)]"
                   >
                     <div className="flex items-center justify-center gap-2">
@@ -166,6 +173,7 @@ export function RobotsScreen() {
                   <Link
                     to="/scripts"
                     state={{ selectedRobot: robot.id }}
+                    onClick={() => haptic.impact("light")}
                     className="flex-1 py-2.5 rounded-xl text-center transition-all font-medium text-sm bg-primary/10 border border-primary/20 text-primary/95 hover:bg-primary/20 hover:border-primary/40 hover:border-[#39ff14]/40 shadow-[0_0_8px_rgba(0,229,255,0.1)] hover:shadow-[0_0_12px_rgba(57,255,20,0.2)] group/scripts"
                   >
                     <div className="flex items-center justify-center gap-2">
