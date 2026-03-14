@@ -10,13 +10,9 @@ export function AppLayout() {
     return location.pathname.startsWith(path);
   };
 
-  const navLinkClass = (active: boolean, scriptsStyle = false) =>
+  const navLinkClass = (active: boolean) =>
     `flex flex-col items-center gap-1 px-2 py-2 rounded-xl transition-all min-w-0 flex-1 ${
-      active
-        ? scriptsStyle
-          ? "text-[#39ff14] scale-110 drop-shadow-[0_0_8px_rgba(57,255,20,0.5)]"
-          : "text-primary scale-110 drop-shadow-[0_0_8px_rgba(0,229,255,0.4)]"
-        : "text-[#666] hover:text-[#999]"
+      active ? "text-primary" : "text-muted-foreground hover:text-foreground"
     }`;
 
   return (
@@ -26,7 +22,7 @@ export function AppLayout() {
         <Outlet />
       </main>
 
-      <nav className="border-t border-white/10 bg-black/30 backdrop-blur-xl pb-safe">
+      <nav className="border-t border-border bg-background/95 backdrop-blur-xl pb-safe">
         <div className="flex items-center justify-between px-2 py-2 gap-1">
           <Link
             to="/"
@@ -41,32 +37,32 @@ export function AppLayout() {
             )}
           >
             <Home className="w-5 h-5 shrink-0" />
-            <span className="text-[9px] font-semibold tracking-wide uppercase truncate">Home</span>
+            <span className="text-[11px] font-medium truncate">Home</span>
           </Link>
 
           <Link to="/robots" onClick={() => haptic.selection()} className={navLinkClass(isActive("/robots"))}>
             <Bot className="w-5 h-5 shrink-0" />
-            <span className="text-[9px] font-semibold tracking-wide uppercase truncate">Robots</span>
+            <span className="text-[11px] font-medium truncate">Robots</span>
           </Link>
 
           <Link to="/store" onClick={() => haptic.selection()} className={navLinkClass(isActive("/store"))}>
             <Store className="w-5 h-5 shrink-0" />
-            <span className="text-[9px] font-semibold tracking-wide uppercase truncate">Store</span>
+            <span className="text-[11px] font-medium truncate">Store</span>
           </Link>
 
           <Link to="/wallet" onClick={() => haptic.selection()} className={navLinkClass(isActive("/wallet"))}>
             <ImageIcon className="w-5 h-5 shrink-0" />
-            <span className="text-[9px] font-semibold tracking-wide uppercase truncate">NFT</span>
+            <span className="text-[11px] font-medium truncate">NFT</span>
           </Link>
 
-          <Link to="/scripts" onClick={() => haptic.selection()} className={navLinkClass(isActive("/scripts"), true)}>
+          <Link to="/scripts" onClick={() => haptic.selection()} className={navLinkClass(isActive("/scripts"))}>
             <MapPin className="w-5 h-5 shrink-0" />
-            <span className="text-[9px] font-semibold tracking-wide uppercase truncate">Scripts</span>
+            <span className="text-[11px] font-medium truncate">Scripts</span>
           </Link>
 
           <Link to="/settings" onClick={() => haptic.selection()} className={navLinkClass(isActive("/settings"))}>
             <Settings className="w-5 h-5 shrink-0" />
-            <span className="text-[9px] font-semibold tracking-wide uppercase truncate">Settings</span>
+            <span className="text-[11px] font-medium truncate">Settings</span>
           </Link>
         </div>
       </nav>

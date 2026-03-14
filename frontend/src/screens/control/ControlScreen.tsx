@@ -54,11 +54,11 @@ export function ControlScreen() {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "online":
-        return "bg-primary shadow-[0_0_8px_rgba(0,229,255,0.8)]";
+        return "bg-primary";
       case "offline":
-        return "bg-[#333]";
+        return "bg-muted";
       case "busy":
-        return "bg-[#39ff14] shadow-[0_0_8px_rgba(57,255,20,0.8)]";
+        return "bg-toxic";
       default:
         return "bg-gray-400";
     }
@@ -110,7 +110,7 @@ export function ControlScreen() {
     return (
       <div className="min-h-full bg-background flex items-center justify-center">
         <div className="text-center">
-          <h2 className="mb-4 text-white">Robot not found</h2>
+          <h2 className="mb-4 text-foreground">Robot not found</h2>
           <Link
             to="/robots"
             className="px-6 py-3 bg-primary text-primary-foreground rounded-lg inline-block"
@@ -125,7 +125,7 @@ export function ControlScreen() {
   if (loading && !displayRobot) {
     return (
       <div className="min-h-full bg-background flex items-center justify-center">
-        <div className="text-[#a0a0a0] text-sm">Loading robot...</div>
+        <div className="text-muted-foreground text-sm">Loading robot...</div>
       </div>
     );
   }
@@ -145,7 +145,7 @@ export function ControlScreen() {
     return (
       <div className="min-h-full bg-background flex items-center justify-center">
         <div className="text-center">
-          <h2 className="mb-4 text-white">Robot not found</h2>
+          <h2 className="mb-4 text-foreground">Robot not found</h2>
           <Link
             to="/robots"
             className="px-6 py-3 bg-primary text-primary-foreground rounded-lg inline-block"
@@ -162,46 +162,43 @@ export function ControlScreen() {
       <div className="px-6 py-8">
         <button
           onClick={handleBack}
-          className="flex items-center gap-2 text-[#a0a0a0] mb-8 hover:text-white transition-colors"
+          className="flex items-center gap-2 text-muted-foreground mb-8 hover:text-foreground transition-colors"
         >
           <ArrowLeft className="w-5 h-5" />
           <span className="font-medium text-[15px]">Back</span>
         </button>
 
-        <div className="bg-primary/10 border border-primary/20 rounded-2xl p-6 mb-6 shadow-[0_0_15px_rgba(0,229,255,0.1)] relative overflow-hidden">
-          {displayRobot.status === "online" && (
-            <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl" />
-          )}
-          <div className="flex items-start justify-between relative z-10">
+        <div className="glass-card rounded-2xl p-6 mb-6">
+          <div className="flex items-start justify-between">
             <div className="flex items-start gap-4">
-              <div className="p-3.5 rounded-xl bg-primary/10 border border-primary/20 shadow-[0_0_8px_rgba(0,229,255,0.15)]">
+              <div className="p-3.5 rounded-xl glass-icon-container">
                 <Bot
-                  className={`w-7 h-7 drop-shadow-[0_0_4px_rgba(0,229,255,0.4)] ${displayRobot.status === "online" ? "text-primary" : "text-primary/60"}`}
+                  className={`w-7 h-7 ${displayRobot.status === "online" ? "text-primary" : "text-muted-foreground"}`}
                 />
               </div>
               <div>
                 <div className="flex items-center gap-3 mb-1">
-                  <h2 className="text-xl font-bold tracking-tight text-primary/95 drop-shadow-[0_0_6px_rgba(0,229,255,0.3)]">{displayRobot.name}</h2>
-                  <div className="flex items-center gap-2 px-2 py-0.5 rounded-full bg-primary/10 border border-primary/20 shadow-[0_0_6px_rgba(0,229,255,0.1)]">
+                  <h2 className="text-xl font-semibold tracking-tight text-foreground">{displayRobot.name}</h2>
+                  <div className="flex items-center gap-2 px-2 py-0.5 rounded-full glass-button-secondary">
                     <div className={`w-2 h-2 rounded-full ${getStatusColor(displayRobot.status)}`} />
-                    <span className="text-[11px] font-semibold text-primary/80 uppercase tracking-wider">
+                    <span className="text-[11px] font-medium text-muted-foreground">
                       {displayRobot.status}
                     </span>
                   </div>
                 </div>
-                <p className="text-primary/70 text-sm font-medium">{displayRobot.model}</p>
+                <p className="text-muted-foreground text-sm font-medium">{displayRobot.model}</p>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="bg-primary/10 border border-primary/20 rounded-2xl p-6 mb-6 shadow-[0_0_15px_rgba(0,229,255,0.1)]">
+        <div className="glass-card rounded-2xl p-6 mb-6">
           <div className="flex items-center justify-between mb-5">
-            <h3 className="text-[13px] font-semibold text-primary/95 uppercase tracking-wider">Telemetry</h3>
+            <h3 className="text-[13px] font-semibold text-foreground">Telemetry</h3>
             {lastUpdated && (
               <span
                 className={`text-[11px] font-medium ${
-                  isStale ? "text-amber-500" : "text-primary/70"
+                  isStale ? "text-amber-500" : "text-muted-foreground"
                 }`}
                 title={lastUpdated.toLocaleTimeString()}
               >
@@ -211,31 +208,31 @@ export function ControlScreen() {
           </div>
           <div className="space-y-5">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3 text-primary/80">
-                <div className="p-2 rounded-lg bg-primary/10 border border-primary/20 shadow-[0_0_6px_rgba(0,229,255,0.1)]">
-                  <MapPin className="w-4 h-4 text-primary drop-shadow-[0_0_4px_rgba(0,229,255,0.4)]" />
+              <div className="flex items-center gap-3 text-muted-foreground">
+                <div className="p-2 rounded-lg glass-icon-container">
+                  <MapPin className="w-4 h-4 text-primary" />
                 </div>
                 <span className="font-medium text-[15px]">Position</span>
               </div>
-              <span className="font-mono text-primary/95 text-[15px] px-3 py-1 rounded-lg bg-primary/10 border border-primary/20 shadow-[0_0_6px_rgba(0,229,255,0.1)]">
+              <span className="font-mono text-foreground text-[15px] px-3 py-1 rounded-lg glass-button-secondary">
                 X: {position.x}, Y: {position.y}
               </span>
             </div>
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3 text-primary/80">
-                <div className="p-2 rounded-lg bg-primary/10 border border-primary/20 shadow-[0_0_6px_rgba(0,229,255,0.1)]">
-                  <Battery className="w-4 h-4 text-primary drop-shadow-[0_0_4px_rgba(0,229,255,0.4)]" />
+              <div className="flex items-center gap-3 text-muted-foreground">
+                <div className="p-2 rounded-lg glass-icon-container">
+                  <Battery className="w-4 h-4 text-primary" />
                 </div>
                 <span className="font-medium text-[15px]">Battery</span>
               </div>
               <div className="flex items-center gap-3">
-                <div className="w-24 rounded-full h-2 overflow-hidden bg-primary/10 border border-primary/20">
+                <div className="w-24 rounded-full h-2 overflow-hidden bg-muted">
                   <div
-                    className={`h-full rounded-full ${battery > 80 ? "bg-[#39ff14] shadow-[0_0_8px_rgba(57,255,20,0.6)]" : battery > 20 ? "bg-primary shadow-[0_0_8px_rgba(0,229,255,0.6)]" : "bg-red-500"}`}
+                    className={`h-full rounded-full ${battery > 80 ? "bg-toxic" : battery > 20 ? "bg-primary" : "bg-red-500"}`}
                     style={{ width: `${battery}%` }}
                   />
                 </div>
-                <span className="font-mono text-primary/95 text-[15px] px-3 py-1 rounded-lg bg-primary/10 border border-primary/20 shadow-[0_0_6px_rgba(0,229,255,0.1)]">
+                <span className="font-mono text-foreground text-[15px] px-3 py-1 rounded-lg glass-button-secondary">
                   {battery}%
                 </span>
               </div>
@@ -243,12 +240,12 @@ export function ControlScreen() {
           </div>
         </div>
 
-        <div className="bg-primary/10 border border-primary/20 rounded-2xl p-6 mb-6 shadow-[0_0_15px_rgba(0,229,255,0.1)]">
-          <h3 className="text-[13px] font-semibold text-primary/95 uppercase tracking-wider mb-5">Commands</h3>
+        <div className="glass-card rounded-2xl p-6 mb-6">
+          <h3 className="text-[13px] font-semibold text-foreground mb-5">Commands</h3>
           {(commandError || commandSuccess) && (
             <div
               className={`mb-4 px-4 py-2 rounded-xl text-sm font-medium ${
-                commandError ? "bg-red-500/10 text-red-500 border border-red-500/30" : "bg-[#39ff14]/10 text-[#39ff14] border border-[#39ff14]/40 shadow-[0_0_8px_rgba(57,255,20,0.2)]"
+                commandError ? "bg-red-500/10 text-red-500 border border-red-500/30" : "bg-toxic/10 text-toxic border border-toxic/30"
               }`}
             >
               {commandError ?? "Command sent"}
@@ -266,15 +263,15 @@ export function ControlScreen() {
             <button
               onClick={handleGoHome}
               disabled={commandPending}
-              className="px-4 py-3.5 bg-primary/10 border border-primary/20 text-primary/95 hover:bg-primary/20 hover:border-primary/40 rounded-xl flex items-center justify-center gap-2 transition-all font-semibold disabled:opacity-50 shadow-[0_0_8px_rgba(0,229,255,0.1)]"
+              className="px-4 py-3.5 glass-button-secondary text-primary hover:bg-muted/50 rounded-xl flex items-center justify-center gap-2 transition-colors font-medium disabled:opacity-50"
             >
-              <Home className="w-4 h-4 text-primary drop-shadow-[0_0_4px_rgba(0,229,255,0.5)]" />
+              <Home className="w-4 h-4" />
               Go Home
             </button>
             <button
               disabled
               title="Coming when platform supports custom commands"
-              className="px-4 py-3.5 bg-primary/10 border border-primary/20 text-primary/95 rounded-xl flex items-center justify-center gap-2 col-span-2 transition-all font-semibold opacity-50 cursor-not-allowed shadow-[0_0_8px_rgba(0,229,255,0.1)]"
+              className="px-4 py-3.5 glass-button-secondary text-muted-foreground rounded-xl flex items-center justify-center gap-2 col-span-2 font-medium opacity-50 cursor-not-allowed"
             >
               <Zap className="w-4 h-4 text-primary" />
               Custom Command
@@ -283,10 +280,10 @@ export function ControlScreen() {
         </div>
 
         {displayScenario ? (
-          <div className="bg-primary/10 border border-primary/30 rounded-2xl p-6 mb-6 shadow-[0_0_20px_rgba(0,229,255,0.15)]">
-            <h3 className="text-[13px] font-semibold text-primary uppercase tracking-wider mb-2">Active Scenario</h3>
-            <p className="text-primary/95 font-medium mb-5 flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_rgba(0,229,255,0.8)] animate-pulse" />
+          <div className="glass-card rounded-2xl p-6 mb-6">
+            <h3 className="text-[13px] font-semibold text-foreground mb-2">Active Scenario</h3>
+            <p className="text-foreground font-medium mb-5 flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
               Running: {displayScenario}
             </p>
             {scenarioStopError && (
@@ -300,27 +297,27 @@ export function ControlScreen() {
             </button>
           </div>
         ) : showScenarioStopped ? (
-          <div className="bg-primary/10 border border-primary/20 rounded-2xl p-6 mb-6 shadow-[0_0_15px_rgba(0,229,255,0.1)]">
-            <h3 className="text-[13px] font-semibold text-primary/95 uppercase tracking-wider mb-2">Scenario</h3>
-            <p className="text-primary/70 mb-5 text-[14px]">Scenario stopped</p>
+          <div className="glass-card rounded-2xl p-6 mb-6">
+            <h3 className="text-[13px] font-semibold text-foreground mb-2">Scenario</h3>
+            <p className="text-muted-foreground mb-5 text-[14px]">Scenario stopped</p>
             <Link
               to="/scripts/mall-guide"
               state={{ selectedRobot: robotId }}
               onClick={() => haptic.impact("light")}
-              className="block w-full px-4 py-4 bg-primary text-black rounded-xl text-center font-bold hover:bg-[#33e8ff] transition-all shadow-[0_0_15px_rgba(0,229,255,0.3)] hover:shadow-[0_0_25px_rgba(0,229,255,0.5)]"
+              className="block w-full px-4 py-4 bg-primary text-primary-foreground rounded-xl text-center font-medium hover:opacity-90 transition-opacity"
             >
               Start Mall Guide
             </Link>
           </div>
         ) : (
-          <div className="bg-primary/10 border border-primary/20 rounded-2xl p-6 shadow-[0_0_15px_rgba(0,229,255,0.1)]">
-            <h3 className="text-[13px] font-semibold text-primary/95 uppercase tracking-wider mb-2">Start Scenario</h3>
-            <p className="text-primary/70 mb-5 text-[14px]">Launch the Mall Guide scenario on this robot</p>
+          <div className="glass-card rounded-2xl p-6">
+            <h3 className="text-[13px] font-semibold text-foreground mb-2">Start Scenario</h3>
+            <p className="text-muted-foreground mb-5 text-[14px]">Launch the Mall Guide scenario on this robot</p>
             <Link
               to="/scripts/mall-guide"
               state={{ selectedRobot: robotId }}
               onClick={() => haptic.impact("light")}
-              className="block w-full px-4 py-4 bg-primary text-black rounded-xl text-center font-bold hover:bg-[#33e8ff] transition-all shadow-[0_0_15px_rgba(0,229,255,0.3)] hover:shadow-[0_0_25px_rgba(0,229,255,0.5)]"
+              className="block w-full px-4 py-4 bg-primary text-primary-foreground rounded-xl text-center font-medium hover:opacity-90 transition-opacity"
             >
               Start Mall Guide
             </Link>

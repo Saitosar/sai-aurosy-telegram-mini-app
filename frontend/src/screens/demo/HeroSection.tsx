@@ -57,7 +57,7 @@ export function HeroSection({
                   }
           }
         >
-          <div className="w-48 h-48 md:w-64 md:h-64 rounded-2xl overflow-hidden bg-[#1f1f22] border border-primary/30 shadow-[0_0_40px_rgba(0,229,255,0.2)] flex items-center justify-center">
+          <div className="w-48 h-48 md:w-64 md:h-64 rounded-2xl overflow-hidden glass-icon-container flex items-center justify-center">
             {robot?.imageUrl ? (
               <img
                 src={robot.imageUrl}
@@ -65,12 +65,12 @@ export function HeroSection({
                 className="w-full h-full object-contain p-4"
               />
             ) : (
-              <Bot className="w-24 h-24 text-primary drop-shadow-[0_0_15px_rgba(0,229,255,0.6)]" />
+              <Bot className="w-24 h-24 text-primary" />
             )}
           </div>
         </motion.div>
 
-        <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-primary to-white mb-3 drop-shadow-[0_0_20px_rgba(0,229,255,0.3)]">
+        <h1 className="text-2xl md:text-3xl lg:text-4xl font-semibold tracking-tight text-foreground mb-3">
           Entertainment Robot Experience
         </h1>
         <p className="text-muted-foreground text-base md:text-lg mb-8 max-w-lg">
@@ -80,8 +80,7 @@ export function HeroSection({
         {!isRunning && !isComplete && (
           <motion.button
             onClick={onStartDemo}
-            className="px-10 py-4 bg-primary text-primary-foreground font-bold text-lg rounded-xl shadow-[0_0_30px_rgba(0,229,255,0.4)] hover:shadow-[0_0_50px_rgba(0,229,255,0.6)] hover:scale-105 transition-all"
-            whileHover={{ scale: 1.05 }}
+            className="px-10 py-4 bg-primary text-primary-foreground font-medium text-lg rounded-xl hover:opacity-90 transition-opacity"
             whileTap={{ scale: 0.98 }}
           >
             Start Event Mode Demo

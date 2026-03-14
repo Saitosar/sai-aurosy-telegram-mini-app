@@ -10,14 +10,7 @@
   body {
     @apply text-foreground;
     font-family: "Inter", sans-serif;
-    background-color: var(--tg-theme-bg-color, #050508);
-    background-image:
-      linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(0, 229, 255, 0.08), transparent),
-      linear-gradient(180deg, #050508 0%, #08080f 40%, #0a0a12 100%);
-    background-size: 24px 24px, 24px 24px, 100% 100%, 100% 100%;
-    background-attachment: fixed;
+    background-color: var(--tg-theme-bg-color, var(--background));
   }
 
   html {
@@ -36,28 +29,28 @@
 
   h1 {
     font-size: 1.5rem;
-    font-weight: 700;
-    line-height: 1.5;
+    font-weight: 600;
+    line-height: 1.4;
     letter-spacing: -0.02em;
   }
 
   h2 {
     font-size: 1.25rem;
     font-weight: 600;
-    line-height: 1.5;
+    line-height: 1.4;
     letter-spacing: -0.01em;
   }
 
   h3 {
     font-size: 1.125rem;
-    font-weight: 600;
-    line-height: 1.5;
+    font-weight: 500;
+    line-height: 1.4;
   }
 
   h4 {
     font-size: 1rem;
     font-weight: 500;
-    line-height: 1.5;
+    line-height: 1.4;
   }
 
   label {
@@ -82,18 +75,18 @@
 @layer components {
   .glass-card {
     background: var(--tg-theme-secondary-bg-color, var(--glass-bg));
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     border: 1px solid var(--glass-border-subtle);
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
   }
 
   .glass-card-elevated {
     background: var(--glass-bg-elevated);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
     border: 1px solid var(--glass-border);
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3), 0 0 20px rgba(0, 229, 255, 0.05);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
   }
 
   .glass-button-secondary {
@@ -104,9 +97,9 @@
   }
 
   .glass-icon-container {
-    background: rgba(0, 0, 0, 0.35);
+    background: rgba(0, 0, 0, 0.2);
     border: 1px solid var(--glass-border-subtle);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
   }
 }

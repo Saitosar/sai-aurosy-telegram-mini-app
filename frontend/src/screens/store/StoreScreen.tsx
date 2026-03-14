@@ -60,14 +60,14 @@ export function StoreScreen() {
   return (
     <div className="min-h-full pb-20">
       <div className="px-6 py-8">
-        <h1 className="mb-6 text-2xl font-bold tracking-tight text-white">Robot Store</h1>
+        <h1 className="mb-6 text-2xl font-semibold tracking-tight text-foreground">Robot Store</h1>
 
         <div className="grid grid-cols-2 gap-4">
           {storeItems.map((item) => (
             <div
               key={item.id}
               role="group"
-              className="glass-card rounded-2xl p-4 hover:border-primary/30 hover:shadow-[0_0_20px_rgba(0,229,255,0.08)] transition-all flex flex-col h-full"
+              className="glass-card rounded-2xl p-4 hover:bg-muted/30 transition-all flex flex-col h-full"
             >
               <button
                 type="button"
@@ -77,31 +77,30 @@ export function StoreScreen() {
                 }}
                 className="text-left group flex flex-col flex-1 min-w-0"
               >
-                <div className="glass-icon-container aspect-square rounded-xl mb-2 group-hover:border-primary/20 transition-colors relative overflow-hidden">
-                  <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="glass-icon-container aspect-square rounded-xl mb-2 relative overflow-hidden">
                   {item.imageUrl ? (
                     <img
                       src={item.imageUrl}
                       alt={item.name}
-                      className="absolute inset-0 w-full h-full object-contain transition-transform group-hover:scale-105"
+                      className="absolute inset-0 w-full h-full object-contain"
                     />
                   ) : (
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <Bot className="w-12 h-12 text-primary drop-shadow-[0_0_8px_rgba(0,229,255,0.4)] transition-transform group-hover:scale-110" />
+                      <Bot className="w-12 h-12 text-primary" />
                     </div>
                   )}
                 </div>
                 {item.model && (
                   <div className="mb-2">
-                    <span className="glass-icon-container inline-flex items-center px-2 py-0.5 border-[#39ff14]/30 rounded-md shadow-[0_0_8px_rgba(57,255,20,0.1)]">
-                      <span className="text-[11px] font-semibold text-[#39ff14] uppercase tracking-wider">
+                    <span className="inline-flex items-center px-2 py-0.5 bg-toxic/10 rounded-md">
+                      <span className="text-[11px] font-medium text-toxic">
                         {item.model}
                       </span>
                     </span>
                   </div>
                 )}
-                <h4 className="font-semibold text-white tracking-tight mb-1 text-[15px]">{item.name}</h4>
-                <p className="text-[12px] text-[#a0a0a0] line-clamp-1 leading-relaxed">{item.description}</p>
+                <h4 className="font-semibold text-foreground tracking-tight mb-1 text-[15px]">{item.name}</h4>
+                <p className="text-[12px] text-muted-foreground line-clamp-1 leading-relaxed">{item.description}</p>
               </button>
               <button
                 type="button"
@@ -110,7 +109,7 @@ export function StoreScreen() {
                   haptic.impact("light");
                   openOrderChat(item);
                 }}
-                className="w-full mt-3 py-2.5 bg-primary text-black font-bold text-[14px] rounded-xl hover:bg-[#33e8ff] transition-all shadow-[0_0_20px_rgba(0,229,255,0.3)] hover:shadow-[0_0_30px_rgba(0,229,255,0.5)] flex items-center justify-center gap-2"
+                className="w-full mt-3 py-2.5 bg-primary text-primary-foreground font-medium text-[14px] rounded-xl hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
               >
                 <MessageCircle className="w-4 h-4" />
                 Order
@@ -126,15 +125,15 @@ export function StoreScreen() {
           onClick={() => setSelectedItem(null)}
         >
           <div
-            className="w-full max-w-2xl rounded-t-[2rem] p-6 max-h-[85vh] overflow-y-auto border-t border-white/10 bg-[#0a0a0c]/95 backdrop-blur-xl shadow-[0_-10px_40px_rgba(0,0,0,0.5)]"
+            className="w-full max-w-2xl rounded-t-[2rem] p-6 max-h-[85vh] overflow-y-auto border-t border-border bg-background/95 backdrop-blur-xl"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-start justify-between mb-6">
               <div className="flex-1">
-                <h2 className="text-2xl font-bold text-white tracking-tight mb-1">{selectedItem.name}</h2>
+                <h2 className="text-2xl font-semibold text-foreground tracking-tight mb-1">{selectedItem.name}</h2>
                 {selectedItem.model && (
-                  <div className="glass-icon-container inline-flex items-center gap-1.5 px-2.5 py-1 border-[#39ff14]/30 rounded-md shadow-[0_0_8px_rgba(57,255,20,0.1)]">
-                    <span className="text-[12px] font-semibold text-[#39ff14] uppercase tracking-wider">
+                  <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-toxic/10 rounded-md mt-2">
+                    <span className="text-[12px] font-medium text-toxic">
                       {selectedItem.model}
                     </span>
                   </div>
@@ -152,7 +151,6 @@ export function StoreScreen() {
             </div>
 
             <div className="aspect-video glass-icon-container rounded-2xl mb-8 relative overflow-hidden">
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,229,255,0.1)_0%,transparent_70%)]" />
               {selectedItem.imageUrl ? (
                 <img
                   src={selectedItem.imageUrl}
@@ -161,23 +159,23 @@ export function StoreScreen() {
                 />
               ) : (
                 <div className="absolute inset-0 flex items-center justify-center z-10">
-                  <Bot className="w-24 h-24 text-primary drop-shadow-[0_0_15px_rgba(0,229,255,0.6)]" />
+                  <Bot className="w-24 h-24 text-primary" />
                 </div>
               )}
             </div>
 
             <div className="mb-8">
-              <h3 className="text-[13px] font-semibold text-white uppercase tracking-wider mb-3">Description</h3>
-              <p className="text-[#a0a0a0] leading-relaxed text-[15px]">{selectedItem.description}</p>
+              <h3 className="text-[13px] font-semibold text-foreground mb-3">Description</h3>
+              <p className="text-muted-foreground leading-relaxed text-[15px]">{selectedItem.description}</p>
             </div>
 
             {selectedItem.specs && selectedItem.specs.length > 0 && (
               <div className="mb-8">
-                <h3 className="text-[13px] font-semibold text-white uppercase tracking-wider mb-3">Specifications</h3>
+                <h3 className="text-[13px] font-semibold text-foreground mb-3">Specifications</h3>
                 <ul className="space-y-3">
                   {selectedItem.specs.map((spec, index) => (
-                    <li key={index} className="flex items-center gap-3 text-[#a0a0a0] text-[15px]">
-                      <div className={`w-1.5 h-1.5 rounded-full shadow-[0_0_5px_currentColor] ${index % 2 === 0 ? "bg-primary" : "bg-[#39ff14]"}`} />
+                    <li key={index} className="flex items-center gap-3 text-muted-foreground text-[15px]">
+                      <div className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${index % 2 === 0 ? "bg-primary" : "bg-toxic"}`} />
                       {spec}
                     </li>
                   ))}
@@ -191,7 +189,7 @@ export function StoreScreen() {
                   haptic.impact("light");
                   openOrderChat(selectedItem);
                 }}
-                className="w-full py-4 bg-primary text-black font-bold text-[16px] rounded-xl hover:bg-[#33e8ff] transition-all shadow-[0_0_20px_rgba(0,229,255,0.3)] hover:shadow-[0_0_30px_rgba(0,229,255,0.5)] flex items-center justify-center gap-2"
+                className="w-full py-4 bg-primary text-primary-foreground font-medium text-[16px] rounded-xl hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
               >
                 <MessageCircle className="w-5 h-5" />
                 Order

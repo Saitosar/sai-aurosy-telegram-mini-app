@@ -41,11 +41,10 @@ export function UserProfileScreen() {
           <span className="text-sm font-medium">Back to Settings</span>
         </Link>
 
-        <h1 className="mb-6 text-2xl font-bold tracking-tight text-foreground">User Profile</h1>
+        <h1 className="mb-6 text-2xl font-semibold tracking-tight text-foreground">User Profile</h1>
 
         {!authenticated ? (
           <div className="glass-card rounded-2xl p-6 relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl" />
             <div className="relative z-10 flex flex-col items-center gap-4 py-8">
               <div className="glass-icon-container w-16 h-16 rounded-2xl flex items-center justify-center">
                 <User className="w-8 h-8 text-primary" />
@@ -70,7 +69,6 @@ export function UserProfileScreen() {
           </div>
         ) : user ? (
           <div className="glass-card rounded-2xl p-6 relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl" />
             <div className="relative z-10 flex flex-col items-center gap-4">
               {user.photo_url ? (
                 <img
@@ -113,7 +111,6 @@ export function UserProfileScreen() {
           </div>
         ) : (
           <div className="glass-card rounded-2xl p-6 relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl" />
             <div className="relative z-10 flex flex-col items-center gap-4 py-8">
               <div className="glass-icon-container w-16 h-16 rounded-2xl flex items-center justify-center">
                 <User className="w-8 h-8 text-primary" />

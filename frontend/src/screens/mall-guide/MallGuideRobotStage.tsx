@@ -45,7 +45,7 @@ export function MallGuideRobotStage({
   return (
     <div className="absolute inset-0 pointer-events-none z-20">
       <div
-        className="absolute -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-primary border-2 border-white shadow-[0_0_12px_rgba(0,229,255,0.9)] flex items-center justify-center"
+        className="absolute -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-primary border-2 border-white flex items-center justify-center"
         style={{ left: `${pathPosition.left}%`, top: `${pathPosition.top}%` }}
       >
         <Bot className="w-5 h-5 text-black" strokeWidth={2.5} />
@@ -56,7 +56,7 @@ export function MallGuideRobotStage({
           className="absolute -translate-x-1/2 -translate-y-full mb-1"
           style={{ left: `${pathPosition.left}%`, top: `${pathPosition.top}%` }}
         >
-          <div className="px-4 py-2 rounded-xl bg-black/80 border border-primary/30 text-white text-sm font-medium text-center shadow-[0_0_12px_rgba(0,229,255,0.2)] whitespace-nowrap max-w-[200px] truncate">
+          <div className="px-4 py-2 rounded-xl bg-black/80 border border-border text-foreground text-sm font-medium text-center whitespace-nowrap max-w-[200px] truncate">
             {stepLabel}
           </div>
           <div

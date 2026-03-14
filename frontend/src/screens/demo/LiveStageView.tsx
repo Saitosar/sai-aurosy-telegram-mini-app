@@ -45,15 +45,14 @@ export function LiveStageView({
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_50%,transparent_0%,rgba(0,0,0,0.3)_100%)]" />
 
         <div
-          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[45%] h-[35%] rounded-full opacity-30"
+          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[45%] h-[35%] rounded-full opacity-20"
           style={{
-            boxShadow: "0 0 80px 40px rgba(0,229,255,0.25)",
-            background: "radial-gradient(circle, rgba(0,229,255,0.15) 0%, transparent 70%)",
+            background: "radial-gradient(circle, rgba(0,122,255,0.1) 0%, transparent 70%)",
           }}
         />
 
         <div className="absolute top-16 left-4 px-4 py-2 rounded-lg bg-black/70 backdrop-blur-sm border border-white/10">
-          <p className="text-white font-bold text-lg tracking-wide">Magic City</p>
+          <p className="text-foreground font-semibold text-lg tracking-wide">Magic City</p>
           <p className="text-primary text-xs font-medium">Event zone: Fountain</p>
         </div>
 
@@ -71,7 +70,7 @@ export function LiveStageView({
         />
 
         <div className="absolute top-16 right-4 px-4 py-2 rounded-lg bg-black/60 backdrop-blur-sm border border-primary/20">
-          <p className="text-white text-sm font-medium">
+          <p className="text-foreground text-sm font-medium">
             <span className="text-primary font-bold">{metrics.visitorsAttracted}</span> visitors
             {" · "}
             <span className="text-primary font-bold">{metrics.childrenInteractions}</span> kids
@@ -98,7 +97,7 @@ export function LiveStageView({
                 {i < TOTAL_STEPS - 1 && (
                   <div className="flex-1 min-w-[8px] h-0.5 mx-0.5 bg-white/20 rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-primary rounded-full transition-all duration-200 shadow-[0_0_6px_rgba(0,229,255,0.5)]"
+                      className="h-full bg-primary rounded-full transition-all duration-200"
                       style={{
                         width:
                           progressFill <= i

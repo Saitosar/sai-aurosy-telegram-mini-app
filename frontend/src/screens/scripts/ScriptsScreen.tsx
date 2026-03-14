@@ -75,8 +75,8 @@ export function ScriptsScreen() {
     <div className="min-h-full pb-20">
       <div className="px-6 py-8">
         <div className="mb-8">
-          <h1 className="text-2xl font-bold tracking-tight text-white mb-1">Scripts</h1>
-          <p className="text-[#a0a0a0] text-sm">
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground mb-1">Scripts</h1>
+          <p className="text-muted-foreground text-sm">
             Browse and run scripts on your robots. Behavioral, speech, and hybrid scenarios.
           </p>
         </div>
@@ -88,10 +88,10 @@ export function ScriptsScreen() {
 
             return (
               <section key={type}>
-                <h2 className="text-[13px] font-semibold text-white uppercase tracking-wider mb-4"> {label}</h2>
+                <h2 className="text-[13px] font-semibold text-foreground mb-4"> {label}</h2>
                 {items.length === 0 ? (
                   <div className="glass-card rounded-2xl p-6 text-center">
-                    <p className="text-[#666] text-sm">No scripts yet</p>
+                    <p className="text-muted-foreground text-sm">No scripts yet</p>
                   </div>
                 ) : (
                   <div className="space-y-4">
@@ -102,25 +102,25 @@ export function ScriptsScreen() {
                       return (
                         <div
                           key={script.id}
-                          className="glass-card rounded-2xl p-6 hover:border-primary/20 hover:shadow-[0_0_20px_rgba(0,229,255,0.06)] transition-colors"
+                          className="glass-card rounded-2xl p-6 hover:bg-muted/30 transition-colors"
                         >
                           <div className="flex items-start gap-4">
                             <div className="glass-icon-container p-3 rounded-xl shrink-0">
                               <IconComponent className="w-6 h-6 text-primary" />
                             </div>
                             <div className="flex-1 min-w-0">
-                              <h3 className="font-semibold text-white text-[17px] mb-1">{script.name}</h3>
-                              <p className="text-[#a0a0a0] text-sm leading-relaxed">{script.description}</p>
+                              <h3 className="font-semibold text-foreground text-[17px] mb-1">{script.name}</h3>
+                              <p className="text-muted-foreground text-sm leading-relaxed">{script.description}</p>
                               {hasDetailScreen ? (
                                 <Link
                                   to={getScriptDetailPath(script.id)}
                                   state={preselectedRobot ? { selectedRobot: preselectedRobot } : undefined}
-                                  className="mt-4 inline-block px-4 py-2.5 bg-primary text-black font-semibold text-sm rounded-xl hover:bg-[#33e8ff] transition-all"
+                                  className="mt-4 inline-block px-4 py-2.5 bg-primary text-primary-foreground font-medium text-sm rounded-xl hover:opacity-90 transition-opacity"
                                 >
                                   Open
                                 </Link>
                               ) : (
-                                <span className="mt-4 inline-block px-4 py-2.5 glass-button-secondary text-[#666] rounded-xl text-sm font-medium cursor-not-allowed">
+                                <span className="mt-4 inline-block px-4 py-2.5 glass-button-secondary text-muted-foreground rounded-xl text-sm font-medium cursor-not-allowed">
                                   Coming soon
                                 </span>
                               )}
@@ -142,11 +142,11 @@ export function ScriptsScreen() {
             >
               <div className="flex items-center gap-4">
                 <div className="glass-icon-container p-3 rounded-xl shrink-0">
-                  <Plus className="w-6 h-6 text-[#666]" />
+                  <Plus className="w-6 h-6 text-muted-foreground" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-white text-[17px] mb-1">Create Script</h3>
-                  <p className="text-[#666] text-sm">В разработке</p>
+                  <h3 className="font-semibold text-foreground text-[17px] mb-1">Create Script</h3>
+                  <p className="text-muted-foreground text-sm">В разработке</p>
                 </div>
               </div>
             </div>
