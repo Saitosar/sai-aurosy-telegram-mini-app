@@ -35,11 +35,11 @@ export function DashboardScreen() {
                 Live
               </span>
               <ChevronRight className="absolute top-4 right-4 w-5 h-5 text-muted-foreground group-hover:text-foreground transition-colors" />
-              <div className="flex flex-col items-center text-center gap-4">
-                <div className="w-16 h-16 rounded-2xl flex items-center justify-center bg-toxic/10 border border-toxic/20 transition-colors">
-                  <Sparkles className="w-8 h-8 text-toxic" />
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 shrink-0 rounded-2xl flex items-center justify-center bg-muted border border-border transition-colors">
+                  <Sparkles className="w-8 h-8 text-muted-foreground" />
                 </div>
-                <div>
+                <div className="flex-1 min-w-0 text-left">
                   <h3 className="font-semibold text-[17px] text-foreground tracking-tight mb-1">
                     Event Mode Demo
                   </h3>
@@ -55,12 +55,12 @@ export function DashboardScreen() {
           <motion.div {...staggerItem(2)}>
           <Link to="/store" className="block group">
             <div className="glass-card-elevated rounded-3xl p-4 sm:p-6 hover:bg-muted/30 transition-all relative">
-              <ChevronRight className="absolute top-4 right-4 w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
-              <div className="flex flex-col items-center text-center gap-4">
-                <div className="w-16 h-16 rounded-2xl flex items-center justify-center bg-primary/10 border border-primary/20 transition-colors">
-                  <Store className="w-8 h-8 text-primary" />
+              <ChevronRight className="absolute top-4 right-4 w-5 h-5 text-muted-foreground group-hover:text-white transition-colors" />
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 shrink-0 rounded-2xl flex items-center justify-center bg-muted border border-border transition-colors">
+                  <Store className="w-8 h-8 text-muted-foreground" />
                 </div>
-                <div>
+                <div className="flex-1 min-w-0 text-left">
                   <h3 className="font-semibold text-[17px] text-foreground tracking-tight mb-1">
                     Robot Store
                   </h3>
@@ -77,11 +77,11 @@ export function DashboardScreen() {
           <Link to="/scripts" className="block group">
             <div className="glass-card rounded-3xl p-4 sm:p-6 hover:bg-muted/30 transition-all relative">
               <ChevronRight className="absolute top-4 right-4 w-5 h-5 text-muted-foreground group-hover:text-foreground transition-colors" />
-              <div className="flex flex-col items-center text-center gap-4">
-                <div className="w-16 h-16 rounded-2xl flex items-center justify-center bg-muted border border-border transition-colors">
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 shrink-0 rounded-2xl flex items-center justify-center bg-muted border border-border transition-colors">
                   <MapPin className="w-8 h-8 text-muted-foreground" />
                 </div>
-                <div>
+                <div className="flex-1 min-w-0 text-left">
                   <h3 className="font-semibold text-[17px] text-foreground tracking-tight mb-1">
                     Scripts
                   </h3>
@@ -98,11 +98,11 @@ export function DashboardScreen() {
           <Link to="/wallet" className="block group">
             <div className="glass-card rounded-3xl p-4 sm:p-6 hover:bg-muted/30 transition-all relative">
               <ChevronRight className="absolute top-4 right-4 w-5 h-5 text-muted-foreground group-hover:text-foreground transition-colors" />
-              <div className="flex flex-col items-center text-center gap-4">
-                <div className="w-16 h-16 rounded-2xl flex items-center justify-center bg-muted border border-border transition-colors">
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 shrink-0 rounded-2xl flex items-center justify-center bg-muted border border-border transition-colors">
                   <Gem className="w-8 h-8 text-muted-foreground" />
                 </div>
-                <div>
+                <div className="flex-1 min-w-0 text-left">
                   <h3 className="font-semibold text-[17px] text-foreground tracking-tight mb-1">
                     NFT
                   </h3>
