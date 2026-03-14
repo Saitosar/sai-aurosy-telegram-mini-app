@@ -9,6 +9,7 @@ import {
 import type { StorePosition } from "./cityMallStores";
 import {
   getDefaultCalibration,
+  getEmptyCalibration,
   loadStores,
   saveStores,
   type PathMode,
@@ -36,6 +37,7 @@ interface StorePositionsContextValue {
   removePathSegment: (index: number) => void;
   clearPathSegments: () => void;
   resetToDefaults: () => void;
+  clearAllCalibration: () => void;
   exportJson: () => string;
   importJson: (data: StoredCalibration) => void;
 }
@@ -143,6 +145,9 @@ export function StorePositionsProvider({ children }: { children: ReactNode }) {
       },
       resetToDefaults: () => {
         persist(getDefaultCalibration());
+      },
+      clearAllCalibration: () => {
+        persist(getEmptyCalibration());
       },
       exportJson: () => JSON.stringify(data, null, 2),
       importJson: (imported) => {

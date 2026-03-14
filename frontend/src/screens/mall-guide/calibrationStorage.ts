@@ -94,5 +94,17 @@ export function getDefaultCalibration(): StoredCalibration {
     stores: Object.fromEntries(
       Object.entries(DEFAULT_STORES).map(([k, v]) => [k, { ...v }])
     ),
+    routes: {},
+    pathSegments: [],
+  };
+}
+
+/** Clears all stores, routes, path segments. Reception set to center for recalibration. */
+export function getEmptyCalibration(): StoredCalibration {
+  return {
+    reception: { left: 50, top: 50 },
+    stores: {},
+    routes: {},
+    pathSegments: [],
   };
 }
