@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { ArrowLeft, Bot, Battery, MapPin, Square, Home, Zap } from "lucide-react";
 import type { RobotDetail } from "shared";
 import { getRobot, sendCommand } from "../../api/robots";
+import { ScreenHeader } from "../../components/ui/ScreenHeader";
 import { haptic } from "../../utils/haptic";
 import { stopExecution } from "../../api/scenarios";
 import { useTelemetry } from "../../hooks/useTelemetry";
@@ -170,14 +171,11 @@ export function ControlScreen() {
     <div className="min-h-full pb-20 relative">
       <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent pointer-events-none" />
       <div className="relative z-10 px-4 sm:px-6 py-8">
-        <motion.button
-          onClick={handleBack}
-          className="flex items-center justify-center text-muted-foreground mb-8 hover:text-foreground transition-colors min-h-[44px] min-w-[44px] touch-target"
-          whileTap={{ scale: 0.98 }}
-          aria-label="Back"
-        >
-          <ArrowLeft className="w-5 h-5" />
-        </motion.button>
+        <ScreenHeader
+          title={displayRobot.name}
+          onBack={handleBack}
+          className="mb-6"
+        />
 
         <div className="glass-card-elevated rounded-3xl p-6 mb-6">
           <div className="flex items-start justify-between">
@@ -189,7 +187,6 @@ export function ControlScreen() {
               </div>
               <div>
                 <div className="flex items-center gap-4 mb-1">
-                  <h2 className="text-xl font-semibold tracking-tight text-foreground">{displayRobot.name}</h2>
                   <div className="flex items-center gap-2 px-2 py-0.5 rounded-full glass-button-secondary">
                     <div className={`w-2 h-2 rounded-full ${getStatusColor(displayRobot.status)}`} />
                     <span className="text-[11px] font-medium text-muted-foreground">

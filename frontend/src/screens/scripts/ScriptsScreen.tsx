@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { MapPin, Mic, Layers, Plus } from "lucide-react";
 import type { Scenario } from "shared";
 import { getScenarios } from "../../api/scenarios";
+import { ScreenHeader } from "../../components/ui/ScreenHeader";
 import { Skeleton } from "../../components/ui/Skeleton";
 
 const SCRIPT_TYPES = ["behavioral", "speech", "hybrid"] as const;
@@ -76,12 +77,11 @@ export function ScriptsScreen() {
     <div className="min-h-full pb-20 relative">
       <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent pointer-events-none" />
       <div className="relative z-10 px-4 sm:px-6 py-8">
-        <div className="mb-8">
-          <h1 className="text-2xl font-semibold tracking-tight text-foreground mb-1">Scripts</h1>
-          <p className="text-muted-foreground text-sm">
-            Browse and run scripts on your robots. Behavioral, speech, and hybrid scenarios.
-          </p>
-        </div>
+        <ScreenHeader
+          title="Scripts"
+          subtitle="Browse and run scripts on your robots. Behavioral, speech, and hybrid scenarios."
+          className="mb-8"
+        />
 
         <div className="space-y-8">
           {SCRIPT_TYPES.map((type) => {

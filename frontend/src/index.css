@@ -113,7 +113,7 @@
   }
 
   .glass-icon-container {
-    background: rgba(0, 0, 0, 0.2);
+    background: var(--glass-icon-bg);
     border: 1px solid var(--glass-border-subtle);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
@@ -173,4 +173,18 @@
     min-height: 44px;
     min-width: 44px;
   }
+
+  /* iOS 26 scroll edge effect - light blurred gradient at scroll container edges */
+  .scroll-edge-top {
+    background: linear-gradient(to bottom, var(--background) 0%, transparent 100%);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+
+  .scroll-edge-bottom {
+    background: linear-gradient(to top, var(--background) 0%, transparent 100%);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+
 }
