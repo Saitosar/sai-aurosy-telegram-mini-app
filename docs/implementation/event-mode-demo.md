@@ -47,9 +47,9 @@ flowchart TB
 - **Approach:** Option A — 3D canvas overlay on 2D map
 - **Camera:** Perspective, 3/4 view — `position: [0, 2.5, 4]`, `fov: 45`
 - **Transparency:** `gl.setClearColor(0x000000, 0)` so map shows through
-- **Model:** `/robot_from_the_series_love_death_and_robots.glb` via `useGLTF` from drei
+- **Model:** `/animated_robot_sdc.glb` via `useGLTF` from drei
 - **Model rotation:** `rotationY` prop (radians) orients robot toward camera; default `Math.PI / 4`
-- **Animation:** Embedded "Scene" clip played via `useAnimations` (walking, arms, head)
+- **Animation:** First available clip (e.g. "Scene") played via `useAnimations`; fallback to first animation if "Scene" is missing
 
 ### Coordinate Mapping
 

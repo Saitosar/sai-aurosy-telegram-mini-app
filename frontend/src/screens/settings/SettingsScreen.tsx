@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { User, Sun, Moon, Globe, ChevronRight } from "lucide-react";
+import { User, Sun, Moon, Globe, ChevronRight, MapPin } from "lucide-react";
 import { useTheme } from "../../contexts/ThemeContext";
 import { useLocale, LOCALES } from "../../contexts/LocaleContext";
 
@@ -57,6 +57,25 @@ export function SettingsScreen() {
                 />
               </button>
             </div>
+          </div>
+
+          <div className="border-t border-border/50">
+            <h3 className="px-4 pt-4 pb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              Map settings
+            </h3>
+            <Link
+              to="/scripts/mall-guide/calibration"
+              className="flex items-center gap-4 p-4 hover:bg-white/5 transition-colors"
+            >
+              <div className="glass-icon-container w-10 h-10 rounded-xl flex items-center justify-center shrink-0">
+                <MapPin className="w-5 h-5 text-primary" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="font-medium text-foreground">Calibration</p>
+                <p className="text-sm text-muted-foreground">Calibrate mall map store positions</p>
+              </div>
+              <ChevronRight className="w-5 h-5 text-muted-foreground shrink-0" />
+            </Link>
           </div>
 
           <div className="border-t border-border/50">

@@ -3,7 +3,7 @@ import { useFrame } from "@react-three/fiber";
 import { useAnimations, useGLTF } from "@react-three/drei";
 import type { Group } from "three";
 
-const ROBOT_GLB_URL = "/robot_from_the_series_love_death_and_robots.glb";
+const ROBOT_GLB_URL = "/animated_robot_sdc.glb";
 
 interface Robot3DModelProps {
   position: [number, number, number];
@@ -22,7 +22,7 @@ export function Robot3DModel({
   const { actions } = useAnimations(animations, sceneRef);
 
   useEffect(() => {
-    const action = actions["Scene"];
+    const action = actions["Scene"] ?? Object.values(actions)[0];
     if (action) action.reset().fadeIn(0.5).play();
     return () => {
       action?.fadeOut(0.5);

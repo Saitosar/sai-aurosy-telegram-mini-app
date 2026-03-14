@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, MapPin, Play, Square, ChevronDown, Bot } from "lucide-react";
 import type { Robot } from "shared";
 import { getRobots } from "../../api/robots";
@@ -9,6 +10,7 @@ import {
   stopExecution,
 } from "../../api/scenarios";
 import { Skeleton } from "../../components/ui/Skeleton";
+import { MallGuideSimulationView } from "./MallGuideSimulationView";
 
 const SCENARIO_ID = "mall-guide";
 
@@ -20,6 +22,7 @@ export function MallGuideScreen() {
   const handleBack = useCallback(() => navigate(-1), [navigate]);
 
   const [robots, setRobots] = useState<Robot[]>([]);
+  const [isSimulationActive, setIsSimulationActive] = useState(false);
   const [loading, setLoading] = useState(true);
   const [selectedRobot, setSelectedRobot] = useState<string>(preselectedRobot ?? "");
   const [showDropdown, setShowDropdown] = useState(false);
@@ -83,13 +86,20 @@ export function MallGuideScreen() {
     }).Telegram?.WebApp;
     if (tg?.BackButton) {
       tg.BackButton.show?.();
-      const offClick = tg.BackButton.onClick?.(handleBack);
+      const onBackPress = () => {
+        if (isSimulationActive) {
+          setIsSimulationActive(false);
+        } else {
+          handleBack();
+        }
+      };
+      const offClick = tg.BackButton.onClick?.(onBackPress);
       return () => {
         offClick?.();
         tg.BackButton?.hide?.();
       };
     }
-  }, [handleBack]);
+  }, [handleBack, isSimulationActive]);
 
   useEffect(() => {
     if (!executionId) return;
@@ -138,7 +148,12 @@ export function MallGuideScreen() {
     } catch (err) {
       setStartError(err instanceof Error ? err.message : "Failed to start scenario");
     }
+    setIsSimulationActive(true);
   };
+
+  const handleSimulationBack = useCallback(() => {
+    setIsSimulationActive(false);
+  }, []);
 
   const handleStop = async () => {
     if (!executionId || !executionStatus) return;
@@ -194,7 +209,22 @@ export function MallGuideScreen() {
   }
 
   return (
-    <div className="min-h-full pb-20">
+    <div className="min-h-full pb-20 relative">
+      <AnimatePresence>
+        {isSimulationActive && (
+          <motion.div
+            key="simulation"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <MallGuideSimulationView onBack={handleSimulationBack} />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {!isSimulationActive && (
       <div className="px-6 py-8">
         <button
           onClick={handleBack}
@@ -221,7 +251,7 @@ export function MallGuideScreen() {
           </p>
         </div>
 
-        <div className="glass-card rounded-2xl p-6 mb-6">
+        <div className={`glass-card rounded-2xl p-6 mb-6 ${showDropdown ? "relative z-10" : ""}`}>
           <h3 className="text-[13px] font-semibold text-white uppercase tracking-wider mb-4">Select Robot</h3>
           <div className="relative">
             <button
@@ -247,7 +277,7 @@ export function MallGuideScreen() {
             </button>
 
             {showDropdown && (
-              <div className="absolute top-[calc(100%+8px)] left-0 right-0 glass-card-elevated rounded-xl overflow-hidden z-20 shadow-[0_10px_40px_rgba(0,0,0,0.5)]">
+              <div className="absolute top-[calc(100%+8px)] left-0 right-0 glass-card-elevated rounded-xl overflow-hidden z-50 shadow-[0_10px_40px_rgba(0,0,0,0.5)]">
                 {robots.map((robot) => (
                   <button
                     key={robot.id}
@@ -287,7 +317,7 @@ export function MallGuideScreen() {
 
         {(isRunning || finalStatus) && (
           <div
-            className={`mb-8 rounded-2xl p-6 relative overflow-hidden ${
+            className={`mb-8 rounded-2xl p-6 relative z-0 overflow-hidden ${
               finalStatus?.status === "error"
                   ? "bg-red-500/10 border border-red-500/30"
                   : finalStatus?.status === "stopped"
@@ -340,7 +370,7 @@ export function MallGuideScreen() {
         )}
 
         {!isRunning && !finalStatus && (
-          <div className="mb-8 glass-card rounded-2xl p-4">
+          <div className="mb-8 glass-card rounded-2xl p-4 relative z-0">
             <p className="text-[#a0a0a0] text-sm font-medium">Ready to start</p>
           </div>
         )}
@@ -380,6 +410,7 @@ export function MallGuideScreen() {
           )}
         </div>
       </div>
+      )}
     </div>
   );
 }

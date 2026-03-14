@@ -92,7 +92,7 @@ npm run dev
 - Navigate to **Event Mode Demo** from Dashboard
 - Tap **Start Event Mode Demo**
 - **Expected:** Map view (Magic City) with 3D GLB robot overlay; robot moves between waypoints and performs bounce animation; step labels (greets, invites, dance, music, photos, thanks); crowd avatars gather around
-- **Technical:** Robot model (`/robot_from_the_series_love_death_and_robots.glb`) with "Scene" animation; React Three Fiber; perspective camera; transparent canvas over 2D map
+- **Technical:** Robot model (`/animated_robot_sdc.glb`) with first available animation; React Three Fiber; perspective camera; transparent canvas over 2D map
 
 ## Expected Outcomes Summary
 
