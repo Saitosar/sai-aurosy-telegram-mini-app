@@ -54,7 +54,7 @@ export function RobotStage({
           <Suspense fallback={null}>
             <Robot3DModel
               position={scenePosition}
-              scale={0.06}
+              scale={0.12}
               rotationY={Math.PI / 4}
             />
           </Suspense>
