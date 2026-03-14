@@ -3,14 +3,14 @@
 
 :root {
   --font-size: 16px;
-  --background: var(--tg-theme-bg-color, #09090b);
+  --background: var(--tg-theme-bg-color, #000000);
   --foreground: var(--tg-theme-text-color, #fafafa);
   --card: #121212;
   --card-foreground: #fafafa;
-  --popover: #09090b;
+  --popover: #0c0c0e;
   --popover-foreground: #fafafa;
-  --primary: #00e5ff;
-  --primary-foreground: #000000;
+  --primary: #007AFF;
+  --primary-foreground: #ffffff;
   --secondary: #1f1f22;
   --secondary-foreground: #fafafa;
   --muted: #27272a;
@@ -25,35 +25,34 @@
   --switch-background: #27272a;
   --font-weight-medium: 500;
   --font-weight-normal: 400;
-  --ring: #00e5ff;
-  --chart-1: #00e5ff;
+  --ring: #007AFF;
+  --chart-1: #007AFF;
   --chart-2: #3b82f6;
   --chart-3: #8b5cf6;
   --chart-4: #ec4899;
   --chart-5: #10b981;
-  --toxic: #39ff14;
-  --toxic-foreground: #000000;
+  --toxic: #34C759;
+  --toxic-foreground: #ffffff;
   --radius: 0.75rem;
-  --sidebar: #09090b;
+  --sidebar: #000000;
   --sidebar-foreground: #fafafa;
-  --sidebar-primary: #00e5ff;
-  --sidebar-primary-foreground: #000000;
+  --sidebar-primary: #007AFF;
+  --sidebar-primary-foreground: #ffffff;
   --sidebar-accent: #27272a;
   --sidebar-accent-foreground: #fafafa;
   --sidebar-border: #27272a;
-  --sidebar-ring: #00e5ff;
+  --sidebar-ring: #007AFF;
 
-  /* Spaceship control panel - glass tokens */
+  /* Apple-style glass tokens - softer blur, no glow */
   --glass-bg: rgba(255, 255, 255, 0.04);
   --glass-bg-elevated: rgba(255, 255, 255, 0.07);
-  --glass-border: rgba(255, 255, 255, 0.12);
-  --glass-border-subtle: rgba(255, 255, 255, 0.08);
-  --glass-glow: rgba(0, 229, 255, 0.15);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-border-subtle: rgba(255, 255, 255, 0.06);
 }
 
 /* Light theme - applied when .dark is not on html */
 html:not(.dark) {
-  --background: #f4f4f5;
+  --background: #F2F2F7;
   --foreground: #18181b;
   --card: #ffffff;
   --card-foreground: #18181b;
@@ -69,27 +68,26 @@ html:not(.dark) {
   --input: #e4e4e7;
   --input-background: #ffffff;
   --switch-background: #e4e4e7;
-  --sidebar: #f4f4f5;
+  --sidebar: #F2F2F7;
   --sidebar-foreground: #18181b;
   --sidebar-accent: #e4e4e7;
   --sidebar-accent-foreground: #18181b;
   --sidebar-border: #e4e4e7;
-  --glass-bg: rgba(0, 0, 0, 0.04);
-  --glass-bg-elevated: rgba(0, 0, 0, 0.06);
-  --glass-border: rgba(0, 0, 0, 0.1);
-  --glass-border-subtle: rgba(0, 0, 0, 0.06);
-  --glass-glow: rgba(0, 229, 255, 0.12);
+  --glass-bg: rgba(255, 255, 255, 0.72);
+  --glass-bg-elevated: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(0, 0, 0, 0.06);
+  --glass-border-subtle: rgba(0, 0, 0, 0.04);
 }
 
 .dark {
-  --background: #09090b;
+  --background: #000000;
   --foreground: #fafafa;
   --card: #121212;
   --card-foreground: #fafafa;
-  --popover: #09090b;
+  --popover: #0c0c0e;
   --popover-foreground: #fafafa;
-  --primary: #00e5ff;
-  --primary-foreground: #000000;
+  --primary: #007AFF;
+  --primary-foreground: #ffffff;
   --secondary: #1f1f22;
   --secondary-foreground: #fafafa;
   --muted: #27272a;
@@ -100,31 +98,30 @@ html:not(.dark) {
   --destructive-foreground: #fafafa;
   --border: #27272a;
   --input: #1f1f22;
-  --ring: #00e5ff;
+  --ring: #007AFF;
   --font-weight-medium: 500;
   --font-weight-normal: 400;
-  --chart-1: #00e5ff;
+  --chart-1: #007AFF;
   --chart-2: #3b82f6;
   --chart-3: #8b5cf6;
   --chart-4: #ec4899;
   --chart-5: #10b981;
-  --toxic: #39ff14;
-  --toxic-foreground: #000000;
-  --sidebar: #09090b;
+  --toxic: #34C759;
+  --toxic-foreground: #ffffff;
+  --sidebar: #000000;
   --sidebar-foreground: #fafafa;
-  --sidebar-primary: #00e5ff;
-  --sidebar-primary-foreground: #000000;
+  --sidebar-primary: #007AFF;
+  --sidebar-primary-foreground: #ffffff;
   --sidebar-accent: #27272a;
   --sidebar-accent-foreground: #fafafa;
   --sidebar-border: #27272a;
-  --sidebar-ring: #00e5ff;
+  --sidebar-ring: #007AFF;
 
-  /* Spaceship control panel - glass tokens */
+  /* Apple-style glass tokens */
   --glass-bg: rgba(255, 255, 255, 0.04);
   --glass-bg-elevated: rgba(255, 255, 255, 0.07);
-  --glass-border: rgba(255, 255, 255, 0.12);
-  --glass-border-subtle: rgba(255, 255, 255, 0.08);
-  --glass-glow: rgba(0, 229, 255, 0.15);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-border-subtle: rgba(255, 255, 255, 0.06);
 }
 
 @theme inline {

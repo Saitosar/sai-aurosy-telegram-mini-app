@@ -10,7 +10,7 @@ export function SettingsScreen() {
   return (
     <div className="min-h-full pb-20">
       <div className="px-6 py-8">
-        <h1 className="mb-6 text-2xl font-bold tracking-tight text-foreground">Settings</h1>
+        <h1 className="mb-6 text-2xl font-semibold tracking-tight text-foreground">Settings</h1>
 
         <div className="glass-card rounded-2xl overflow-hidden">
           <Link
@@ -60,7 +60,7 @@ export function SettingsScreen() {
           </div>
 
           <div className="border-t border-border/50">
-            <h3 className="px-4 pt-4 pb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+            <h3 className="px-4 pt-4 pb-2 text-xs font-medium text-muted-foreground">
               Map settings
             </h3>
             <Link

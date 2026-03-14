@@ -33,20 +33,18 @@ export function TonWalletSection() {
 
   return (
     <div className="glass-card rounded-2xl p-6 relative overflow-hidden">
-      <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl" />
       <div className="relative z-10 flex flex-col gap-4">
         <div className="flex items-center gap-2">
           <div className="glass-icon-container w-10 h-10 rounded-xl flex items-center justify-center">
-            <Wallet className="w-5 h-5 text-primary drop-shadow-[0_0_8px_rgba(0,229,255,0.6)]" />
+            <Wallet className="w-5 h-5 text-primary" />
           </div>
-          <h3 className="text-white font-semibold">TON Wallet</h3>
+          <h3 className="text-foreground font-semibold">TON Wallet</h3>
         </div>
 
         {!isConnected ? (
           <motion.button
             onClick={() => open()}
-            className="w-full py-4 bg-primary text-primary-foreground font-bold text-[16px] rounded-xl shadow-[0_0_30px_rgba(0,229,255,0.4)] hover:shadow-[0_0_50px_rgba(0,229,255,0.6)] hover:scale-[1.02] transition-all flex items-center justify-center gap-2"
-            whileHover={{ scale: 1.02 }}
+            className="w-full py-4 bg-primary text-primary-foreground font-medium text-[16px] rounded-xl hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
             whileTap={{ scale: 0.98 }}
           >
             <Wallet className="w-5 h-5" />
@@ -55,12 +53,12 @@ export function TonWalletSection() {
         ) : (
           <div className="space-y-3">
             <div className="flex items-center gap-2 p-3 rounded-xl glass-button-secondary">
-              <code className="flex-1 text-sm font-mono text-[#a0a0a0] truncate tabular-nums">
+              <code className="flex-1 text-sm font-mono text-muted-foreground truncate tabular-nums">
                 {truncateAddress(address)}
               </code>
               <button
                 onClick={handleCopy}
-                className="p-2 rounded-lg hover:bg-white/10 transition-colors text-[#a0a0a0] hover:text-white"
+                className="p-2 rounded-lg hover:bg-muted/50 transition-colors text-muted-foreground hover:text-foreground"
                 title="Copy address"
               >
                 <Copy className="w-4 h-4" />
@@ -71,7 +69,7 @@ export function TonWalletSection() {
             )}
             <button
               onClick={handleDisconnect}
-              className="w-full py-2.5 glass-button-secondary text-[#a0a0a0] hover:text-white text-sm font-medium rounded-xl flex items-center justify-center gap-2 transition-colors"
+              className="w-full py-2.5 glass-button-secondary text-muted-foreground hover:text-foreground text-sm font-medium rounded-xl flex items-center justify-center gap-2 transition-colors"
             >
               <LogOut className="w-4 h-4" />
               Disconnect

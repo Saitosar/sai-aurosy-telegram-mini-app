@@ -37,7 +37,7 @@ export function EventModeDemoScreen() {
         <div className="flex items-center justify-between px-6 py-4">
           <Link
             to="/"
-            className="flex items-center gap-2 text-muted-foreground hover:text-white transition-colors"
+            className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
             <span className="font-medium text-[15px]">Back</span>
@@ -101,8 +101,8 @@ export function EventModeDemoScreen() {
               ref={finalMessageRef}
             >
               <div className="max-w-2xl mx-auto text-center space-y-8">
-                <div className="p-8 rounded-2xl bg-primary/10 border border-primary/30 shadow-[0_0_40px_rgba(0,229,255,0.15)]">
-                  <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
+                <div className="p-8 rounded-2xl glass-card">
+                  <h2 className="text-2xl md:text-3xl font-semibold text-foreground mb-4">
                     Imagine this experience in your mall.
                   </h2>
                   <p className="text-lg text-muted-foreground mb-8">
@@ -114,13 +114,13 @@ export function EventModeDemoScreen() {
                       href="https://t.me/Arif_Mammadov1"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="px-8 py-4 bg-primary text-primary-foreground font-bold text-lg rounded-xl shadow-[0_0_30px_rgba(0,229,255,0.4)] hover:shadow-[0_0_50px_rgba(0,229,255,0.6)] transition-all"
+                      className="px-8 py-4 bg-primary text-primary-foreground font-medium text-lg rounded-xl hover:opacity-90 transition-opacity"
                     >
                       Deploy Robot in My Mall
                     </a>
                     <button
                       onClick={restart}
-                      className="px-8 py-4 bg-white/10 border border-white/20 text-white font-semibold text-lg rounded-xl hover:bg-white/20 transition-all"
+                      className="px-8 py-4 glass-button-secondary text-foreground font-medium text-lg rounded-xl hover:bg-muted/50 transition-colors"
                     >
                       Replay Demo
                     </button>

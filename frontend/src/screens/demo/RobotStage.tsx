@@ -76,7 +76,7 @@ export function RobotStage({
         <AnimatePresence mode="wait">
           <motion.div
             key={currentStepLabel}
-            className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 px-4 py-2 rounded-xl bg-black/80 border border-primary/30 text-white text-sm font-medium text-center shadow-[0_0_12px_rgba(0,229,255,0.2)]"
+            className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2 px-4 py-2 rounded-xl bg-black/80 border border-border text-foreground text-sm font-medium text-center"
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -4 }}
