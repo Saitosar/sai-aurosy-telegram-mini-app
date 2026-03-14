@@ -17,6 +17,7 @@
 | Mall Guide | `/scripts/mall-guide` | Run Mall Guide script |
 | Mall Guide Calibration | `/scripts/mall-guide/calibration` | Calibrate mall floor plan |
 | Event Mode Demo | `/demo` | 3D robot demo on map overlay (standalone, outside main layout) |
+| NFT Marketplace | `/nft` | Browse NFTs from whitelisted collections; Buy redirects to Getgems |
 
 ### V2 Screens (Planned)
 
@@ -42,6 +43,7 @@ flowchart TB
 
     subgraph HomeCards [Home Dashboard Cards]
         Wallet[TON Wallet /wallet]
+        NFTMarketplace[NFT Marketplace /nft]
         Scripts[Scripts /scripts]
     end
 
@@ -57,6 +59,7 @@ flowchart TB
     Dashboard --> Store
     Dashboard --> Settings
     Dashboard -->|"Cards"| Wallet
+    Dashboard -->|"Cards"| NFTMarketplace
     Dashboard -->|"Cards"| Scripts
     Settings -->|"User Profile"| UserProfile
     Robots -->|"Select robot"| ControlPanel
@@ -75,10 +78,11 @@ flowchart TB
 
 | From | Reachable Screens |
 |------|-------------------|
-| **Dashboard** | Robots, Store, Settings (via tabs), Wallet, Scripts, Event Mode Demo (via cards) |
+| **Dashboard** | Robots, Store, Settings (via tabs), Wallet, NFT Marketplace, Scripts, Event Mode Demo (via cards) |
 | **Robots** | Dashboard, Store, Settings (via tabs), Control Panel (select robot), Scripts (run script) |
 | **Store** | Dashboard, Robots, Settings (via tabs), Robots (after acquire) |
 | **Wallet** | Dashboard (via Home card or Back Button) |
+| **NFT Marketplace** | Dashboard (via Home card or Back Button) |
 | **Scripts** | Dashboard (via Home card or Back Button), Mall Guide (open script) |
 | **Settings** | Dashboard, Robots, Store (via tabs), User Profile |
 | **User Profile** | Settings (back) |
@@ -91,14 +95,15 @@ flowchart TB
 
 Primary navigation (tab bar, 4 items):
 
-- **Home** — Dashboard (route `/`); cards link to Event Mode Demo, Store, Scripts, NFT
+- **Home** — Dashboard (route `/`); cards link to Event Mode Demo, Store, Scripts, NFT Marketplace, TON Wallet
 - **Robots** — My robots
 - **Store** — Robot Store
 - **Settings** — App settings (User Profile, Theme toggle, Language selector)
 
 **Reached from Home cards (not in tab bar):**
 
-- **TON Wallet / NFT** — `/wallet`; card on Dashboard
+- **NFT Marketplace** — `/nft`; card on Dashboard
+- **TON Wallet** — `/wallet`; card on Dashboard
 - **Scripts** — `/scripts`; card on Dashboard
 
 Control Panel is reached by selecting a robot from the Robots screen or from Mall Guide. Mall Guide is reached from Scripts; Mall Guide Calibration is a sub-screen of Mall Guide. All are detail screens, not tabs.
@@ -121,7 +126,7 @@ Control Panel is reached by selecting a robot from the Robots screen or from Mal
 |-------------|-------------|--------|
 | **Dashboard** | Hidden | Root screen; no back |
 | **Robots, Store, Settings** | Hidden | Tab screens; switch via tabs |
-| **Wallet, Scripts** | Hidden | Reached from Home cards; use Back Button or tap Home |
+| **Wallet, NFT Marketplace, Scripts** | Hidden | Reached from Home cards; use Back Button or tap Home |
 | **User Profile** | Hidden | In-app back link to Settings |
 | **Control Panel** | Visible | Back to Robots or Mall Guide (previous screen) |
 | **Store item detail** | In-app | Modal overlay on Store screen; no separate route; close via in-app button |
@@ -148,6 +153,7 @@ flowchart LR
 
     subgraph HomeOnly [Reached from Home Cards]
         Wallet
+        NFTMarketplace[NFT Marketplace]
         Scripts
     end
     subgraph Detail [Detail]
@@ -164,6 +170,7 @@ flowchart LR
     Dashboard --> Store
     Dashboard --> Settings
     Dashboard --> Wallet
+    Dashboard --> NFTMarketplace
     Dashboard --> Scripts
     Dashboard --> Demo
     Robots --> Control

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Store, Sparkles, ChevronRight, Gem, MapPin } from "lucide-react";
+import { Store, Sparkles, ChevronRight, Gem, MapPin, Wallet } from "lucide-react";
 import { ProfileInfoCard } from "../../components/wallet/ProfileInfoCard";
 import { ScreenHeader } from "../../components/ui/ScreenHeader";
 
@@ -94,7 +94,7 @@ export function DashboardScreen() {
           </motion.div>
 
           <motion.div {...staggerItem(4)}>
-          <Link to="/wallet" className="block group">
+          <Link to="/nft" className="block group">
             <div className="glass-card rounded-3xl p-4 sm:p-6 hover:bg-muted/30 transition-all relative">
               <ChevronRight className="absolute top-4 right-4 w-5 h-5 text-muted-foreground group-hover:text-foreground transition-colors" />
               <div className="flex items-center gap-4">
@@ -103,10 +103,31 @@ export function DashboardScreen() {
                 </div>
                 <div className="flex-1 min-w-0 text-left">
                   <h3 className="font-semibold text-[17px] text-foreground tracking-tight mb-1">
-                    NFT
+                    NFT Marketplace
                   </h3>
                   <p className="text-muted-foreground text-[13px] leading-relaxed">
-                    View your NFT collection and robot assets
+                    Browse NFTs and buy on Getgems
+                  </p>
+                </div>
+              </div>
+            </div>
+          </Link>
+          </motion.div>
+
+          <motion.div {...staggerItem(5)}>
+          <Link to="/wallet" className="block group">
+            <div className="glass-card rounded-3xl p-4 sm:p-6 hover:bg-muted/30 transition-all relative">
+              <ChevronRight className="absolute top-4 right-4 w-5 h-5 text-muted-foreground group-hover:text-foreground transition-colors" />
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 shrink-0 rounded-2xl flex items-center justify-center bg-muted border border-border transition-colors">
+                  <Wallet className="w-8 h-8 text-muted-foreground" />
+                </div>
+                <div className="flex-1 min-w-0 text-left">
+                  <h3 className="font-semibold text-[17px] text-foreground tracking-tight mb-1">
+                    TON Wallet
+                  </h3>
+                  <p className="text-muted-foreground text-[13px] leading-relaxed">
+                    Connect wallet and view address
                   </p>
                 </div>
               </div>

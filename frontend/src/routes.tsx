@@ -10,6 +10,7 @@ import { MallGuideScreen } from "./screens/mall-guide/MallGuideScreen";
 import { MallGuideCalibrationScreen } from "./screens/mall-guide/MallGuideCalibrationScreen";
 import { EventModeDemoScreen } from "./screens/demo/EventModeDemoScreen";
 import { WalletScreen } from "./screens/wallet/WalletScreen";
+import { NFTMarketplaceScreen } from "./screens/nft/NFTMarketplaceScreen";
 import { SettingsScreen } from "./screens/settings/SettingsScreen";
 import { UserProfileScreen } from "./screens/settings/UserProfileScreen";
 
@@ -27,6 +28,7 @@ export const router = createBrowserRouter([
       { path: "robots", Component: RobotsScreen },
       { path: "store", Component: StoreScreen },
       { path: "wallet", Component: WalletScreen },
+      { path: "nft", Component: NFTMarketplaceScreen },
       { path: "settings", Component: SettingsScreen },
       { path: "settings/profile", Component: UserProfileScreen },
       { path: "control/:robotId", Component: ControlScreen },
