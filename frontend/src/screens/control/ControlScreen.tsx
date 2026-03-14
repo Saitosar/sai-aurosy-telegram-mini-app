@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate, useLocation } from "react-router-dom";
 import { ArrowLeft, Bot, Battery, MapPin, Square, Home, Zap } from "lucide-react";
 import type { RobotDetail } from "shared";
 import { getRobot, sendCommand } from "../../api/robots";
+import { haptic } from "../../utils/haptic";
 import { stopExecution } from "../../api/scenarios";
 import { useTelemetry } from "../../hooks/useTelemetry";
 
@@ -45,7 +46,10 @@ export function ControlScreen() {
     }
   }, []);
 
-  const handleBack = () => navigate(-1);
+  const handleBack = () => {
+    haptic.impact("light");
+    navigate(-1);
+  };
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -62,14 +66,17 @@ export function ControlScreen() {
 
   const handleCommand = async (command: string) => {
     if (!robotId || commandPending) return;
+    haptic.impact("medium");
     setCommandPending(true);
     setCommandError(null);
     setCommandSuccess(false);
     try {
       await sendCommand(robotId, { command });
+      haptic.success();
       setCommandSuccess(true);
       setTimeout(() => setCommandSuccess(false), 3000);
     } catch (err) {
+      haptic.error();
       setCommandError(err instanceof Error ? err.message : "Command failed");
     } finally {
       setCommandPending(false);
@@ -81,11 +88,14 @@ export function ControlScreen() {
 
   const handleStopScenario = async () => {
     if (!executionId || scenarioStopped) return;
+    haptic.impact("medium");
     setScenarioStopError(null);
     try {
       await stopExecution(scenarioId, executionId);
+      haptic.success();
       setScenarioStopped(true);
     } catch (err) {
+      haptic.error();
       setScenarioStopError(err instanceof Error ? err.message : "Failed to stop scenario");
     }
   };
@@ -296,6 +306,7 @@ export function ControlScreen() {
             <Link
               to="/scripts/mall-guide"
               state={{ selectedRobot: robotId }}
+              onClick={() => haptic.impact("light")}
               className="block w-full px-4 py-4 bg-primary text-black rounded-xl text-center font-bold hover:bg-[#33e8ff] transition-all shadow-[0_0_15px_rgba(0,229,255,0.3)] hover:shadow-[0_0_25px_rgba(0,229,255,0.5)]"
             >
               Start Mall Guide
@@ -308,6 +319,7 @@ export function ControlScreen() {
             <Link
               to="/scripts/mall-guide"
               state={{ selectedRobot: robotId }}
+              onClick={() => haptic.impact("light")}
               className="block w-full px-4 py-4 bg-primary text-black rounded-xl text-center font-bold hover:bg-[#33e8ff] transition-all shadow-[0_0_15px_rgba(0,229,255,0.3)] hover:shadow-[0_0_25px_rgba(0,229,255,0.5)]"
             >
               Start Mall Guide

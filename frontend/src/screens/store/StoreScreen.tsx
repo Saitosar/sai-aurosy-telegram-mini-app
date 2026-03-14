@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Bot, MessageCircle, X } from "lucide-react";
 import type { StoreItem } from "shared";
 import { getStoreItems } from "../../api/store";
+import { haptic } from "../../utils/haptic";
 import { Skeleton } from "../../components/ui/Skeleton";
 
 const ORDER_TELEGRAM_USERNAME = "Arif_Mammadov1";
@@ -70,7 +71,10 @@ export function StoreScreen() {
             >
               <button
                 type="button"
-                onClick={() => setSelectedItem(item)}
+                onClick={() => {
+                  haptic.impact("light");
+                  setSelectedItem(item);
+                }}
                 className="text-left group flex flex-col flex-1 min-w-0"
               >
                 <div className="glass-icon-container aspect-square rounded-xl mb-2 group-hover:border-primary/20 transition-colors relative overflow-hidden">
@@ -103,6 +107,7 @@ export function StoreScreen() {
                 type="button"
                 onClick={(e) => {
                   e.stopPropagation();
+                  haptic.impact("light");
                   openOrderChat(item);
                 }}
                 className="w-full mt-3 py-2.5 bg-primary text-black font-bold text-[14px] rounded-xl hover:bg-[#33e8ff] transition-all shadow-[0_0_20px_rgba(0,229,255,0.3)] hover:shadow-[0_0_30px_rgba(0,229,255,0.5)] flex items-center justify-center gap-2"
@@ -136,7 +141,10 @@ export function StoreScreen() {
                 )}
               </div>
               <button
-                onClick={() => setSelectedItem(null)}
+                onClick={() => {
+                  haptic.impact("light");
+                  setSelectedItem(null);
+                }}
                 className="glass-button-secondary p-2 hover:bg-white/10 rounded-full transition-colors text-white"
               >
                 <X className="w-5 h-5" />
@@ -179,7 +187,10 @@ export function StoreScreen() {
 
             <div className="flex flex-col gap-3">
               <button
-                onClick={() => openOrderChat(selectedItem)}
+                onClick={() => {
+                  haptic.impact("light");
+                  openOrderChat(selectedItem);
+                }}
                 className="w-full py-4 bg-primary text-black font-bold text-[16px] rounded-xl hover:bg-[#33e8ff] transition-all shadow-[0_0_20px_rgba(0,229,255,0.3)] hover:shadow-[0_0_30px_rgba(0,229,255,0.5)] flex items-center justify-center gap-2"
               >
                 <MessageCircle className="w-5 h-5" />
