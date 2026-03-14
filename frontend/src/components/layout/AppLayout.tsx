@@ -1,5 +1,5 @@
 import { Outlet, Link, useLocation } from "react-router-dom";
-import { Home, Bot, Store, MapPin, ImageIcon, Settings } from "lucide-react";
+import { Home, Bot, Store, Settings } from "lucide-react";
 import { haptic } from "../../utils/haptic";
 
 export function AppLayout() {
@@ -24,18 +24,7 @@ export function AppLayout() {
 
       <nav className="border-t border-border bg-background/95 backdrop-blur-xl pb-safe">
         <div className="flex items-center justify-between px-2 py-2 gap-1">
-          <Link
-            to="/"
-            onClick={() => haptic.selection()}
-            className={navLinkClass(
-              isActive("/") &&
-                !isActive("/robots") &&
-                !isActive("/store") &&
-                !isActive("/scripts") &&
-                !isActive("/wallet") &&
-                !isActive("/settings")
-            )}
-          >
+          <Link to="/" onClick={() => haptic.selection()} className={navLinkClass(isActive("/"))}>
             <Home className="w-5 h-5 shrink-0" />
             <span className="text-[11px] font-medium truncate">Home</span>
           </Link>
@@ -48,16 +37,6 @@ export function AppLayout() {
           <Link to="/store" onClick={() => haptic.selection()} className={navLinkClass(isActive("/store"))}>
             <Store className="w-5 h-5 shrink-0" />
             <span className="text-[11px] font-medium truncate">Store</span>
-          </Link>
-
-          <Link to="/wallet" onClick={() => haptic.selection()} className={navLinkClass(isActive("/wallet"))}>
-            <ImageIcon className="w-5 h-5 shrink-0" />
-            <span className="text-[11px] font-medium truncate">NFT</span>
-          </Link>
-
-          <Link to="/scripts" onClick={() => haptic.selection()} className={navLinkClass(isActive("/scripts"))}>
-            <MapPin className="w-5 h-5 shrink-0" />
-            <span className="text-[11px] font-medium truncate">Scripts</span>
           </Link>
 
           <Link to="/settings" onClick={() => haptic.selection()} className={navLinkClass(isActive("/settings"))}>

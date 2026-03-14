@@ -23,8 +23,9 @@ Additional tokens: `--popover`, `--accent`, `--input`, `--input-background`, `--
 
 ### Typography
 
-- **Font:** Inter (300, 400, 500, 600)
+- **Font:** Geist Variable (weights 100–900 via variable font)
 - **Base size:** 16px (`--font-size`)
+- **Variables:** `--font-sans`
 
 | Element | Size | Weight |
 |---------|------|--------|
@@ -92,7 +93,7 @@ import { Skeleton } from "../../components/ui/Skeleton";
 
 ## Files
 
-- `frontend/src/styles/fonts.css` — Inter font import
+- `frontend/src/styles/fonts.css` — Geist (npm) import
 - `frontend/src/styles/theme.css` — CSS variables and `@theme inline` for Tailwind
 - `frontend/src/index.css` — Import order: fonts → theme → tailwindcss; base styles and typography in `@layer base`
 - `frontend/src/components/ui/Skeleton.tsx` — Skeleton component

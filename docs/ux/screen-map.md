@@ -37,9 +37,12 @@ flowchart TB
         Dashboard[Dashboard /]
         Robots[Robots /robots]
         Store[Store /store]
+        Settings[Settings /settings]
+    end
+
+    subgraph HomeCards [Home Dashboard Cards]
         Wallet[TON Wallet /wallet]
         Scripts[Scripts /scripts]
-        Settings[Settings /settings]
     end
 
     subgraph Detail [Detail]
@@ -52,9 +55,9 @@ flowchart TB
     TelegramBot -->|"Opens Mini App"| Dashboard
     Dashboard --> Robots
     Dashboard --> Store
-    Dashboard --> Wallet
-    Dashboard --> Scripts
     Dashboard --> Settings
+    Dashboard -->|"Cards"| Wallet
+    Dashboard -->|"Cards"| Scripts
     Settings -->|"User Profile"| UserProfile
     Robots -->|"Select robot"| ControlPanel
     Robots --> Scripts
@@ -72,12 +75,12 @@ flowchart TB
 
 | From | Reachable Screens |
 |------|-------------------|
-| **Dashboard** | Robots, Store, Wallet, Scripts, Settings, Event Mode Demo |
-| **Robots** | Dashboard, Store, Wallet, Scripts, Settings (via tabs), Control Panel (select robot), Scripts (run script) |
-| **Store** | Dashboard, Robots, Wallet, Scripts, Settings (via tabs), Robots (after acquire) |
-| **Wallet** | Dashboard, Robots, Store, Scripts, Settings (via tabs) |
-| **Scripts** | Dashboard, Robots, Store, Wallet, Settings (via tabs), Mall Guide (open script) |
-| **Settings** | Dashboard, Robots, Store, Wallet, Scripts (via tabs), User Profile |
+| **Dashboard** | Robots, Store, Settings (via tabs), Wallet, Scripts, Event Mode Demo (via cards) |
+| **Robots** | Dashboard, Store, Settings (via tabs), Control Panel (select robot), Scripts (run script) |
+| **Store** | Dashboard, Robots, Settings (via tabs), Robots (after acquire) |
+| **Wallet** | Dashboard (via Home card or Back Button) |
+| **Scripts** | Dashboard (via Home card or Back Button), Mall Guide (open script) |
+| **Settings** | Dashboard, Robots, Store (via tabs), User Profile |
 | **User Profile** | Settings (back) |
 | **Mall Guide** | Scripts (back), Mall Guide Calibration, Control Panel (select robot) |
 | **Mall Guide Calibration** | Mall Guide (back) |
@@ -86,14 +89,17 @@ flowchart TB
 
 ## Tab Bar / Menu (V1)
 
-Primary navigation (tab bar or bottom menu):
+Primary navigation (tab bar, 4 items):
 
-- **Home** — Dashboard (route `/`)
+- **Home** — Dashboard (route `/`); cards link to Event Mode Demo, Store, Scripts, NFT
 - **Robots** — My robots
 - **Store** — Robot Store
-- **TON** — TON wallet connection and actions
-- **Scripts** — Browse and run scripts
 - **Settings** — App settings (User Profile, Theme toggle, Language selector)
+
+**Reached from Home cards (not in tab bar):**
+
+- **TON Wallet / NFT** — `/wallet`; card on Dashboard
+- **Scripts** — `/scripts`; card on Dashboard
 
 Control Panel is reached by selecting a robot from the Robots screen or from Mall Guide. Mall Guide is reached from Scripts; Mall Guide Calibration is a sub-screen of Mall Guide. All are detail screens, not tabs.
 
@@ -114,7 +120,8 @@ Control Panel is reached by selecting a robot from the Robots screen or from Mal
 | Screen Type | Back Button | Action |
 |-------------|-------------|--------|
 | **Dashboard** | Hidden | Root screen; no back |
-| **Robots, Store, Wallet, Scripts, Settings** | Hidden | Tab screens; switch via tabs |
+| **Robots, Store, Settings** | Hidden | Tab screens; switch via tabs |
+| **Wallet, Scripts** | Hidden | Reached from Home cards; use Back Button or tap Home |
 | **User Profile** | Hidden | In-app back link to Settings |
 | **Control Panel** | Visible | Back to Robots or Mall Guide (previous screen) |
 | **Store item detail** | In-app | Modal overlay on Store screen; no separate route; close via in-app button |
@@ -132,13 +139,16 @@ Control Panel is reached by selecting a robot from the Robots screen or from Mal
 
 ```mermaid
 flowchart LR
-    subgraph Main [Main Screens]
+    subgraph Main [Main Screens - Tab Bar]
         Dashboard
         Robots
         Store
+        Settings
+    end
+
+    subgraph HomeOnly [Reached from Home Cards]
         Wallet
         Scripts
-        Settings
     end
     subgraph Detail [Detail]
         Control
@@ -152,9 +162,9 @@ flowchart LR
     end
     Dashboard --> Robots
     Dashboard --> Store
+    Dashboard --> Settings
     Dashboard --> Wallet
     Dashboard --> Scripts
-    Dashboard --> Settings
     Dashboard --> Demo
     Robots --> Control
     Robots --> Scripts
