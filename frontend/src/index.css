@@ -140,6 +140,35 @@
     animation: shimmer 1.5s ease-in-out infinite;
   }
 
+  @keyframes shimmer-sweep {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  .shimmer-button {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .shimmer-button::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.2) 50%,
+      transparent 100%
+    );
+    animation: shimmer-sweep 2.5s ease-in-out infinite;
+    pointer-events: none;
+  }
+
   .touch-target {
     min-height: 44px;
     min-width: 44px;

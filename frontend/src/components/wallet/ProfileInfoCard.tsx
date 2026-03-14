@@ -94,11 +94,13 @@ export function ProfileInfoCard() {
         {!isConnected ? (
           <motion.button
             onClick={() => open()}
-            className="w-fit min-h-[44px] px-5 py-3 bg-primary text-primary-foreground font-medium text-sm rounded-2xl hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
+            className="shimmer-button w-fit min-h-[44px] px-5 py-3 bg-muted text-foreground font-medium text-sm rounded-2xl hover:bg-muted/80 transition-colors flex items-center justify-center gap-2"
             whileTap={{ scale: 0.98 }}
           >
-            <Wallet className="w-4 h-4" />
-            Connect TON wallet
+            <span className="relative z-[1] flex items-center justify-center gap-2">
+              <Wallet className="w-4 h-4" />
+              Connect TON wallet
+            </span>
           </motion.button>
         ) : (
           <div className="space-y-3">
