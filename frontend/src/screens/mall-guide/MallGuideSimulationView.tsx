@@ -107,9 +107,14 @@ export function MallGuideSimulationView({ onBack }: MallGuideSimulationViewProps
                   type="text"
                   value={storeInput}
                   onChange={(e) => setStoreInput(e.target.value)}
-                  onKeyDown={(e) => e.key === "Enter" && handleSubmitStore()}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      handleSubmitStore();
+                    }
+                  }}
                   placeholder="For example: Zara, Mango..."
-                  className="flex-1 px-3 py-2 sm:px-4 sm:py-3 rounded-xl bg-white/10 border border-white/20 text-white text-sm placeholder:text-white/40 focus:outline-none focus:border-primary/50"
+                  className="flex-1 px-3 py-2 sm:px-4 sm:py-3 rounded-xl bg-white/10 border border-white/20 text-white text-[16px] placeholder:text-white/40 focus:outline-none focus:border-primary/50"
                 />
                 <button
                   onClick={handleSubmitStore}
