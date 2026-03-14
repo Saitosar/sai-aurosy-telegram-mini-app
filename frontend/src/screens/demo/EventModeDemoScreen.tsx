@@ -37,10 +37,10 @@ export function EventModeDemoScreen() {
         <div className="flex items-center justify-between px-6 py-4">
           <Link
             to="/"
-            className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+            className="flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors min-h-[44px] min-w-[44px] touch-target"
+            aria-label="Back"
           >
             <ArrowLeft className="w-5 h-5" />
-            <span className="font-medium text-[15px]">Back</span>
           </Link>
           <span className="text-sm font-medium text-primary">Event Mode Demo</span>
         </div>
@@ -101,7 +101,7 @@ export function EventModeDemoScreen() {
               ref={finalMessageRef}
             >
               <div className="max-w-2xl mx-auto text-center space-y-8">
-                <div className="p-8 rounded-2xl glass-card">
+                <div className="p-8 rounded-3xl glass-card">
                   <h2 className="text-2xl md:text-3xl font-semibold text-foreground mb-4">
                     Imagine this experience in your mall.
                   </h2>
@@ -114,13 +114,13 @@ export function EventModeDemoScreen() {
                       href="https://t.me/Arif_Mammadov1"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="px-8 py-4 bg-primary text-primary-foreground font-medium text-lg rounded-xl hover:opacity-90 transition-opacity"
+                      className="px-8 py-4 bg-primary text-primary-foreground font-medium text-lg rounded-2xl hover:opacity-90 transition-opacity"
                     >
                       Deploy Robot in My Mall
                     </a>
                     <button
                       onClick={restart}
-                      className="px-8 py-4 glass-button-secondary text-foreground font-medium text-lg rounded-xl hover:bg-muted/50 transition-colors"
+                      className="px-8 py-4 glass-button-secondary text-foreground font-medium text-lg rounded-2xl hover:bg-muted/50 transition-colors"
                     >
                       Replay Demo
                     </button>

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { motion } from "framer-motion";
 import { MapPin, Mic, Layers, Plus } from "lucide-react";
 import type { Scenario } from "shared";
 import { getScenarios } from "../../api/scenarios";
@@ -51,15 +52,15 @@ export function ScriptsScreen() {
   if (loading) {
     return (
       <div className="min-h-full pb-20">
-        <div className="px-6 py-8">
+        <div className="px-4 sm:px-6 py-8">
           <Skeleton className="h-8 w-32 mb-2" />
           <Skeleton className="h-4 w-64 mb-8" />
           <div className="space-y-6">
             {[1, 2, 3].map((i) => (
               <div key={i} className="space-y-3">
                 <Skeleton className="h-4 w-24" />
-                <div className="glass-card rounded-2xl p-6">
-                  <Skeleton className="h-12 w-12 rounded-xl mb-4" />
+                <div className="glass-card rounded-3xl p-6">
+                  <Skeleton className="h-12 w-12 rounded-2xl mb-4" />
                   <Skeleton className="h-5 w-3/4 mb-2" />
                   <Skeleton className="h-4 w-full" />
                 </div>
@@ -72,8 +73,9 @@ export function ScriptsScreen() {
   }
 
   return (
-    <div className="min-h-full pb-20">
-      <div className="px-6 py-8">
+    <div className="min-h-full pb-20 relative">
+      <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent pointer-events-none" />
+      <div className="relative z-10 px-4 sm:px-6 py-8">
         <div className="mb-8">
           <h1 className="text-2xl font-semibold tracking-tight text-foreground mb-1">Scripts</h1>
           <p className="text-muted-foreground text-sm">
@@ -90,43 +92,48 @@ export function ScriptsScreen() {
               <section key={type}>
                 <h2 className="text-[13px] font-semibold text-foreground mb-4"> {label}</h2>
                 {items.length === 0 ? (
-                  <div className="glass-card rounded-2xl p-6 text-center">
+                  <div className="glass-card rounded-3xl p-6 text-center">
                     <p className="text-muted-foreground text-sm">No scripts yet</p>
                   </div>
                 ) : (
                   <div className="space-y-4">
-                    {items.map((script) => {
+                    {items.map((script, idx) => {
                       const IconComponent = TYPE_ICONS[getGroupForType(script.type)] ?? MapPin;
                       const hasDetailScreen = script.id === "mall-guide";
 
                       return (
-                        <div
+                        <motion.div
                           key={script.id}
-                          className="glass-card rounded-2xl p-6 hover:bg-muted/30 transition-colors"
+                          initial={{ opacity: 0, y: 8 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: idx * 0.08, duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
+                          className={`rounded-3xl p-6 hover:bg-muted/30 transition-colors ${hasDetailScreen ? "glass-card-elevated" : "glass-card"}`}
                         >
                           <div className="flex items-start gap-4">
-                            <div className="glass-icon-container p-3 rounded-xl shrink-0">
+                            <div className="glass-icon-container p-3 rounded-2xl shrink-0">
                               <IconComponent className="w-6 h-6 text-primary" />
                             </div>
                             <div className="flex-1 min-w-0">
                               <h3 className="font-semibold text-foreground text-[17px] mb-1">{script.name}</h3>
                               <p className="text-muted-foreground text-sm leading-relaxed">{script.description}</p>
                               {hasDetailScreen ? (
-                                <Link
-                                  to={getScriptDetailPath(script.id)}
-                                  state={preselectedRobot ? { selectedRobot: preselectedRobot } : undefined}
-                                  className="mt-4 inline-block px-4 py-2.5 bg-primary text-primary-foreground font-medium text-sm rounded-xl hover:opacity-90 transition-opacity"
-                                >
-                                  Open
-                                </Link>
+                                <motion.div whileTap={{ scale: 0.98 }} className="mt-4">
+                                  <Link
+                                    to={getScriptDetailPath(script.id)}
+                                    state={preselectedRobot ? { selectedRobot: preselectedRobot } : undefined}
+                                    className="inline-block px-4 py-2.5 bg-primary text-primary-foreground font-medium text-sm rounded-2xl hover:opacity-90 transition-opacity"
+                                  >
+                                    Open
+                                  </Link>
+                                </motion.div>
                               ) : (
-                                <span className="mt-4 inline-block px-4 py-2.5 glass-button-secondary text-muted-foreground rounded-xl text-sm font-medium cursor-not-allowed">
+                                <span className="mt-4 inline-block px-4 py-2.5 glass-button-secondary text-muted-foreground rounded-2xl text-sm font-medium cursor-not-allowed">
                                   Coming soon
                                 </span>
                               )}
                             </div>
                           </div>
-                        </div>
+                        </motion.div>
                       );
                     })}
                   </div>
@@ -137,11 +144,11 @@ export function ScriptsScreen() {
 
           <section>
             <div
-              className="glass-card rounded-2xl p-6 border-dashed opacity-60 cursor-not-allowed"
+              className="glass-card rounded-3xl p-6 border-dashed opacity-60 cursor-not-allowed"
               title="В разработке"
             >
               <div className="flex items-center gap-4">
-                <div className="glass-icon-container p-3 rounded-xl shrink-0">
+                <div className="glass-icon-container p-3 rounded-2xl shrink-0">
                   <Plus className="w-6 h-6 text-muted-foreground" />
                 </div>
                 <div>

@@ -1,4 +1,6 @@
 import { useMemo, useState } from "react";
+import { motion } from "framer-motion";
+import { Square } from "lucide-react";
 import { useMallGuideSimulation } from "./useMallGuideSimulation";
 import { MallGuideRobotStage } from "./MallGuideRobotStage";
 import { PathOverlay } from "./PathOverlay";
@@ -74,33 +76,35 @@ export function MallGuideSimulationView({ onBack }: MallGuideSimulationViewProps
           />
         </div>
 
-        <button
+        <motion.button
           onClick={handleBack}
-          className="absolute top-4 left-4 z-50 px-4 py-2 rounded-lg bg-black/70 backdrop-blur-sm border border-white/10 text-white font-medium text-sm hover:bg-black/80 transition-colors flex items-center gap-2"
+          className="absolute top-4 left-4 z-50 p-2.5 min-h-[44px] min-w-[44px] rounded-lg bg-black/70 backdrop-blur-sm border border-white/10 text-white hover:bg-black/80 transition-colors flex items-center justify-center touch-target"
+          whileTap={{ scale: 0.98 }}
+          aria-label="Stop"
         >
-          <span>←</span>
-          <span>Stop</span>
-        </button>
+          <Square className="w-5 h-5" />
+        </motion.button>
 
         <div className="absolute top-16 left-4 px-4 py-2 rounded-lg bg-black/70 backdrop-blur-sm border border-white/10 z-10">
           <p className="text-white font-bold text-lg tracking-wide">City Mall</p>
           <p className="text-primary text-xs font-medium">Mall Guide</p>
         </div>
 
-        <div className="absolute bottom-0 left-0 right-0 z-30 p-3 sm:p-4 bg-black/70 backdrop-blur-sm border-t border-white/10 pointer-events-auto">
+        <div className="absolute bottom-0 left-0 right-0 z-30 p-4 sm:p-6 bg-black/70 backdrop-blur-sm border-t border-white/10 pointer-events-auto">
           {phase === "asking" && (
             <div className="space-y-2 sm:space-y-3">
               <div className="flex items-center justify-between gap-2">
                 <p className="text-white font-medium text-xs sm:text-sm">
                   Which store are you looking for?
                 </p>
-                <button
+                <motion.button
                   type="button"
                   onClick={() => setShowAllStores((s) => !s)}
                   className="text-xs text-primary/80 hover:text-primary font-medium"
+                  whileTap={{ scale: 0.98 }}
                 >
                   {showAllStores ? "Hide markers" : "Show all stores"}
-                </button>
+                </motion.button>
               </div>
               <div className="flex gap-2">
                 <input
@@ -114,14 +118,15 @@ export function MallGuideSimulationView({ onBack }: MallGuideSimulationViewProps
                     }
                   }}
                   placeholder="For example: Zara, Mango..."
-                  className="flex-1 px-3 py-2 sm:px-4 sm:py-3 rounded-xl bg-white/10 border border-white/20 text-white text-[16px] placeholder:text-white/40 focus:outline-none focus:border-primary/50"
+                  className="flex-1 px-3 py-2 sm:px-4 sm:py-3 rounded-2xl bg-white/10 border border-white/20 text-white text-[16px] placeholder:text-white/40 focus:outline-none focus:border-primary/50"
                 />
-                <button
+                <motion.button
                   onClick={handleSubmitStore}
-                  className="px-4 py-2 sm:px-6 sm:py-3 bg-primary text-black font-bold rounded-xl hover:bg-[#33e8ff] transition-colors text-sm sm:text-base"
+                  className="px-4 py-2 sm:px-6 sm:py-3 bg-primary text-black font-bold rounded-2xl hover:bg-[#33e8ff] transition-colors text-sm sm:text-base"
+                  whileTap={{ scale: 0.98 }}
                 >
                   Search
-                </button>
+                </motion.button>
               </div>
               {storeNotFound && (
                 <p className="text-red-400 text-sm">Store not found</p>
@@ -140,12 +145,13 @@ export function MallGuideSimulationView({ onBack }: MallGuideSimulationViewProps
               <p className="text-white font-medium text-center text-sm sm:text-base">
                 You have arrived at {targetStore}
               </p>
-              <button
+              <motion.button
                 onClick={submitThanks}
-                className="w-full py-2 sm:py-3 bg-primary text-black font-bold rounded-xl hover:bg-[#33e8ff] transition-colors text-sm sm:text-base"
+                className="w-full py-2 sm:py-3 bg-primary text-black font-bold rounded-2xl hover:bg-[#33e8ff] transition-colors text-sm sm:text-base"
+                whileTap={{ scale: 0.98 }}
               >
                 Thank you!
-              </button>
+              </motion.button>
             </div>
           )}
 

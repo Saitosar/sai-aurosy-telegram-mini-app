@@ -29,20 +29,20 @@ export function BusinessMetrics({
         Business Value
       </h2>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6 mb-8">
         {METRIC_CONFIG.map(({ key, label, suffix }, index) => (
           <motion.div
             key={key}
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.05, duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
-            className={`p-4 rounded-xl border ${
+            className={`p-4 rounded-2xl border ${
               showMetrics
                 ? "glass-card"
                 : "glass-card"
             }`}
           >
-            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-1">
+            <p className="text-xs font-medium text-muted-foreground mb-1">
               {label}
             </p>
             <p className="text-2xl font-semibold text-foreground">
@@ -57,7 +57,7 @@ export function BusinessMetrics({
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="p-6 rounded-xl glass-card"
+          className="p-6 rounded-2xl glass-card"
         >
           <p className="text-center font-semibold text-primary text-lg">
             This robot event increased visitor engagement in the mall.

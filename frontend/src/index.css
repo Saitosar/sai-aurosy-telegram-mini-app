@@ -4,7 +4,7 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border;
   }
 
   body {
@@ -15,6 +15,17 @@
 
   html {
     font-size: var(--font-size);
+  }
+
+  /* Focus-visible for keyboard navigation */
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible,
+  [tabindex]:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
   }
 
   h1,
@@ -28,45 +39,45 @@
   }
 
   h1 {
-    font-size: 1.5rem;
+    font-size: clamp(1.3125rem, 5vw, 1.5625rem);
     font-weight: 600;
     line-height: 1.4;
     letter-spacing: -0.02em;
   }
 
   h2 {
-    font-size: 1.25rem;
+    font-size: clamp(1.1875rem, 4vw, 1.3125rem);
     font-weight: 600;
     line-height: 1.4;
     letter-spacing: -0.01em;
   }
 
   h3 {
-    font-size: 1.125rem;
+    font-size: clamp(1.0625rem, 3.5vw, 1.1875rem);
     font-weight: 500;
     line-height: 1.4;
   }
 
   h4 {
-    font-size: 1rem;
+    font-size: clamp(1rem, 3vw, 1.0625rem);
     font-weight: 500;
     line-height: 1.4;
   }
 
   label {
-    font-size: 1rem;
+    font-size: 1.0625rem;
     font-weight: var(--font-weight-medium);
     line-height: 1.5;
   }
 
   button {
-    font-size: 1rem;
+    font-size: 1.0625rem;
     font-weight: var(--font-weight-medium);
     line-height: 1.5;
   }
 
   input {
-    font-size: 1rem;
+    font-size: 1.0625rem;
     font-weight: var(--font-weight-normal);
     line-height: 1.5;
   }
@@ -74,24 +85,29 @@
 
 @layer components {
   .glass-card {
-    background: var(--tg-theme-secondary-bg-color, var(--glass-bg));
+    background: var(--tg-theme-secondary-bg-color, var(--glass-bg-gradient));
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    border: 1px solid var(--glass-border-subtle);
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--glass-border-liquid);
+    box-shadow: var(--glass-shadow-outer), var(--glass-shadow-inner);
+  }
+
+  .gradient-accent {
+    background: linear-gradient(135deg, var(--primary) 0%, #5856D6 100%);
   }
 
   .glass-card-elevated {
-    background: var(--glass-bg-elevated);
+    background: var(--glass-bg-elevated-gradient);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    border: 1px solid var(--glass-border);
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--glass-border-liquid);
+    box-shadow: var(--glass-shadow-outer), var(--glass-shadow-inner);
   }
 
   .glass-button-secondary {
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid var(--glass-border-subtle);
+    background: var(--glass-bg-gradient);
+    border: 1px solid var(--glass-border-liquid);
+    box-shadow: var(--glass-shadow-inner);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
   }
@@ -101,5 +117,31 @@
     border: 1px solid var(--glass-border-subtle);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+
+  .shimmer-loading {
+    background: linear-gradient(
+      90deg,
+      var(--muted) 0%,
+      var(--muted-foreground) 20%,
+      var(--muted) 40%,
+      var(--muted) 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s ease-in-out infinite;
+  }
+
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
   }
 }

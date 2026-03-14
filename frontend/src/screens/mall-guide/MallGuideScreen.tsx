@@ -189,30 +189,31 @@ export function MallGuideScreen() {
   if (loading) {
     return (
       <div className="min-h-full pb-20">
-        <div className="px-6 py-8">
-          <button
+        <div className="px-4 sm:px-6 py-8">
+          <motion.button
             onClick={handleBack}
-            className="flex items-center gap-2 text-muted-foreground mb-8 hover:text-foreground transition-colors"
+            className="flex items-center justify-center text-muted-foreground mb-8 hover:text-foreground transition-colors min-h-[44px] min-w-[44px] touch-target"
+            whileTap={{ scale: 0.98 }}
+            aria-label="Back"
           >
             <ArrowLeft className="w-5 h-5" />
-            <span className="font-medium text-[15px]">Back</span>
-          </button>
+          </motion.button>
           <div className="flex items-center gap-4 mb-8">
-            <Skeleton className="h-14 w-14 rounded-xl" />
+            <Skeleton className="h-14 w-14 rounded-2xl" />
             <div className="flex-1">
               <Skeleton className="h-8 w-32 mb-2" />
               <Skeleton className="h-4 w-48" />
             </div>
           </div>
-          <div className="glass-card rounded-2xl p-6 mb-6">
+          <div className="glass-card rounded-3xl p-6 mb-6">
             <Skeleton className="h-4 w-16 mb-3" />
             <Skeleton className="h-4 w-full mb-2" />
             <Skeleton className="h-4 w-full mb-2" />
             <Skeleton className="h-4 w-3/4" />
           </div>
-          <div className="glass-card rounded-2xl p-6">
+          <div className="glass-card rounded-3xl p-6">
             <Skeleton className="h-4 w-24 mb-4" />
-            <Skeleton className="h-12 w-full rounded-xl" />
+            <Skeleton className="h-12 w-full rounded-2xl" />
           </div>
         </div>
       </div>
@@ -221,6 +222,7 @@ export function MallGuideScreen() {
 
   return (
     <div className="min-h-full pb-20 relative">
+      <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent pointer-events-none" />
       <AnimatePresence>
         {isSimulationActive && (
           <motion.div
@@ -236,16 +238,17 @@ export function MallGuideScreen() {
       </AnimatePresence>
 
       {!isSimulationActive && (
-      <div className="px-6 py-8">
-        <button
+      <div className="relative z-10 px-4 sm:px-6 py-8">
+        <motion.button
           onClick={handleBack}
-          className="flex items-center gap-2 text-muted-foreground mb-8 hover:text-foreground transition-colors"
+          className="flex items-center justify-center text-muted-foreground mb-8 hover:text-foreground transition-colors min-h-[44px] min-w-[44px] touch-target"
+          whileTap={{ scale: 0.98 }}
+          aria-label="Back"
         >
           <ArrowLeft className="w-5 h-5" />
-          <span className="font-medium text-[15px]">Back</span>
-        </button>
+        </motion.button>
         <div className="flex items-center gap-4 mb-8">
-          <div className="glass-icon-container p-3.5 rounded-xl">
+          <div className="glass-icon-container p-3.5 rounded-2xl">
             <MapPin className="w-7 h-7 text-primary" />
           </div>
           <div>
@@ -254,7 +257,7 @@ export function MallGuideScreen() {
           </div>
         </div>
 
-        <div className="glass-card rounded-2xl p-6 mb-6">
+        <div className="glass-card rounded-3xl p-6 mb-6">
           <h3 className="text-[13px] font-semibold text-foreground mb-3">About</h3>
           <p className="text-muted-foreground leading-relaxed text-[14px]">
             Guide customers through the mall with predefined waypoints. The robot will navigate between key locations
@@ -262,16 +265,17 @@ export function MallGuideScreen() {
           </p>
         </div>
 
-        <div className={`glass-card rounded-2xl p-6 mb-6 ${showDropdown ? "relative z-10" : ""}`}>
+        <div className={`glass-card-elevated rounded-3xl p-6 mb-6 ${showDropdown ? "relative z-10" : ""}`}>
           <h3 className="text-[13px] font-semibold text-foreground mb-4">Select Robot</h3>
           <div className="relative">
-            <button
+            <motion.button
               onClick={() => setShowDropdown(!showDropdown)}
               disabled={loading}
-              className="glass-icon-container w-full px-4 py-3.5 rounded-xl flex items-center justify-between text-foreground hover:bg-muted/30 transition-colors disabled:opacity-50"
+              className="glass-icon-container w-full min-h-[44px] px-4 py-3.5 rounded-2xl flex items-center justify-between text-foreground hover:bg-muted/30 transition-colors disabled:opacity-50"
+              whileTap={loading ? undefined : { scale: 0.98 }}
             >
               {selectedRobotData ? (
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-4">
                   <Bot className="w-5 h-5 text-primary" />
                   <span className="font-medium text-[15px]">
                     {selectedRobotData.name}{" "}
@@ -285,21 +289,22 @@ export function MallGuideScreen() {
                 </span>
               )}
               <ChevronDown className={`w-5 h-5 text-muted-foreground transition-transform ${showDropdown ? "rotate-180" : ""}`} />
-            </button>
+            </motion.button>
 
             {showDropdown && (
-              <div className="absolute top-[calc(100%+8px)] left-0 right-0 glass-card-elevated rounded-xl overflow-hidden z-50 shadow-[0_10px_40px_rgba(0,0,0,0.5)]">
+              <div className="absolute top-[calc(100%+8px)] left-0 right-0 glass-card-elevated rounded-2xl overflow-hidden z-50 shadow-[0_10px_40px_rgba(0,0,0,0.5)]">
                 {robots.map((robot) => (
-                  <button
+                  <motion.button
                     key={robot.id}
                     onClick={() => {
                       haptic.selection();
                       setSelectedRobot(robot.id);
                       setShowDropdown(false);
                     }}
-                    className="w-full px-4 py-3.5 hover:bg-white/5 text-left flex items-center justify-between transition-colors border-b border-white/5 last:border-0"
+                    className="w-full min-h-[44px] px-4 py-3.5 hover:bg-white/5 text-left flex items-center justify-between transition-colors border-b border-white/5 last:border-0"
+                    whileTap={{ scale: 0.98 }}
                   >
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-4">
                       <Bot
                         className={`w-5 h-5 ${robot.status === "online" ? "text-primary" : "text-muted-foreground"}`}
                       />
@@ -311,10 +316,10 @@ export function MallGuideScreen() {
                     </div>
                     <div
                       className={`w-2 h-2 rounded-full ${
-                        robot.status === "online" ? "bg-primary" : "bg-muted"
+                        robot.status === "online" ? "bg-[var(--status-online)]" : "bg-[var(--status-offline)]"
                       }`}
                     />
-                  </button>
+                  </motion.button>
                 ))}
               </div>
             )}
@@ -322,20 +327,20 @@ export function MallGuideScreen() {
         </div>
 
         {startError && (
-          <div className="mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded-xl text-red-400 text-sm">
+          <div className="mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded-2xl text-red-400 text-sm">
             {startError}
           </div>
         )}
 
         {(isRunning || finalStatus) && (
           <div
-            className={`mb-8 rounded-2xl p-6 relative z-0 overflow-hidden ${
+            className={`mb-8 rounded-3xl p-6 relative z-0 overflow-hidden ${
               finalStatus?.status === "error"
-                  ? "bg-red-500/10 border border-red-500/30"
+                  ? "bg-[var(--status-error)]/10 border border-[var(--status-error)]/30"
                   : finalStatus?.status === "stopped"
-                    ? "bg-amber-500/10 border border-amber-500/30"
+                    ? "bg-[var(--status-warning)]/10 border border-[var(--status-warning)]/30"
                     : finalStatus?.status === "completed"
-                      ? "bg-toxic/10 border border-toxic/30"
+                      ? "bg-[var(--status-busy)]/10 border border-[var(--status-busy)]/30"
                       : "glass-card"
             }`}
           >
@@ -349,10 +354,10 @@ export function MallGuideScreen() {
               <span
                 className={`font-bold text-sm tracking-wide ${
                   finalStatus?.status === "error"
-                    ? "text-red-400"
+                    ? "text-[var(--status-error)]"
                     : finalStatus?.status === "completed"
-                      ? "text-toxic"
-                      : "text-primary"
+                      ? "text-[var(--status-busy)]"
+                      : "text-[var(--status-online)]"
                 }`}
               >
                 Waypoint {currentWaypoint}/{totalWaypoints}
@@ -362,16 +367,16 @@ export function MallGuideScreen() {
               <div
                 className={`h-full rounded-full transition-all duration-500 ${
                   finalStatus?.status === "error"
-                    ? "bg-red-500"
+                    ? "bg-[var(--status-error)]"
                     : finalStatus?.status === "completed"
-                      ? "bg-toxic"
-                      : "bg-primary"
+                      ? "bg-[var(--status-busy)]"
+                      : "bg-[var(--status-online)]"
                 }`}
                 style={{ width: `${((currentWaypoint ?? 0) / (totalWaypoints || 1)) * 100}%` }}
               />
             </div>
             {finalStatus?.status === "error" && (
-              <p className="mt-4 text-red-400 text-sm relative z-10">
+              <p className="mt-4 text-[var(--status-error)] text-sm relative z-10">
                 Scenario encountered an error. You can start again.
               </p>
             )}
@@ -379,44 +384,48 @@ export function MallGuideScreen() {
         )}
 
         {!isRunning && !finalStatus && (
-          <div className="mb-8 glass-card rounded-2xl p-4 relative z-0">
+          <div className="mb-8 glass-card rounded-3xl p-4 sm:p-6 relative z-0">
             <p className="text-muted-foreground text-sm font-medium">Ready to start</p>
           </div>
         )}
 
         <div className="space-y-4">
           {!isRunning ? (
-            <button
+            <motion.button
               onClick={handleStart}
               disabled={!selectedRobot || loading}
-              className="w-full py-4 bg-primary text-primary-foreground font-medium text-[16px] rounded-xl flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed hover:opacity-90 transition-opacity"
+              className="w-full min-h-[44px] py-4 bg-primary text-primary-foreground font-medium text-base rounded-2xl flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed hover:opacity-90 transition-opacity"
+              whileTap={!selectedRobot || loading ? undefined : { scale: 0.98 }}
             >
               <Play className="w-5 h-5 fill-black" />
               Start Mall Guide
-            </button>
+            </motion.button>
           ) : (
-            <button
+            <motion.button
               onClick={handleStop}
-              className="w-full py-4 bg-red-500/10 text-red-500 border border-red-500/30 font-medium text-[16px] rounded-xl flex items-center justify-center gap-2 hover:bg-red-500/20 transition-colors"
+              className="w-full min-h-[44px] py-4 bg-red-500/10 text-red-500 border border-red-500/30 font-medium text-base rounded-2xl flex items-center justify-center gap-2 hover:bg-red-500/20 transition-colors"
+              whileTap={{ scale: 0.98 }}
             >
               <Square className="w-5 h-5 fill-red-500" />
               Stop Mall Guide
-            </button>
+            </motion.button>
           )}
 
           {selectedRobot && (
-            <Link
-              to={`/control/${selectedRobot}`}
-              state={
-                executionId
-                  ? { executionId, scenarioId: SCENARIO_ID }
-                  : { selectedRobot }
-              }
-              onClick={() => haptic.impact("light")}
-              className="glass-button-secondary block w-full py-4 hover:bg-muted/50 text-foreground font-medium text-[16px] rounded-xl text-center transition-colors"
-            >
-              Open Control Panel
-            </Link>
+            <motion.div whileTap={{ scale: 0.98 }}>
+              <Link
+                to={`/control/${selectedRobot}`}
+                state={
+                  executionId
+                    ? { executionId, scenarioId: SCENARIO_ID }
+                    : { selectedRobot }
+                }
+                onClick={() => haptic.impact("light")}
+                className="glass-button-secondary block w-full min-h-[44px] py-4 hover:bg-muted/50 text-foreground font-medium text-base rounded-2xl text-center transition-colors"
+              >
+                Open Control Panel
+              </Link>
+            </motion.div>
           )}
         </div>
       </div>

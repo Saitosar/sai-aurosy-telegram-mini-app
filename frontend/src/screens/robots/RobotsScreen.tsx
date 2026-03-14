@@ -1,15 +1,19 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Bot, Plus, Power, Play } from "lucide-react";
+import { motion } from "framer-motion";
+import { Bot, Plus, Power, Play, Store, MessageCircle } from "lucide-react";
 import type { Robot } from "shared";
 import { getRobots } from "../../api/robots";
 import { haptic } from "../../utils/haptic";
 import { Skeleton } from "../../components/ui/Skeleton";
+import { EmptyState } from "../../components/ui/EmptyState";
+import { useOnboardingProgress } from "../../hooks/useOnboardingProgress";
 
 export function RobotsScreen() {
   const [robots, setRobots] = useState<Robot[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { step, isCompleted, markCompleted } = useOnboardingProgress();
 
   useEffect(() => {
     getRobots()
@@ -18,16 +22,22 @@ export function RobotsScreen() {
       .finally(() => setLoading(false));
   }, []);
 
+  useEffect(() => {
+    if (robots.length > 0) markCompleted();
+  }, [robots.length, markCompleted]);
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case "online":
-        return "bg-primary";
+        return "bg-[var(--status-online)]";
       case "offline":
-        return "bg-muted";
+        return "bg-[var(--status-offline)]";
       case "busy":
-        return "bg-toxic";
+        return "bg-[var(--status-busy)]";
+      case "error":
+        return "bg-[var(--status-error)]";
       default:
-        return "bg-gray-400";
+        return "bg-[var(--status-warning)]";
     }
   };
 
@@ -36,20 +46,20 @@ export function RobotsScreen() {
   if (loading) {
     return (
       <div className="min-h-full">
-        <div className="px-6 py-8">
+        <div className="px-4 sm:px-6 py-8">
           <div className="mb-8 flex items-center justify-between">
             <Skeleton className="h-8 w-36" />
-            <Skeleton className="h-10 w-10 rounded-xl" />
+            <Skeleton className="h-10 w-10 rounded-2xl" />
           </div>
           <div className="space-y-4">
             {[1, 2, 3].map((i) => (
               <div
                 key={i}
-                className="glass-card rounded-2xl p-5"
+                className="glass-card rounded-3xl p-5"
               >
                 <div className="flex items-start justify-between mb-5">
                   <div className="flex items-start gap-4">
-                    <Skeleton className="h-12 w-12 rounded-xl" />
+                    <Skeleton className="h-12 w-12 rounded-2xl" />
                     <div>
                       <Skeleton className="h-5 w-24 mb-2" />
                       <Skeleton className="h-4 w-16" />
@@ -57,9 +67,9 @@ export function RobotsScreen() {
                   </div>
                   <Skeleton className="h-6 w-16 rounded-full" />
                 </div>
-                <div className="flex gap-3">
-                  <Skeleton className="h-10 flex-1 rounded-xl" />
-                  <Skeleton className="h-10 flex-1 rounded-xl" />
+                <div className="flex gap-4">
+                  <Skeleton className="h-10 flex-1 rounded-2xl" />
+                  <Skeleton className="h-10 flex-1 rounded-2xl" />
                 </div>
               </div>
             ))}
@@ -71,9 +81,9 @@ export function RobotsScreen() {
 
   if (error) {
     return (
-      <div className="min-h-full flex flex-col items-center justify-center px-6">
+      <div className="min-h-full flex flex-col items-center justify-center px-4 sm:px-6">
         <p className="text-red-400 text-sm mb-4">{error}</p>
-          <button
+          <motion.button
             onClick={() => {
               haptic.impact("light");
               setError(null);
@@ -84,53 +94,82 @@ export function RobotsScreen() {
                 .finally(() => setLoading(false));
             }}
             className="px-4 py-2 bg-primary/20 text-primary rounded-lg text-sm font-medium"
+            whileTap={{ scale: 0.98 }}
           >
             Retry
-          </button>
+          </motion.button>
       </div>
     );
   }
 
   return (
-    <div className="min-h-full">
-      <div className="px-6 py-8">
+    <div className="min-h-full relative">
+      <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent pointer-events-none" />
+      <div className="relative z-10 px-4 sm:px-6 py-8">
         <div className="mb-8 flex items-center justify-between">
           <h1 className="text-2xl font-semibold tracking-tight text-foreground">My Robots</h1>
-          <button
+          <motion.button
             onClick={() => haptic.impact("light")}
-            className="p-2.5 glass-button-secondary text-primary rounded-xl hover:bg-muted/50 transition-colors"
+            className="p-2.5 min-h-[44px] min-w-[44px] flex items-center justify-center glass-button-secondary text-primary rounded-2xl hover:bg-muted/50 transition-colors touch-target"
+            whileTap={{ scale: 0.98 }}
           >
             <Plus className="w-5 h-5" />
-          </button>
+          </motion.button>
         </div>
 
         {robots.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-20 text-center glass-card rounded-3xl">
-            <div className="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 bg-primary/10 border border-primary/20">
-              <Bot className="w-8 h-8 text-primary" />
-            </div>
-            <h3 className="mb-2 font-semibold text-foreground">No robots deployed</h3>
-            <p className="text-muted-foreground mb-8 max-w-[200px] text-sm">
-              Connect your first unit or browse models in the Store.
-            </p>
-            <Link
-              to="/store"
-              onClick={() => haptic.impact("light")}
-              className="px-6 py-3 bg-primary text-primary-foreground font-medium rounded-xl hover:opacity-90 transition-opacity"
-            >
-              Browse Store
-            </Link>
-          </div>
+          <EmptyState
+            title="No robots deployed"
+            description={
+              isCompleted
+                ? "Connect your first unit or browse models in the Store."
+                : "Подключите первого робота за 3 шага"
+            }
+            action={{
+              label: "Browse Store",
+              href: "/store",
+              onClick: () => haptic.impact("light"),
+            }}
+            steps={
+              isCompleted
+                ? undefined
+                : [
+                    {
+                      label: "Browse Store",
+                      href: "/store",
+                      completed: step >= 2,
+                      icon: Store,
+                    },
+                    {
+                      label: "Order robot",
+                      href: "/store",
+                      completed: step >= 3,
+                      icon: MessageCircle,
+                    },
+                    {
+                      label: "Start control",
+                      completed: false,
+                      icon: Power,
+                    },
+                  ]
+            }
+            progress={
+              isCompleted ? undefined : (step >= 2 ? 1 : 0) + (step >= 3 ? 1 : 0)
+            }
+          />
         ) : (
           <div className="space-y-4">
-            {robots.map((robot) => (
-              <div
+            {robots.map((robot, i) => (
+              <motion.div
                 key={robot.id}
-                className="glass-card rounded-2xl p-5 hover:bg-muted/30 transition-all group"
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.08, duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
+                className={`rounded-3xl p-4 sm:p-6 hover:bg-muted/30 transition-all group ${robot.status === "online" ? "glass-card-elevated" : "glass-card"}`}
               >
                 <div className="flex items-start justify-between mb-5">
                   <div className="flex items-start gap-4">
-                    <div className="p-3 rounded-xl glass-icon-container">
+                    <div className="p-3 rounded-2xl glass-icon-container">
                       <Bot
                         className={`w-6 h-6 ${robot.status === "online" ? "text-primary" : "text-muted-foreground"}`}
                       />
@@ -156,30 +195,34 @@ export function RobotsScreen() {
                     </span>
                   </div>
                 </div>
-                <div className="flex gap-3">
-                  <Link
-                    to={`/control/${robot.id}`}
-                    onClick={() => haptic.impact("light")}
-                    className="flex-1 py-2.5 rounded-xl text-center transition-colors font-medium text-sm glass-button-secondary text-primary hover:bg-muted/50"
-                  >
-                    <div className="flex items-center justify-center gap-2">
-                      <Power className="w-4 h-4" />
-                      Control
-                    </div>
-                  </Link>
-                  <Link
-                    to="/scripts"
-                    state={{ selectedRobot: robot.id }}
-                    onClick={() => haptic.impact("light")}
-                    className="flex-1 py-2.5 rounded-xl text-center transition-colors font-medium text-sm glass-button-secondary text-primary hover:bg-muted/50"
-                  >
-                    <div className="flex items-center justify-center gap-2">
-                      <Play className="w-4 h-4" />
-                      Scripts
-                    </div>
-                  </Link>
+                <div className="flex gap-4">
+                  <motion.div whileTap={{ scale: 0.98 }} className="flex-1">
+                    <Link
+                      to={`/control/${robot.id}`}
+                      onClick={() => haptic.impact("light")}
+                      className="block min-h-[44px] py-3 rounded-2xl text-center transition-colors font-medium text-sm bg-primary text-primary-foreground hover:opacity-90"
+                    >
+                      <div className="flex items-center justify-center gap-2">
+                        <Power className="w-4 h-4" />
+                        Control
+                      </div>
+                    </Link>
+                  </motion.div>
+                  <motion.div whileTap={{ scale: 0.98 }} className="flex-1">
+                    <Link
+                      to="/scripts"
+                      state={{ selectedRobot: robot.id }}
+                      onClick={() => haptic.impact("light")}
+                      className="block min-h-[44px] py-3 rounded-2xl text-center transition-colors font-medium text-sm glass-button-secondary text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                    >
+                      <div className="flex items-center justify-center gap-2">
+                        <Play className="w-4 h-4" />
+                        Scripts
+                      </div>
+                    </Link>
+                  </motion.div>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         )}
