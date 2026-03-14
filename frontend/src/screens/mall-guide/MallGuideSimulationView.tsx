@@ -51,16 +51,31 @@ export function MallGuideSimulationView({ onBack }: MallGuideSimulationViewProps
 
   return (
     <div className="fixed inset-0 z-40 flex flex-col bg-background">
-      <div className="relative flex-1 min-h-0">
+      <div className="relative flex-1 min-h-0 flex items-center justify-center overflow-hidden">
+        {/* Map: aspect 1024/558, fits viewport — full map visible on mobile (no crop) */}
         <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          className="relative shrink-0 w-full max-h-full landscape:h-full landscape:max-w-full landscape:w-auto bg-cover bg-center bg-no-repeat"
           style={{
             backgroundImage: "url(/city-mall-floorplan.png)",
+            aspectRatio: "1024/558",
             opacity: 0.95,
           }}
-        />
+        >
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_50%,transparent_0%,rgba(0,0,0,0.25)_100%)]" />
 
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_50%_at_50%_50%,transparent_0%,rgba(0,0,0,0.25)_100%)]" />
+            <StoreMarkers targetStore={targetStore} showAllStores={showAllStores} />
+            {pathOverlay && (
+              <PathOverlay path={pathOverlay} className="opacity-60" />
+            )}
+            <MallGuideRobotStage
+              phase={phase}
+              targetStore={targetStore}
+              guidingDurationMs={guidingDurationMs}
+              returningDurationMs={returningDurationMs}
+              onGuidingComplete={onGuidingComplete}
+              onReturningComplete={onReturningComplete}
+            />
+        </div>
 
         <button
           onClick={handleBack}
@@ -75,24 +90,11 @@ export function MallGuideSimulationView({ onBack }: MallGuideSimulationViewProps
           <p className="text-primary text-xs font-medium">Mall Guide</p>
         </div>
 
-        <StoreMarkers targetStore={targetStore} showAllStores={showAllStores} />
-        {pathOverlay && (
-          <PathOverlay path={pathOverlay} className="opacity-60" />
-        )}
-        <MallGuideRobotStage
-          phase={phase}
-          targetStore={targetStore}
-          guidingDurationMs={guidingDurationMs}
-          returningDurationMs={returningDurationMs}
-          onGuidingComplete={onGuidingComplete}
-          onReturningComplete={onReturningComplete}
-        />
-
-        <div className="absolute bottom-0 left-0 right-0 z-30 p-4 bg-black/70 backdrop-blur-sm border-t border-white/10 pointer-events-auto">
+        <div className="absolute bottom-0 left-0 right-0 z-30 p-3 sm:p-4 bg-black/70 backdrop-blur-sm border-t border-white/10 pointer-events-auto">
           {phase === "asking" && (
-            <div className="space-y-3">
+            <div className="space-y-2 sm:space-y-3">
               <div className="flex items-center justify-between gap-2">
-                <p className="text-white font-medium text-sm">
+                <p className="text-white font-medium text-xs sm:text-sm">
                   Which store are you looking for?
                 </p>
                 <button
@@ -110,11 +112,11 @@ export function MallGuideSimulationView({ onBack }: MallGuideSimulationViewProps
                   onChange={(e) => setStoreInput(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && handleSubmitStore()}
                   placeholder="For example: Zara, Mango..."
-                  className="flex-1 px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder:text-white/40 focus:outline-none focus:border-primary/50"
+                  className="flex-1 px-3 py-2 sm:px-4 sm:py-3 rounded-xl bg-white/10 border border-white/20 text-white text-sm placeholder:text-white/40 focus:outline-none focus:border-primary/50"
                 />
                 <button
                   onClick={handleSubmitStore}
-                  className="px-6 py-3 bg-primary text-black font-bold rounded-xl hover:bg-[#33e8ff] transition-colors"
+                  className="px-4 py-2 sm:px-6 sm:py-3 bg-primary text-black font-bold rounded-xl hover:bg-[#33e8ff] transition-colors text-sm sm:text-base"
                 >
                   Search
                 </button>
@@ -132,13 +134,13 @@ export function MallGuideSimulationView({ onBack }: MallGuideSimulationViewProps
           )}
 
           {phase === "arrived" && (
-            <div className="space-y-3">
-              <p className="text-white font-medium text-center">
+            <div className="space-y-2 sm:space-y-3">
+              <p className="text-white font-medium text-center text-sm sm:text-base">
                 You have arrived at {targetStore}
               </p>
               <button
                 onClick={submitThanks}
-                className="w-full py-3 bg-primary text-black font-bold rounded-xl hover:bg-[#33e8ff] transition-colors"
+                className="w-full py-2 sm:py-3 bg-primary text-black font-bold rounded-xl hover:bg-[#33e8ff] transition-colors text-sm sm:text-base"
               >
                 Thank you!
               </button>
