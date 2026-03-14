@@ -1,25 +1,13 @@
+import type { PathMode, PathSegment, StoredCalibration, StorePosition } from "shared";
 import {
   DEFAULT_RECEPTION,
   DEFAULT_STORES,
-  type StorePosition,
 } from "./cityMallStores";
 
 export const STORAGE_KEY = "city-mall-stores";
+export const MIGRATION_FLAG_KEY = "city-mall-migration-done";
 
-export type PathMode = "waypoints" | "wayGraph";
-
-export interface PathSegment {
-  from: StorePosition;
-  to: StorePosition;
-}
-
-export interface StoredCalibration {
-  reception: StorePosition;
-  stores: Record<string, StorePosition>;
-  pathMode?: PathMode;
-  routes?: Record<string, StorePosition[]>;
-  pathSegments?: PathSegment[];
-}
+export type { PathMode, PathSegment, StoredCalibration, StorePosition };
 
 function isValidPosition(p: unknown): p is StorePosition {
   return (

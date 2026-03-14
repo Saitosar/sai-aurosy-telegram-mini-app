@@ -2,16 +2,19 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
   type ReactNode,
 } from "react";
+import { getCalibration, putCalibration } from "../../api/calibration";
 import type { StorePosition } from "./cityMallStores";
 import {
   getDefaultCalibration,
   getEmptyCalibration,
   loadStores,
-  saveStores,
+  MIGRATION_FLAG_KEY,
+  STORAGE_KEY,
   type PathMode,
   type PathSegment,
   type StoredCalibration,
@@ -66,14 +69,44 @@ function findStoreInStores(
 }
 
 export function StorePositionsProvider({ children }: { children: ReactNode }) {
-  const [data, setData] = useState<StoredCalibration>(() => {
-    const loaded = loadStores();
-    return loaded ?? getDefaultCalibration();
-  });
+  const [data, setData] = useState<StoredCalibration>(getDefaultCalibration);
+
+  useEffect(() => {
+    let cancelled = false;
+    getCalibration()
+      .then((res) => {
+        if (cancelled) return;
+        if (!res.persisted) {
+          const local = loadStores();
+          if (local && !localStorage.getItem(MIGRATION_FLAG_KEY)) {
+            putCalibration(local)
+              .then(() => {
+                if (!cancelled) {
+                  localStorage.setItem(MIGRATION_FLAG_KEY, "1");
+                  localStorage.removeItem(STORAGE_KEY);
+                }
+              })
+              .catch(() => {});
+            setData(local);
+            return;
+          }
+        }
+        setData(res.data);
+      })
+      .catch(() => {
+        if (!cancelled) {
+          const local = loadStores();
+          setData(local ?? getDefaultCalibration());
+        }
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const persist = useCallback((next: StoredCalibration) => {
     setData(next);
-    saveStores(next);
+    putCalibration(next).catch(() => {});
   }, []);
 
   const value = useMemo<StorePositionsContextValue>(() => {

@@ -1,5 +1,11 @@
 # Mall Guide — Calibration of Store Coordinates
 
+## Storage
+
+Calibration is **persisted on the backend** (JSON file at `backend/data/city-mall-stores.json`). All users and devices share the same calibration. The frontend fetches from `GET /mall-guide/calibration` and saves via `PUT /mall-guide/calibration`.
+
+**Migration:** On first load, if the backend has no persisted data and the browser has calibration in localStorage, the app automatically migrates it to the backend and clears localStorage.
+
 ## How It Works
 
 The robot navigates using **percent-based coordinates** on the floor plan image:
