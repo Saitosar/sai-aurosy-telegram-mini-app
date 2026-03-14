@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import { ArrowLeft, User, LogIn } from "lucide-react";
 import { login } from "../../api/auth";
 import { setSessionTokens } from "../../auth/session";
@@ -31,44 +32,46 @@ export function UserProfileScreen() {
   };
 
   return (
-    <div className="min-h-full pb-20">
-      <div className="px-6 py-8">
+    <div className="min-h-full pb-20 relative">
+      <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent pointer-events-none" />
+      <div className="relative z-10 px-4 sm:px-6 py-8">
         <Link
           to="/settings"
-          className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground mb-6 transition-colors"
+          className="inline-flex items-center justify-center text-muted-foreground hover:text-foreground mb-6 transition-colors min-h-[44px] min-w-[44px] touch-target"
+          aria-label="Back to Settings"
         >
-          <ArrowLeft className="w-4 h-4" />
-          <span className="text-sm font-medium">Back to Settings</span>
+          <ArrowLeft className="w-5 h-5" />
         </Link>
 
         <h1 className="mb-6 text-2xl font-semibold tracking-tight text-foreground">User Profile</h1>
 
         {!authenticated ? (
-          <div className="glass-card rounded-2xl p-6 relative overflow-hidden">
-            <div className="relative z-10 flex flex-col items-center gap-4 py-8">
+          <div className="glass-card rounded-3xl p-6 relative overflow-hidden">
+            <div className="relative z-10 flex flex-col items-start text-left gap-4 py-8">
               <div className="glass-icon-container w-16 h-16 rounded-2xl flex items-center justify-center">
                 <User className="w-8 h-8 text-primary" />
               </div>
-              <p className="text-muted-foreground text-sm text-center">
+              <p className="text-muted-foreground text-sm">
                 {inTelegram && initData
                   ? "Sign in with your Telegram account to view your profile."
                   : "Open this Mini App from Telegram to sign in and view your profile."}
               </p>
               {inTelegram && initData && (
-                <button
+                <motion.button
                   onClick={handleLogin}
                   disabled={loading}
-                  className="flex items-center gap-2 px-6 py-3 rounded-xl bg-primary text-primary-foreground font-medium hover:opacity-90 disabled:opacity-50 transition-opacity"
+                  className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-primary text-primary-foreground font-medium hover:opacity-90 disabled:opacity-50 transition-opacity"
+                  whileTap={loading ? undefined : { scale: 0.98 }}
                 >
                   <LogIn className="w-4 h-4" />
                   {loading ? "Signing in..." : "Sign in with Telegram"}
-                </button>
+                </motion.button>
               )}
               {error && <p className="text-destructive text-sm">{error}</p>}
             </div>
           </div>
         ) : user ? (
-          <div className="glass-card rounded-2xl p-6 relative overflow-hidden">
+          <div className="glass-card rounded-3xl p-6 relative overflow-hidden">
             <div className="relative z-10 flex flex-col items-center gap-4">
               {user.photo_url ? (
                 <img
@@ -110,12 +113,12 @@ export function UserProfileScreen() {
             </div>
           </div>
         ) : (
-          <div className="glass-card rounded-2xl p-6 relative overflow-hidden">
-            <div className="relative z-10 flex flex-col items-center gap-4 py-8">
+          <div className="glass-card rounded-3xl p-6 relative overflow-hidden">
+            <div className="relative z-10 flex flex-col items-start text-left gap-4 py-8">
               <div className="glass-icon-container w-16 h-16 rounded-2xl flex items-center justify-center">
                 <User className="w-8 h-8 text-primary" />
               </div>
-              <p className="text-muted-foreground text-sm text-center">
+              <p className="text-muted-foreground text-sm">
                 User data is not available. This can happen when the Mini App is opened from a
                 keyboard or inline mode. Try opening from the bot menu.
               </p>

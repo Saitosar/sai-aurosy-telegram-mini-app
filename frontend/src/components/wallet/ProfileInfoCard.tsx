@@ -78,23 +78,23 @@ export function ProfileInfoCard() {
   const isConnected = Boolean(address);
 
   return (
-    <div className="glass-card rounded-2xl p-6 relative overflow-hidden">
+    <div className="glass-card-elevated rounded-3xl p-6 relative overflow-hidden">
       <div className="relative z-10 flex flex-col gap-4">
         <div className="flex items-center gap-2">
-          <div className="glass-icon-container w-10 h-10 rounded-xl flex items-center justify-center">
+          <div className="glass-icon-container w-10 h-10 rounded-2xl flex items-center justify-center">
             <User className="w-5 h-5 text-primary" />
           </div>
           <h3 className="text-foreground font-semibold">Profile info</h3>
         </div>
 
-        <div className="text-[var(--tg-theme-text-color,#fafafa)] font-medium">
+        <div className="text-foreground font-medium">
           {displayName}
         </div>
 
         {!isConnected ? (
           <motion.button
             onClick={() => open()}
-            className="w-fit px-5 py-2.5 bg-primary text-primary-foreground font-medium text-sm rounded-xl hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
+            className="w-fit min-h-[44px] px-5 py-3 bg-primary text-primary-foreground font-medium text-sm rounded-2xl hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
             whileTap={{ scale: 0.98 }}
           >
             <Wallet className="w-4 h-4" />
@@ -107,41 +107,44 @@ export function ProfileInfoCard() {
                 Balance: <span className="text-primary font-medium">{balance}</span>
               </div>
             )}
-            <div className="flex items-center gap-2 p-3 rounded-xl glass-button-secondary">
+            <div className="flex items-center gap-2 p-3 rounded-2xl glass-button-secondary">
               <code className="flex-1 text-sm font-mono text-muted-foreground truncate tabular-nums">
                 {addressVisible ? truncateAddress(address) : maskedAddress()}
               </code>
-              <button
+              <motion.button
                 onClick={() => setAddressVisible(!addressVisible)}
-                className="p-2 rounded-lg hover:bg-muted/50 transition-colors text-muted-foreground hover:text-foreground"
+                className="p-2 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg hover:bg-muted/50 transition-colors text-muted-foreground hover:text-foreground touch-target"
                 title={addressVisible ? "Hide address" : "Show address"}
+                whileTap={{ scale: 0.98 }}
               >
                 {addressVisible ? (
                   <EyeOff className="w-4 h-4" />
                 ) : (
                   <Eye className="w-4 h-4" />
                 )}
-              </button>
+              </motion.button>
               {addressVisible && (
-                <button
+                <motion.button
                   onClick={handleCopy}
-                  className="p-2 rounded-lg hover:bg-muted/50 transition-colors text-muted-foreground hover:text-foreground"
+                  className="p-2 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg hover:bg-muted/50 transition-colors text-muted-foreground hover:text-foreground touch-target"
                   title="Copy address"
+                  whileTap={{ scale: 0.98 }}
                 >
                   <Copy className="w-4 h-4" />
-                </button>
+                </motion.button>
               )}
             </div>
             {copied && (
               <p className="text-xs text-primary font-medium">Copied!</p>
             )}
-            <button
+            <motion.button
               onClick={handleDisconnect}
-              className="w-full py-2.5 glass-button-secondary text-muted-foreground hover:text-foreground text-sm font-medium rounded-xl flex items-center justify-center gap-2 transition-colors"
+              className="w-full min-h-[44px] py-3 glass-button-secondary text-muted-foreground hover:text-foreground text-sm font-medium rounded-2xl flex items-center justify-center gap-2 transition-colors"
+              whileTap={{ scale: 0.98 }}
             >
               <LogOut className="w-4 h-4" />
               Disconnect
-            </button>
+            </motion.button>
           </div>
         )}
       </div>

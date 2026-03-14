@@ -1,6 +1,7 @@
 import { RouterProvider } from "react-router-dom";
 import { TonConnectUIProvider } from "@tonconnect/ui-react";
 import { TelegramProvider } from "./components/layout/TelegramProvider";
+import { LoadingScreen } from "./components/layout/LoadingScreen";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { LocaleProvider } from "./contexts/LocaleContext";
 import { useTelegramAuth } from "./auth/useTelegramAuth";
@@ -13,11 +14,7 @@ function AppContent() {
   const { isReady } = useTelegramAuth();
 
   if (!isReady) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-[#a0a0a0] text-sm">Loading...</div>
-      </div>
-    );
+    return <LoadingScreen />;
   }
 
   return <RouterProvider router={router} />;

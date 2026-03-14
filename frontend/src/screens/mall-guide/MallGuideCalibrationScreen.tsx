@@ -1,5 +1,6 @@
 import { useCallback, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import {
   ArrowLeft,
   Download,
@@ -9,6 +10,7 @@ import {
   Route,
   GitBranch,
   Trash2,
+  Save,
 } from "lucide-react";
 import { useStorePositions } from "./useStorePositions";
 import { haptic } from "../../utils/haptic";
@@ -135,26 +137,29 @@ export function MallGuideCalibrationScreen() {
   const storeList = Object.entries(stores);
 
   return (
-    <div className="min-h-full pb-20">
+    <div className="min-h-full pb-20 relative">
+      <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent pointer-events-none" />
       <header className="sticky top-0 z-50 border-b border-white/5 bg-background/90 backdrop-blur-md">
-        <div className="flex items-center justify-between px-6 py-4">
-          <Link
-            to="/scripts/mall-guide"
-            className="flex items-center gap-2 text-muted-foreground hover:text-white transition-colors"
-          >
-            <ArrowLeft className="w-5 h-5" />
-            <span className="font-medium text-[15px]">Back</span>
-          </Link>
+        <div className="flex items-center justify-between px-4 sm:px-6 py-4">
+          <motion.div whileTap={{ scale: 0.98 }}>
+            <Link
+              to="/scripts/mall-guide"
+              className="flex items-center justify-center text-muted-foreground hover:text-white transition-colors min-h-[44px] min-w-[44px] touch-target"
+              aria-label="Back"
+            >
+              <ArrowLeft className="w-5 h-5" />
+            </Link>
+          </motion.div>
           <h1 className="text-lg font-semibold text-white">Calibration</h1>
           <div className="w-20" />
         </div>
       </header>
 
-      <div className="p-4 space-y-4">
+      <div className="relative z-10 p-4 space-y-4">
         <div className="flex justify-center">
           <div
             ref={mapRef}
-            className="relative inline-block max-w-full max-h-[70vh] cursor-crosshair rounded-xl overflow-hidden touch-none"
+            className="relative inline-block max-w-full max-h-[70vh] cursor-crosshair rounded-2xl overflow-hidden touch-none"
             onClick={handleMapClick}
           >
             <img
@@ -188,8 +193,8 @@ export function MallGuideCalibrationScreen() {
           </div>
         </div>
 
-        <div className="glass-card rounded-2xl p-4 space-y-4">
-          <button
+        <div className="glass-card rounded-3xl p-4 sm:p-6 space-y-4">
+          <motion.button
             type="button"
             onClick={(e) => {
               e.preventDefault();
@@ -202,15 +207,16 @@ export function MallGuideCalibrationScreen() {
               setRouteStore("");
               haptic.success();
             }}
-            className="w-full py-3 rounded-xl bg-red-500/20 text-red-400 hover:bg-red-500/30 border border-red-500/30 font-medium text-sm flex items-center justify-center gap-2 transition-colors"
+            className="w-full py-3 rounded-2xl bg-red-500/20 text-red-400 hover:bg-red-500/30 border border-red-500/30 font-medium text-sm flex items-center justify-center gap-2 transition-colors"
+            whileTap={{ scale: 0.98 }}
           >
             <Trash2 className="w-4 h-4" />
             Сбросить все точки калибровки
-          </button>
+          </motion.button>
           <div className="flex items-center justify-between">
             <span className="text-xs text-white/60">Режим пути в симуляции:</span>
             <div className="flex gap-1">
-              <button
+              <motion.button
                 type="button"
                 onClick={() => setPathMode("waypoints")}
                 className={`px-3 py-1 rounded-lg text-xs font-medium ${
@@ -218,10 +224,11 @@ export function MallGuideCalibrationScreen() {
                     ? "bg-primary text-black"
                     : "bg-white/10 text-white"
                 }`}
+                whileTap={{ scale: 0.98 }}
               >
                 Waypoints
-              </button>
-              <button
+              </motion.button>
+              <motion.button
                 type="button"
                 onClick={() => setPathMode("wayGraph")}
                 className={`px-3 py-1 rounded-lg text-xs font-medium ${
@@ -229,59 +236,64 @@ export function MallGuideCalibrationScreen() {
                     ? "bg-primary text-black"
                     : "bg-white/10 text-white"
                 }`}
+                whileTap={{ scale: 0.98 }}
               >
                 Way Graph
-              </button>
+              </motion.button>
             </div>
           </div>
           <div className="flex flex-wrap gap-2">
-            <button
+            <motion.button
               type="button"
               onClick={() => setMode("store")}
-              className={`flex-1 min-w-[80px] py-2 rounded-xl font-medium text-sm ${
+              className={`flex-1 min-w-[80px] min-h-[44px] py-3 rounded-2xl font-medium text-sm ${
                 mode === "store"
                   ? "bg-primary text-black"
                   : "bg-white/10 text-white"
               }`}
+              whileTap={{ scale: 0.98 }}
             >
               Магазин
-            </button>
-            <button
+            </motion.button>
+            <motion.button
               type="button"
               onClick={() => setMode("reception")}
-              className={`flex-1 min-w-[80px] py-2 rounded-xl font-medium text-sm flex items-center justify-center gap-1 ${
+              className={`flex-1 min-w-[80px] min-h-[44px] py-3 rounded-2xl font-medium text-sm flex items-center justify-center gap-1 ${
                 mode === "reception"
                   ? "bg-primary text-black"
                   : "bg-white/10 text-white"
               }`}
+              whileTap={{ scale: 0.98 }}
             >
               <MapPin className="w-4 h-4" />
               Reception
-            </button>
-            <button
+            </motion.button>
+            <motion.button
               type="button"
               onClick={() => setMode("waypoints")}
-              className={`flex-1 min-w-[80px] py-2 rounded-xl font-medium text-sm flex items-center justify-center gap-1 ${
+              className={`flex-1 min-w-[80px] min-h-[44px] py-3 rounded-2xl font-medium text-sm flex items-center justify-center gap-1 ${
                 mode === "waypoints"
                   ? "bg-primary text-black"
                   : "bg-white/10 text-white"
               }`}
+              whileTap={{ scale: 0.98 }}
             >
               <Route className="w-4 h-4" />
               Waypoints
-            </button>
-            <button
+            </motion.button>
+            <motion.button
               type="button"
               onClick={() => setMode("wayGraph")}
-              className={`flex-1 min-w-[80px] py-2 rounded-xl font-medium text-sm flex items-center justify-center gap-1 ${
+              className={`flex-1 min-w-[80px] min-h-[44px] py-3 rounded-2xl font-medium text-sm flex items-center justify-center gap-1 ${
                 mode === "wayGraph"
                   ? "bg-primary text-black"
                   : "bg-white/10 text-white"
               }`}
+              whileTap={{ scale: 0.98 }}
             >
               <GitBranch className="w-4 h-4" />
               Way Graph
-            </button>
+            </motion.button>
           </div>
 
           {mode === "waypoints" && (
@@ -290,7 +302,7 @@ export function MallGuideCalibrationScreen() {
               <select
                 value={routeStore}
                 onChange={(e) => setRouteStore(e.target.value)}
-                className="w-full px-4 py-2 rounded-xl bg-white/10 border border-white/20 text-white"
+                className="w-full px-4 py-2 rounded-2xl bg-white/10 border border-white/20 text-white"
               >
                 <option value="">Выберите магазин</option>
                 {Object.keys(stores).map((name) => (
@@ -313,7 +325,7 @@ export function MallGuideCalibrationScreen() {
                         <span className="text-white/80">
                           {i + 1}. {wp.left.toFixed(0)}%, {wp.top.toFixed(0)}%
                         </span>
-                        <button
+                        <motion.button
                           type="button"
                           onClick={() => {
                             const wps = (routes[routeStore] ?? []).filter(
@@ -322,19 +334,21 @@ export function MallGuideCalibrationScreen() {
                             saveRoute(routeStore, wps);
                           }}
                           className="text-red-400 hover:text-red-300"
+                          whileTap={{ scale: 0.98 }}
                         >
                           Удалить
-                        </button>
+                        </motion.button>
                       </div>
                     ))}
                   </div>
-                  <button
+                  <motion.button
                     type="button"
                     onClick={() => deleteRoute(routeStore)}
-                    className="w-full py-2 rounded-xl bg-red-500/20 text-red-400 text-sm font-medium"
+                    className="w-full py-2 rounded-2xl bg-red-500/20 text-red-400 text-sm font-medium"
+                    whileTap={{ scale: 0.98 }}
                   >
                     Очистить маршрут
-                  </button>
+                  </motion.button>
                 </>
               )}
             </div>
@@ -360,23 +374,25 @@ export function MallGuideCalibrationScreen() {
                           {seg.from.left.toFixed(0)},{seg.from.top.toFixed(0)} →{" "}
                           {seg.to.left.toFixed(0)},{seg.to.top.toFixed(0)}
                         </span>
-                        <button
+                        <motion.button
                           type="button"
                           onClick={() => removePathSegment(i)}
                           className="text-red-400 hover:text-red-300 shrink-0"
+                          whileTap={{ scale: 0.98 }}
                         >
                           Удалить
-                        </button>
+                        </motion.button>
                       </div>
                     ))}
                   </div>
-                  <button
+                  <motion.button
                     type="button"
                     onClick={clearPathSegments}
-                    className="w-full py-2 rounded-xl bg-red-500/20 text-red-400 text-sm font-medium"
+                    className="w-full py-2 rounded-2xl bg-red-500/20 text-red-400 text-sm font-medium"
+                    whileTap={{ scale: 0.98 }}
                   >
                     Очистить все сегменты
-                  </button>
+                  </motion.button>
                 </>
               )}
             </div>
@@ -389,16 +405,18 @@ export function MallGuideCalibrationScreen() {
                 value={storeName}
                 onChange={(e) => setStoreName(e.target.value)}
                 placeholder="Название магазина"
-                className="w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder:text-white/40"
+                className="w-full px-4 py-3 rounded-2xl bg-white/10 border border-white/20 text-white placeholder:text-white/40"
               />
-              <button
+              <motion.button
                 type="button"
                 onClick={handleSaveStore}
                 disabled={!storeName.trim() || !clickedPos}
-                className="w-full py-3 bg-primary text-black font-bold rounded-xl disabled:opacity-50"
+                className="w-full min-h-[44px] py-3 bg-primary text-black font-bold rounded-2xl disabled:opacity-50 flex items-center justify-center"
+                whileTap={!storeName.trim() || !clickedPos ? undefined : { scale: 0.98 }}
+                aria-label="Сохранить"
               >
-                Сохранить
-              </button>
+                <Save className="w-5 h-5" />
+              </motion.button>
               {clickedPos && (
                 <p className="text-xs text-primary/80">
                   Координаты: left {clickedPos.left.toFixed(1)}%, top{" "}
@@ -415,7 +433,7 @@ export function MallGuideCalibrationScreen() {
           )}
         </div>
 
-        <div className="glass-card rounded-2xl p-4">
+        <div className="glass-card rounded-3xl p-4 sm:p-6">
           <h3 className="text-sm font-semibold text-white mb-3">
             Магазины ({storeList.length})
           </h3>
@@ -425,10 +443,11 @@ export function MallGuideCalibrationScreen() {
                 key={name}
                 className="flex items-center justify-between py-2 px-3 rounded-lg hover:bg-white/5"
               >
-                <button
+                <motion.button
                   type="button"
                   onClick={() => handleEditStore(name)}
                   className="text-left flex-1 min-w-0"
+                  whileTap={{ scale: 0.98 }}
                 >
                   <span className="text-white font-medium truncate block">
                     {name}
@@ -436,28 +455,30 @@ export function MallGuideCalibrationScreen() {
                   <span className="text-xs text-white/50">
                     {pos.left.toFixed(0)}%, {pos.top.toFixed(0)}%
                   </span>
-                </button>
-                <button
+                </motion.button>
+                <motion.button
                   type="button"
                   onClick={() => deleteStore(name)}
                   className="text-red-400 hover:text-red-300 text-sm px-2"
+                  whileTap={{ scale: 0.98 }}
                 >
                   Удалить
-                </button>
+                </motion.button>
               </div>
             ))}
           </div>
         </div>
 
         <div className="flex gap-2">
-          <button
+          <motion.button
             type="button"
             onClick={handleExport}
-            className="flex-1 py-3 rounded-xl bg-white/10 text-white font-medium flex items-center justify-center gap-2"
+            className="flex-1 py-3 rounded-2xl bg-white/10 text-white font-medium flex items-center justify-center gap-2"
+            whileTap={{ scale: 0.98 }}
           >
             <Download className="w-4 h-4" />
             Экспорт
-          </button>
+          </motion.button>
           <input
             ref={fileInputRef}
             type="file"
@@ -465,22 +486,24 @@ export function MallGuideCalibrationScreen() {
             className="hidden"
             onChange={handleFileChange}
           />
-          <button
+          <motion.button
             type="button"
             onClick={handleImport}
-            className="flex-1 py-3 rounded-xl bg-white/10 text-white font-medium flex items-center justify-center gap-2"
+            className="flex-1 py-3 rounded-2xl bg-white/10 text-white font-medium flex items-center justify-center gap-2"
+            whileTap={{ scale: 0.98 }}
           >
             <Upload className="w-4 h-4" />
             Импорт
-          </button>
-          <button
+          </motion.button>
+          <motion.button
             type="button"
             onClick={resetToDefaults}
-            className="flex-1 py-3 rounded-xl bg-white/10 text-white font-medium flex items-center justify-center gap-2"
+            className="flex-1 py-3 rounded-2xl bg-white/10 text-white font-medium flex items-center justify-center gap-2"
+            whileTap={{ scale: 0.98 }}
           >
             <RotateCcw className="w-4 h-4" />
             Сброс
-          </button>
+          </motion.button>
         </div>
       </div>
     </div>

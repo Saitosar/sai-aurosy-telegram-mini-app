@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Bot, MessageCircle, X } from "lucide-react";
 import type { StoreItem } from "shared";
 import { getStoreItems } from "../../api/store";
 import { haptic } from "../../utils/haptic";
 import { Skeleton } from "../../components/ui/Skeleton";
+import { useOnboardingProgress } from "../../hooks/useOnboardingProgress";
 
 const ORDER_TELEGRAM_USERNAME = "Arif_Mammadov1";
 
-function openOrderChat(item?: StoreItem) {
+function openOrderChat(item?: StoreItem): void {
   const text = item ? `Hi! I'm interested in ${item.name}` : undefined;
   const url = text
     ? `https://t.me/${ORDER_TELEGRAM_USERNAME}?text=${encodeURIComponent(text)}`
@@ -25,6 +27,11 @@ export function StoreScreen() {
   const [storeItems, setStoreItems] = useState<StoreItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedItem, setSelectedItem] = useState<StoreItem | null>(null);
+  const { markStep1Completed, markStep2Completed } = useOnboardingProgress();
+
+  useEffect(() => {
+    markStep1Completed();
+  }, [markStep1Completed]);
 
   useEffect(() => {
     getStoreItems()
@@ -36,19 +43,19 @@ export function StoreScreen() {
   if (loading) {
     return (
       <div className="min-h-full pb-20">
-        <div className="px-6 py-8">
+        <div className="px-4 sm:px-6 py-8">
           <Skeleton className="mb-6 h-8 w-40" />
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-4 sm:gap-6">
             {[1, 2, 3, 4].map((i) => (
               <div
                 key={i}
-                className="glass-card rounded-2xl p-4 flex flex-col"
+                className="glass-card rounded-3xl p-4 sm:p-6 flex flex-col"
               >
-                <Skeleton className="aspect-square rounded-xl mb-2" />
+                <Skeleton className="aspect-square rounded-2xl mb-2" />
                 <Skeleton className="h-5 w-16 mb-2" />
                 <Skeleton className="h-5 w-3/4 mb-2" />
                 <Skeleton className="h-4 w-full" />
-                <Skeleton className="h-10 w-full mt-3 rounded-xl" />
+                <Skeleton className="h-10 w-full mt-3 rounded-2xl" />
               </div>
             ))}
           </div>
@@ -58,26 +65,23 @@ export function StoreScreen() {
   }
 
   return (
-    <div className="min-h-full pb-20">
-      <div className="px-6 py-8">
+    <div className="min-h-full pb-20 relative">
+      <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent pointer-events-none" />
+      <div className="relative z-10 px-4 sm:px-6 py-8">
         <h1 className="mb-6 text-2xl font-semibold tracking-tight text-foreground">Robot Store</h1>
 
-        <div className="grid grid-cols-2 gap-4">
-          {storeItems.map((item) => (
-            <div
+        <div className="grid grid-cols-2 gap-4 sm:gap-6">
+          {storeItems.map((item, i) => (
+            <motion.div
               key={item.id}
               role="group"
-              className="glass-card rounded-2xl p-4 hover:bg-muted/30 transition-all flex flex-col h-full"
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.08, duration: 0.25, ease: [0.25, 0.1, 0.25, 1] }}
+              className="glass-card rounded-3xl p-4 sm:p-6 hover:bg-muted/30 transition-all flex flex-col h-full"
             >
-              <button
-                type="button"
-                onClick={() => {
-                  haptic.impact("light");
-                  setSelectedItem(item);
-                }}
-                className="text-left group flex flex-col flex-1 min-w-0"
-              >
-                <div className="glass-icon-container aspect-square rounded-xl mb-2 relative overflow-hidden">
+              <div className="text-left group flex flex-col flex-1 min-w-0">
+                <div className="glass-icon-container aspect-square rounded-2xl mb-2 relative overflow-hidden">
                   {item.imageUrl ? (
                     <img
                       src={item.imageUrl}
@@ -101,33 +105,60 @@ export function StoreScreen() {
                 )}
                 <h4 className="font-semibold text-foreground tracking-tight mb-1 text-[15px]">{item.name}</h4>
                 <p className="text-[12px] text-muted-foreground line-clamp-1 leading-relaxed">{item.description}</p>
-              </button>
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  haptic.impact("light");
-                  openOrderChat(item);
-                }}
-                className="w-full mt-3 py-2.5 bg-primary text-primary-foreground font-medium text-[14px] rounded-xl hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
-              >
-                <MessageCircle className="w-4 h-4" />
-                Order
-              </button>
-            </div>
+              </div>
+              <div className="mt-3 flex gap-2">
+                <motion.button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    haptic.impact("light");
+                    setSelectedItem(item);
+                  }}
+                  className="flex-1 min-h-[44px] py-3 glass-button-secondary text-muted-foreground hover:text-foreground font-medium text-sm rounded-2xl hover:bg-muted/50 transition-colors flex items-center justify-center gap-2"
+                  whileTap={{ scale: 0.98 }}
+                >
+                  Details
+                </motion.button>
+                <motion.button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    haptic.impact("light");
+                    markStep2Completed();
+                    openOrderChat(item);
+                  }}
+                  className="flex-1 min-h-[44px] py-3 bg-primary text-primary-foreground font-medium text-sm rounded-2xl hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <MessageCircle className="w-4 h-4 max-[400px]:hidden shrink-0" />
+                  Order
+                </motion.button>
+              </div>
+            </motion.div>
           ))}
         </div>
       </div>
 
-      {selectedItem && (
-        <div
-          className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-end justify-center z-50 transition-opacity"
-          onClick={() => setSelectedItem(null)}
-        >
-          <div
-            className="w-full max-w-2xl rounded-t-[2rem] p-6 max-h-[85vh] overflow-y-auto border-t border-border bg-background/95 backdrop-blur-xl"
-            onClick={(e) => e.stopPropagation()}
+      <AnimatePresence>
+        {selectedItem && (
+          <motion.div
+            key="modal-backdrop"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-end justify-center z-50"
+            onClick={() => setSelectedItem(null)}
           >
+            <motion.div
+              key="modal-sheet"
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "100%" }}
+              transition={{ type: "tween", duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+              className="w-full max-w-2xl rounded-t-[2rem] p-4 sm:p-6 max-h-[85vh] overflow-y-auto border-t border-border bg-background/95 backdrop-blur-xl"
+              onClick={(e) => e.stopPropagation()}
+            >
             <div className="flex items-start justify-between mb-6">
               <div className="flex-1">
                 <h2 className="text-2xl font-semibold text-foreground tracking-tight mb-1">{selectedItem.name}</h2>
@@ -139,15 +170,16 @@ export function StoreScreen() {
                   </div>
                 )}
               </div>
-              <button
+              <motion.button
                 onClick={() => {
                   haptic.impact("light");
                   setSelectedItem(null);
                 }}
-                className="glass-button-secondary p-2 hover:bg-white/10 rounded-full transition-colors text-white"
+                className="glass-button-secondary p-2 min-h-[44px] min-w-[44px] flex items-center justify-center hover:bg-white/10 rounded-full transition-colors text-white touch-target"
+                whileTap={{ scale: 0.98 }}
               >
                 <X className="w-5 h-5" />
-              </button>
+              </motion.button>
             </div>
 
             <div className="aspect-video glass-icon-container rounded-2xl mb-8 relative overflow-hidden">
@@ -172,9 +204,9 @@ export function StoreScreen() {
             {selectedItem.specs && selectedItem.specs.length > 0 && (
               <div className="mb-8">
                 <h3 className="text-[13px] font-semibold text-foreground mb-3">Specifications</h3>
-                <ul className="space-y-3">
+                <ul className="space-y-4">
                   {selectedItem.specs.map((spec, index) => (
-                    <li key={index} className="flex items-center gap-3 text-muted-foreground text-[15px]">
+                    <li key={index} className="flex items-center gap-4 text-muted-foreground text-[15px]">
                       <div className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${index % 2 === 0 ? "bg-primary" : "bg-toxic"}`} />
                       {spec}
                     </li>
@@ -183,21 +215,24 @@ export function StoreScreen() {
               </div>
             )}
 
-            <div className="flex flex-col gap-3">
-              <button
+            <div className="flex flex-col gap-4 sm:gap-5">
+              <motion.button
                 onClick={() => {
                   haptic.impact("light");
+                  markStep2Completed();
                   openOrderChat(selectedItem);
                 }}
-                className="w-full py-4 bg-primary text-primary-foreground font-medium text-[16px] rounded-xl hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
+                className="w-full min-h-[44px] py-4 bg-primary text-primary-foreground font-medium text-base rounded-2xl hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
+                whileTap={{ scale: 0.98 }}
               >
-                <MessageCircle className="w-5 h-5" />
+                <MessageCircle className="w-5 h-5 max-[400px]:hidden shrink-0" />
                 Order
-              </button>
+              </motion.button>
             </div>
-          </div>
-        </div>
-      )}
+          </motion.div>
+        </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

@@ -80,7 +80,7 @@ export function HeroSection({
         {!isRunning && !isComplete && (
           <motion.button
             onClick={onStartDemo}
-            className="px-10 py-4 bg-primary text-primary-foreground font-medium text-lg rounded-xl hover:opacity-90 transition-opacity"
+            className="px-10 py-4 bg-primary text-primary-foreground font-medium text-lg rounded-2xl hover:opacity-90 transition-opacity"
             whileTap={{ scale: 0.98 }}
           >
             Start Event Mode Demo

@@ -56,7 +56,7 @@ export function MallGuideRobotStage({
           className="absolute -translate-x-1/2 -translate-y-full mb-1"
           style={{ left: `${pathPosition.left}%`, top: `${pathPosition.top}%` }}
         >
-          <div className="px-4 py-2 rounded-xl bg-black/80 border border-border text-foreground text-sm font-medium text-center whitespace-nowrap max-w-[200px] truncate">
+          <div className="px-4 py-2 rounded-2xl bg-black/80 border border-border text-foreground text-sm font-medium text-center whitespace-nowrap max-w-[200px] truncate">
             {stepLabel}
           </div>
           <div

@@ -1,101 +1,119 @@
 import { Link } from "react-router-dom";
-import { Store, Sparkles, ChevronRight, ImageIcon, MapPin } from "lucide-react";
+import { motion } from "framer-motion";
+import { Store, Sparkles, ChevronRight, Gem, MapPin } from "lucide-react";
 import { ProfileInfoCard } from "../../components/wallet/ProfileInfoCard";
+
+const staggerItem = (i: number) => ({
+  initial: { opacity: 0, y: 8 },
+  animate: { opacity: 1, y: 0 },
+  transition: { delay: i * 0.08, duration: 0.25, ease: [0.25, 0.1, 0.25, 1] as const },
+});
 
 export function DashboardScreen() {
   return (
-    <div className="min-h-full">
-      <div className="px-6 py-8 pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]">
+    <div className="min-h-full relative">
+      <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-transparent pointer-events-none" />
+      <div className="relative z-10 px-4 sm:px-6 py-8 pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]">
         <div className="mb-10 text-center">
           <h1 className="mb-2 text-3xl tracking-tighter text-foreground font-semibold">
             SAI Control
           </h1>
-          <p className="text-[var(--tg-theme-hint-color,#a1a1aa)] text-sm font-medium max-w-[280px] mx-auto">
+          <p className="text-muted-foreground text-sm font-medium max-w-[280px] mx-auto">
             Your robots, one tap away. Control, monitor, and scale from Telegram.
           </p>
         </div>
 
         <div className="space-y-4">
-          <ProfileInfoCard />
+          <motion.div {...staggerItem(0)}>
+            <ProfileInfoCard />
+          </motion.div>
 
+          <motion.div {...staggerItem(1)}>
           <Link to="/demo" className="block group">
-            <div className="glass-card rounded-2xl p-6 hover:bg-muted/30 transition-all relative">
+            <div className="glass-card-elevated rounded-3xl p-4 sm:p-6 hover:bg-muted/30 transition-all relative">
               <span className="absolute top-3 right-12 text-[10px] font-medium text-toxic bg-toxic/10 px-2 py-0.5 rounded">
                 Live
               </span>
               <ChevronRight className="absolute top-4 right-4 w-5 h-5 text-muted-foreground group-hover:text-foreground transition-colors" />
-              <div className="flex flex-col items-center text-center gap-3">
+              <div className="flex flex-col items-center text-center gap-4">
                 <div className="w-16 h-16 rounded-2xl flex items-center justify-center bg-toxic/10 border border-toxic/20 transition-colors">
                   <Sparkles className="w-8 h-8 text-toxic" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-[17px] text-[var(--tg-theme-text-color,#fafafa)] tracking-tight mb-1">
+                  <h3 className="font-semibold text-[17px] text-foreground tracking-tight mb-1">
                     Event Mode Demo
                   </h3>
-                  <p className="text-[var(--tg-theme-hint-color,#a1a1aa)] text-[13px] leading-relaxed">
+                  <p className="text-muted-foreground text-[13px] leading-relaxed">
                     See AGIBOT X2 in action — try the live demo
                   </p>
                 </div>
               </div>
             </div>
           </Link>
+          </motion.div>
 
+          <motion.div {...staggerItem(2)}>
           <Link to="/store" className="block group">
-            <div className="glass-card rounded-2xl p-6 hover:bg-muted/30 transition-all relative">
+            <div className="glass-card-elevated rounded-3xl p-4 sm:p-6 hover:bg-muted/30 transition-all relative">
               <ChevronRight className="absolute top-4 right-4 w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
-              <div className="flex flex-col items-center text-center gap-3">
+              <div className="flex flex-col items-center text-center gap-4">
                 <div className="w-16 h-16 rounded-2xl flex items-center justify-center bg-primary/10 border border-primary/20 transition-colors">
                   <Store className="w-8 h-8 text-primary" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-[17px] text-[var(--tg-theme-text-color,#fafafa)] tracking-tight mb-1">
+                  <h3 className="font-semibold text-[17px] text-foreground tracking-tight mb-1">
                     Robot Store
                   </h3>
-                  <p className="text-[var(--tg-theme-hint-color,#a1a1aa)] text-[13px] leading-relaxed">
+                  <p className="text-muted-foreground text-[13px] leading-relaxed">
                     Add robots to your fleet — browse and get started
                   </p>
                 </div>
               </div>
             </div>
           </Link>
+          </motion.div>
 
+          <motion.div {...staggerItem(3)}>
           <Link to="/scripts" className="block group">
-            <div className="glass-card rounded-2xl p-6 hover:bg-muted/30 transition-all relative">
+            <div className="glass-card rounded-3xl p-4 sm:p-6 hover:bg-muted/30 transition-all relative">
               <ChevronRight className="absolute top-4 right-4 w-5 h-5 text-muted-foreground group-hover:text-foreground transition-colors" />
-              <div className="flex flex-col items-center text-center gap-3">
+              <div className="flex flex-col items-center text-center gap-4">
                 <div className="w-16 h-16 rounded-2xl flex items-center justify-center bg-muted border border-border transition-colors">
                   <MapPin className="w-8 h-8 text-muted-foreground" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-[17px] text-[var(--tg-theme-text-color,#fafafa)] tracking-tight mb-1">
+                  <h3 className="font-semibold text-[17px] text-foreground tracking-tight mb-1">
                     Scripts
                   </h3>
-                  <p className="text-[var(--tg-theme-hint-color,#a1a1aa)] text-[13px] leading-relaxed">
+                  <p className="text-muted-foreground text-[13px] leading-relaxed">
                     Browse and run scripts — behavioral, speech, Mall Guide
                   </p>
                 </div>
               </div>
             </div>
           </Link>
+          </motion.div>
 
+          <motion.div {...staggerItem(4)}>
           <Link to="/wallet" className="block group">
-            <div className="glass-card rounded-2xl p-6 hover:bg-muted/30 transition-all relative">
+            <div className="glass-card rounded-3xl p-4 sm:p-6 hover:bg-muted/30 transition-all relative">
               <ChevronRight className="absolute top-4 right-4 w-5 h-5 text-muted-foreground group-hover:text-foreground transition-colors" />
-              <div className="flex flex-col items-center text-center gap-3">
+              <div className="flex flex-col items-center text-center gap-4">
                 <div className="w-16 h-16 rounded-2xl flex items-center justify-center bg-muted border border-border transition-colors">
-                  <ImageIcon className="w-8 h-8 text-muted-foreground" />
+                  <Gem className="w-8 h-8 text-muted-foreground" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-[17px] text-[var(--tg-theme-text-color,#fafafa)] tracking-tight mb-1">
+                  <h3 className="font-semibold text-[17px] text-foreground tracking-tight mb-1">
                     NFT
                   </h3>
-                  <p className="text-[var(--tg-theme-hint-color,#a1a1aa)] text-[13px] leading-relaxed">
+                  <p className="text-muted-foreground text-[13px] leading-relaxed">
                     View your NFT collection and robot assets
                   </p>
                 </div>
               </div>
             </div>
           </Link>
+          </motion.div>
         </div>
       </div>
     </div>
