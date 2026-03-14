@@ -34,6 +34,12 @@ The app deals with the following entities. All are sourced from the SAI AUROSY p
 - **Attributes:** Robot ID, timestamp, status, sensor data, position (TBD)
 - **Relationship:** Associated with robot; streamed or polled
 
+### Mall Guide Calibration
+
+- **Source:** Backend (JSON file; `GET/PUT /mall-guide/calibration`)
+- **Attributes:** Reception point, stores, path mode, routes, path segments
+- **Relationship:** Global configuration for Mall Guide scenario; persisted on backend; not proxied to platform
+
 ## Entity Relationship Diagram
 
 ```mermaid
@@ -78,6 +84,7 @@ erDiagram
 | Scenarios | Platform API | No |
 | Store catalog | Backend mock (V1); Platform API (V2) | No |
 | Telemetry | Platform API / stream | No (display only) |
+| Mall Guide calibration | Backend (JSON file) | Yes (backend only) |
 
 ## Local State (App-Only)
 

@@ -58,7 +58,7 @@ cp .env.example .env
 ```
 
 - `VITE_API_BASE_URL` — API base URL for the frontend; must match backend (e.g. `http://localhost:3001`)
-- `PORT` — Backend port (default: `3000`; `.env.example` uses `3001` if port 3000 is occupied). Ensure `VITE_API_BASE_URL` and `PORT` match.
+- `PORT` — Backend port (default: `3000` when unset; `.env.example` uses `3001`). Ensure `VITE_API_BASE_URL` and `PORT` match.
 
 ### 3. Run locally
 
@@ -81,7 +81,7 @@ npm run dev:frontend
 ### 4. Access
 
 - **Frontend:** http://localhost:5173
-- **Backend API:** http://localhost:3000 (or http://localhost:3001 if `PORT=3001` in `.env`)
+- **Backend API:** http://localhost:3001 (or http://localhost:3000 if `PORT=3000` in `.env`)
 
 ### 5. Telegram testing
 

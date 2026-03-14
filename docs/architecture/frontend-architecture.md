@@ -51,7 +51,7 @@ src/
 │   ├── store/
 │   ├── control/
 │   ├── scripts/
-│   ├── mall-guide/
+│   ├── mall-guide/       # MallGuideLayout, MallGuideScreen, MallGuideCalibrationScreen
 │   ├── wallet/
 │   ├── settings/
 │   └── demo/             # Event Mode Demo
@@ -76,6 +76,7 @@ src/
 | Control Panel | `/control/:robotId` | View robot data and send commands |
 | Scripts | `/scripts` | Browse scripts by type |
 | Mall Guide | `/scripts/mall-guide` | Run Mall Guide script |
+| Mall Guide Calibration | `/scripts/mall-guide/calibration` | Calibrate mall floor plan (reception, stores, routes) |
 | Event Mode Demo | `/demo` | 3D robot demo on map overlay (standalone, outside AppLayout) |
 
 ## API Client
