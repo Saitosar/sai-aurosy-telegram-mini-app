@@ -37,6 +37,10 @@ export function mapRobot(raw: unknown): Robot {
     model: str(o.model ?? ""),
     status: (str(o.status) as Robot["status"]) || "offline",
     scenario: o.scenario ? str(o.scenario) : undefined,
+    battery: typeof o.battery === "number" ? o.battery : undefined,
+    warnings: Array.isArray(o.warnings)
+      ? (o.warnings as unknown[]).map((w) => str(w)).filter(Boolean)
+      : undefined,
   }));
 }
 
@@ -50,7 +54,6 @@ export function mapRobotDetail(raw: unknown): RobotDetail {
         position && typeof position.x === "number" && typeof position.y === "number"
           ? { x: position.x, y: position.y }
           : undefined,
-      battery: typeof o.battery === "number" ? o.battery : undefined,
     };
   });
 }
@@ -91,9 +94,23 @@ export function mapTaskToScenarioExecution(
   });
 }
 
+function mapTemperature(v: unknown): Telemetry["temperature"] {
+  const t = v && typeof v === "object" && !Array.isArray(v) ? (v as Record<string, unknown>) : undefined;
+  if (!t) return undefined;
+  const casing = t.casing != null ? num(t.casing) : undefined;
+  const winding = t.winding != null ? num(t.winding) : undefined;
+  if (casing === undefined && winding === undefined) return undefined;
+  return { casing, winding };
+}
+
 export function mapTelemetry(raw: unknown, robotId: string): Telemetry {
   return obj(raw, (o) => {
     const position = o.position as { x?: number; y?: number } | undefined;
+    const commQuality = o.communication_quality ?? o.communicationQuality;
+    const alarmsRaw = o.alarms;
+    const alarms = Array.isArray(alarmsRaw)
+      ? (alarmsRaw as unknown[]).map((a) => str(a)).filter(Boolean)
+      : undefined;
     return {
       robotId,
       timestamp: str(o.timestamp) || new Date().toISOString(),
@@ -107,6 +124,9 @@ export function mapTelemetry(raw: unknown, robotId: string): Telemetry {
         o.sensorData && typeof o.sensorData === "object"
           ? (o.sensorData as Record<string, unknown>)
           : undefined,
+      temperature: mapTemperature(o.temperature),
+      communicationQuality: commQuality != null ? num(commQuality) : undefined,
+      alarms: alarms?.length ? alarms : undefined,
     };
   });
 }

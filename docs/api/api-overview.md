@@ -39,7 +39,22 @@ The SAI AUROSY Telegram Mini App calls the **NestJS backend** at `VITE_API_BASE_
 | Disconnect | `POST /robots/:id/disconnect` | Unlink robot (Planned, TBD) |
 | Send command | `POST /robots/:id/commands` | Send command to robot |
 
-**Command request:** `{ "command": "<commandType>", "params": { ... } }` (TBD)
+**Command request:** `{ "command": "<commandType>", "params": { ... } }`
+
+**Command types and params:**
+
+| Command | Params | Purpose |
+|---------|--------|---------|
+| `safe_stop` | — | Emergency stop |
+| `go_home` | — | Return to home position |
+| `move` | `{ direction?: number, speed?: number }` | Movement: direction 0–360° (0=forward, 90=right), speed 0–1 |
+| `walk` | — | Switch to walk mode |
+| `run` | — | Switch to run mode |
+| `posture` | — | Switch to posture mode |
+| `head_rotate` | `{ direction?: "left" or "right", amount?: number }` | Rotate head |
+| `waist_rotate` | `{ direction?: "left" or "right", amount?: number }` | Rotate waist |
+
+When `PLATFORM_API_URL` is unset, commands are logged and no-op (no platform forward).
 
 ## Store
 
@@ -83,7 +98,7 @@ Calibration is stored on the backend (JSON file) so all users and devices see th
 | Subscribe/Stream | `GET /telemetry/:robotId/stream` | Real-time robot status (SSE; returns 501 when platform stream not available) |
 | Poll | `GET /telemetry/:robotId` | Current robot status (polling) |
 
-**Response:** Robot status, position, sensor data (schema TBD)
+**Response:** `Telemetry` — robotId, timestamp, status, position (x, y), battery (0–100), temperature (casing, winding in °C), communicationQuality (0–100), alarms (string[]). When no alarms: `alarms` absent or empty; UI shows "No current anomalies".
 
 ## Request/Response Patterns
 

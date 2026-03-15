@@ -13,7 +13,7 @@ The app deals with the following entities. All are sourced from the SAI AUROSY p
 ### Robot
 
 - **Source:** Platform API (`/robots`, `/robots/:id`)
-- **Attributes:** ID, name, model, status, connection state, assigned scenario (if any)
+- **Attributes:** ID, name, model, status, connection state, assigned scenario (if any), battery (0–100), warnings (platform alerts)
 - **Relationship:** Belongs to user; can run scenarios; produces telemetry
 
 ### Scenario
@@ -31,7 +31,7 @@ The app deals with the following entities. All are sourced from the SAI AUROSY p
 ### Telemetry
 
 - **Source:** Platform API (`/telemetry` or streaming)
-- **Attributes:** Robot ID, timestamp, status, sensor data, position (TBD)
+- **Attributes:** Robot ID, timestamp, status, position, battery, sensor data, temperature (casing, winding), communication quality (0–100), alarms (string array)
 - **Relationship:** Associated with robot; streamed or polled
 
 ### Mall Guide Calibration
@@ -72,6 +72,11 @@ erDiagram
         string robotId
         datetime timestamp
         string status
+        object position
+        number battery
+        object temperature
+        number communicationQuality
+        array alarms
     }
 ```
 

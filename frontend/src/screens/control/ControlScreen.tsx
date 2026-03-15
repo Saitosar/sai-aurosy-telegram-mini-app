@@ -1,18 +1,30 @@
 import { useEffect, useState } from "react";
-import { useParams, Link, useNavigate, useLocation } from "react-router-dom";
+import { useParams, Link, useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowLeft, Bot, Battery, MapPin, Square, Home, Zap } from "lucide-react";
+import { ArrowLeft, Bot, Square, Home, Zap } from "lucide-react";
 import type { RobotDetail } from "shared";
 import { getRobot, sendCommand } from "../../api/robots";
 import { ScreenHeader } from "../../components/ui/ScreenHeader";
+import { InfoManageTabs, type ControlTab } from "../../components/ui/InfoManageTabs";
+import { ManualControlView } from "../../components/control/ManualControlView";
+import { RobotMetricsPanel } from "../../components/control/RobotMetricsPanel";
 import { haptic } from "../../utils/haptic";
 import { stopExecution } from "../../api/scenarios";
 import { useTelemetry } from "../../hooks/useTelemetry";
+
+function parseTabParam(value: string | null): ControlTab {
+  if (value === "info" || value === "manage") return value;
+  return "info";
+}
 
 export function ControlScreen() {
   const { robotId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const tabParam = searchParams.get("tab");
+  const activeTab = parseTabParam(tabParam);
+
   const state = location.state as { executionId?: string; scenarioId?: string } | undefined;
   const executionId = state?.executionId;
   const scenarioId = state?.scenarioId ?? "mall-guide";
@@ -51,6 +63,10 @@ export function ControlScreen() {
   const handleBack = () => {
     haptic.impact("light");
     navigate(-1);
+  };
+
+  const handleTabChange = (tab: ControlTab) => {
+    setSearchParams({ tab }, { replace: true });
   };
 
   const getStatusColor = (status: string) => {
@@ -106,8 +122,6 @@ export function ControlScreen() {
 
   const displayScenario = robot?.scenario ?? (executionId && !scenarioStopped ? "Mall Guide" : null);
   const showScenarioStopped = scenarioStopped || (executionId && !displayScenario);
-  const position = telemetry?.position ?? robot?.position ?? { x: 0, y: 0 };
-  const battery = telemetry?.battery ?? robot?.battery ?? 0;
   const displayRobot = robot ?? (telemetry ? { id: robotId!, name: "Robot", model: "", status: telemetry.status as "online" | "offline" | "busy" | "error" } : null);
 
   if (!robotId) {
@@ -177,6 +191,18 @@ export function ControlScreen() {
           className="mb-6"
         />
 
+        <InfoManageTabs
+          activeTab={activeTab}
+          onTabChange={handleTabChange}
+          className="mb-6"
+        />
+
+        {activeTab === "info" && (
+        <div
+          id="control-info-panel"
+          role="tabpanel"
+          aria-labelledby="tab-info"
+        >
         <div className="glass-card-elevated rounded-3xl p-6 mb-6">
           <div className="flex items-start justify-between">
             <div className="flex items-start gap-4">
@@ -200,53 +226,11 @@ export function ControlScreen() {
           </div>
         </div>
 
-        <div className="glass-card rounded-3xl p-6 mb-6">
-          <div className="flex items-center justify-between mb-5">
-            <h3 className="text-[13px] font-semibold text-foreground">Telemetry</h3>
-            {lastUpdated && (
-              <span
-                className={`text-[11px] font-medium ${
-                  isStale ? "text-amber-500" : "text-muted-foreground"
-                }`}
-                title={lastUpdated.toLocaleTimeString()}
-              >
-                {isStale ? "Data may be outdated" : `Updated ${Math.round((Date.now() - lastUpdated.getTime()) / 1000)}s ago`}
-              </span>
-            )}
-          </div>
-          <div className="space-y-5">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4 text-muted-foreground">
-                <div className="p-2 rounded-lg glass-icon-container">
-                  <MapPin className="w-4 h-4 text-primary" />
-                </div>
-                <span className="font-medium text-[15px]">Position</span>
-              </div>
-              <span className="font-mono text-foreground text-[15px] px-3 py-1 rounded-lg glass-button-secondary">
-                X: {position.x}, Y: {position.y}
-              </span>
-            </div>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4 text-muted-foreground">
-                <div className="p-2 rounded-lg glass-icon-container">
-                  <Battery className="w-4 h-4 text-primary" />
-                </div>
-                <span className="font-medium text-[15px]">Battery</span>
-              </div>
-              <div className="flex items-center gap-4">
-                <div className="w-24 rounded-full h-2 overflow-hidden bg-muted">
-                  <div
-                    className={`h-full rounded-full ${battery > 80 ? "bg-toxic" : battery > 20 ? "bg-primary" : "bg-red-500"}`}
-                    style={{ width: `${battery}%` }}
-                  />
-                </div>
-                <span className="font-mono text-foreground text-[15px] px-3 py-1 rounded-lg glass-button-secondary">
-                  {battery}%
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
+        <RobotMetricsPanel
+          telemetry={telemetry}
+          lastUpdated={lastUpdated}
+          isStale={isStale}
+        />
 
         <div className="glass-card rounded-3xl p-6 mb-6">
           <h3 className="text-[13px] font-semibold text-foreground mb-5">Commands</h3>
@@ -337,6 +321,21 @@ export function ControlScreen() {
               </Link>
             </motion.div>
           </div>
+        )}
+        </div>
+        )}
+
+        {activeTab === "manage" && (
+          <ManualControlView
+            robotId={robotId}
+            commandPending={commandPending}
+            commandError={commandError}
+            onCommandSent={() => {
+              setCommandSuccess(true);
+              setTimeout(() => setCommandSuccess(false), 3000);
+            }}
+            onCommandError={setCommandError}
+          />
         )}
       </div>
     </div>

@@ -15,9 +15,31 @@ import { mapRobot, mapRobotDetail } from "../platform/platform-mappers";
 import { PlatformClientService } from "../platform/platform-client.service";
 
 const MOCK_ROBOTS: Robot[] = [
-  { id: "robot-a", name: "Robot A", model: "Model X", status: "online", scenario: "Mall Guide" },
-  { id: "robot-b", name: "Robot B", model: "Model Y", status: "offline" },
-  { id: "robot-c", name: "Store Bot", model: "Model Z", status: "busy", scenario: "Inventory Scan" },
+  {
+    id: "robot-a",
+    name: "Robot A",
+    model: "Model X",
+    status: "online",
+    scenario: "Mall Guide",
+    battery: 74,
+    warnings: [],
+  },
+  {
+    id: "robot-b",
+    name: "Robot B",
+    model: "Model Y",
+    status: "offline",
+    battery: 15,
+    warnings: ["Low battery"],
+  },
+  {
+    id: "robot-c",
+    name: "Store Bot",
+    model: "Model Z",
+    status: "busy",
+    scenario: "Inventory Scan",
+    battery: 92,
+  },
 ];
 
 const MOCK_ROBOT_DETAILS: Record<string, RobotDetail> = {

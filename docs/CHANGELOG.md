@@ -1,5 +1,189 @@
 # Changelog
 
+## Phase 4 — Multi-dimensional Telemetry (2025-03)
+
+### Summary
+
+Extended telemetry to support temperature, communication quality, and alarms. Created RobotMetricsPanel component with selectable metrics and "No current anomalies" display. Telemetry controller now proxies to platform when configured.
+
+### Changes
+
+**Telemetry DTO**
+- Added `temperature?: { casing?: number; winding?: number }`, `communicationQuality?: number`, `alarms?: string[]` in `shared/src/dto/telemetry.dto.ts`
+
+**Backend**
+- `mapTelemetry` in `platform-mappers.ts` maps temperature, communicationQuality, alarms from platform response
+- TelemetryController injects PlatformClientService; proxies `GET /telemetry/:robotId` to platform when `PLATFORM_API_URL` is set
+- Extended MOCK_TELEMETRY with new fields for demo
+
+**RobotMetricsPanel**
+- New component in `frontend/src/components/control/RobotMetricsPanel.tsx`
+- Vertical list: Communication Quality (with bar), Casing/Winding Temperature, Location, Battery (with bar), Alarms
+- Tap metric row to highlight (active metric selection)
+- Alarms: shows "No current anomalies" when empty; list when present
+
+**ControlScreen**
+- Info tab: replaced inline telemetry section with RobotMetricsPanel
+
+### Files Added
+
+- `frontend/src/components/control/RobotMetricsPanel.tsx`
+
+### Files Modified
+
+- `shared/src/dto/telemetry.dto.ts`
+- `backend/src/platform/platform-mappers.ts`
+- `backend/src/telemetry/telemetry.controller.ts`
+- `frontend/src/screens/control/ControlScreen.tsx`
+- `docs/architecture/data-model.md`
+- `docs/api/api-overview.md`
+- `docs/ux/control-screen.md`
+- `docs/CHANGELOG.md`
+
+---
+
+## Robot Image Integration — ManualControlView (2025-03)
+
+### Summary
+
+Integrated the futuristic humanoid robot PNG as the central visual element in the Manage tab. Restructured layout to match reference: left panel (alert button, joystick, Posture/Walk/Run modes), center (robot avatar), right panel (circular Head/Waist rotation buttons). Added red emergency stop button and white pill-style REMOTE OPERATION MODE indicator.
+
+### Changes
+
+**RobotAvatar**
+- New component in `frontend/src/components/control/RobotAvatar.tsx`
+- Renders robot PNG in dark rounded container
+
+**ManualControlView**
+- 3-column grid layout (responsive: stacked on mobile)
+- Red alert button above joystick (`safe_stop` command)
+- POSTURE button above joystick; WALK and RUN in row below
+- Active mode: yellow accent
+- HEAD ROTATION and WAIST ROTATION as circular buttons (left/right pairs)
+- REMOTE OPERATION MODE: white pill with black text
+
+**Assets**
+- `frontend/public/robot-avatar.png` — robot image for Manage tab
+
+### Files Added
+
+- `frontend/src/components/control/RobotAvatar.tsx`
+- `frontend/public/robot-avatar.png`
+
+### Files Modified
+
+- `frontend/src/components/control/ManualControlView.tsx`
+- `docs/ux/control-screen.md`
+- `docs/CHANGELOG.md`
+
+---
+
+## Phase 3 — Manage (Manual Control) (2025-03)
+
+### Summary
+
+Implemented the Manage tab with full manual control: virtual joystick for movement, mode buttons (Posture/Walk/Run), body control (Head/Waist rotation), and REMOTE OPERATION MODE indicator. Commands are sent via the existing `POST /robots/:id/commands` API.
+
+### Changes
+
+**ManualControlView**
+- New component in `frontend/src/components/control/ManualControlView.tsx`
+- REMOTE OPERATION MODE indicator at top
+- Virtual joystick for direction and speed (throttled at 120ms)
+- Movement mode buttons: Posture, Walk, Run
+- Body control: Head rotation (left/right), Waist rotation (left/right)
+- Error display for failed commands
+
+**VirtualJoystick**
+- New component in `frontend/src/components/control/VirtualJoystick.tsx`
+- Custom SVG joystick with touch/pointer support
+- Output: `{ x, y, angle, magnitude }` for move command params
+
+**Shared DTO**
+- Added `RobotCommandType`, `MoveCommandParams`, `RotateCommandParams` in `shared/src/dto/robot.dto.ts`
+- Documented command schemas in `docs/api/api-overview.md`
+
+**ControlScreen**
+- Manage tab now renders `ManualControlView` instead of placeholder
+
+### Files Added
+
+- `frontend/src/components/control/ManualControlView.tsx`
+- `frontend/src/components/control/VirtualJoystick.tsx`
+
+### Files Modified
+
+- `frontend/src/screens/control/ControlScreen.tsx`
+- `shared/src/dto/robot.dto.ts`
+- `docs/api/api-overview.md`
+- `docs/ux/control-screen.md`
+- `docs/CHANGELOG.md`
+
+---
+
+## Phase 2 — Info / Manage Tabs (2025-03)
+
+### Summary
+
+Split the Control screen into Info and Manage tabs with a tab switcher under the header. The active tab is persisted in the URL (`?tab=info` / `?tab=manage`) so it is restored when navigating back.
+
+### Changes
+
+**InfoManageTabs component**
+- New reusable component in `frontend/src/components/ui/InfoManageTabs.tsx`
+- Two tabs: Info and Manage; active tab uses primary styling
+- Touch-friendly (`min-h-[44px]`), uses `glass-card` and `glass-button-secondary` for consistency
+- Exports `ControlTab` type and `InfoManageTabs` component
+
+**ControlScreen**
+- Tab switcher placed under `ScreenHeader`
+- Info tab: robot info card, telemetry, commands, scenario blocks (existing content)
+- Manage tab: placeholder "Manual control coming soon" in a glass card
+- URL sync via `useSearchParams`: `?tab=info` or `?tab=manage`; defaults to `info` when invalid or missing
+
+### Files Added
+
+- `frontend/src/components/ui/InfoManageTabs.tsx`
+
+### Files Modified
+
+- `frontend/src/screens/control/ControlScreen.tsx`
+- `docs/CHANGELOG.md`
+
+---
+
+## Phase 1 — Robot Cards: Battery and Warnings (2025-03)
+
+### Summary
+
+Extended robot cards on RobotsScreen to display battery level and warning indicators. Users can see charge status and platform alerts before navigating to Control.
+
+### Changes
+
+**Shared DTO**
+- Added `battery?: number` (0–100) and `warnings?: string[]` to `Robot` interface in `shared/src/dto/robot.dto.ts`
+- `RobotDetail` now inherits battery from `Robot`; removed redundant field
+
+**Backend**
+- `mapRobot` in `platform-mappers.ts`: maps `battery` and `warnings` from platform response
+- `MOCK_ROBOTS` in `robots.controller.ts`: added battery and warnings for demo (74%, 15%, 92%; Robot B has "Low battery" warning)
+
+**Frontend**
+- `RobotsScreen.tsx`: battery icon + percentage; `AlertCircle` icon when `warnings.length > 0`
+- Battery color by level: green (>80%), yellow (20–80%), red (<20%)
+- Compact layout with `text-[11px]`, tooltip on warning icon for full message list
+
+### Files Modified
+
+- `shared/src/dto/robot.dto.ts`
+- `backend/src/platform/platform-mappers.ts`
+- `backend/src/robots/robots.controller.ts`
+- `frontend/src/screens/robots/RobotsScreen.tsx`
+- `docs/architecture/data-model.md`
+- `docs/CHANGELOG.md`
+
+---
+
 ## NFT Marketplace: TON DNS + Dog Collections (2025-03)
 
 ### Summary

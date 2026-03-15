@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Bot, Plus, Power, Play, Store, MessageCircle } from "lucide-react";
+import { AlertCircle, Battery, Bot, Plus, Power, Play, Store, MessageCircle } from "lucide-react";
 import type { Robot } from "shared";
 import { getRobots } from "../../api/robots";
 import { haptic } from "../../utils/haptic";
@@ -43,6 +43,12 @@ export function RobotsScreen() {
   };
 
   const getStatusText = (status: string) => status.charAt(0).toUpperCase() + status.slice(1);
+
+  const getBatteryColor = (battery: number) => {
+    if (battery > 80) return "text-toxic";
+    if (battery >= 20) return "text-[var(--warning)]";
+    return "text-red-500";
+  };
 
   if (loading) {
     return (
@@ -193,11 +199,29 @@ export function RobotsScreen() {
                       )}
                     </div>
                   </div>
-                  <div className="flex items-center gap-2 px-2.5 py-1 rounded-full glass-button-secondary">
-                    <div className={`w-2 h-2 rounded-full ${getStatusColor(robot.status)}`} />
-                    <span className="text-[11px] text-muted-foreground font-medium">
-                      {getStatusText(robot.status)}
-                    </span>
+                  <div className="flex items-center gap-1.5">
+                    {robot.battery != null && (
+                      <div
+                        className={`flex items-center gap-1 px-2 py-0.5 rounded-md glass-button-secondary ${getBatteryColor(robot.battery)}`}
+                      >
+                        <Battery className="w-3.5 h-3.5" />
+                        <span className="text-[11px] font-medium">{robot.battery}%</span>
+                      </div>
+                    )}
+                    {robot.warnings && robot.warnings.length > 0 && (
+                      <div
+                        className="flex items-center justify-center w-6 h-6 rounded-full bg-red-500/20 text-red-500"
+                        title={robot.warnings.join(", ")}
+                      >
+                        <AlertCircle className="w-3.5 h-3.5" />
+                      </div>
+                    )}
+                    <div className="flex items-center gap-2 px-2.5 py-1 rounded-full glass-button-secondary">
+                      <div className={`w-2 h-2 rounded-full ${getStatusColor(robot.status)}`} />
+                      <span className="text-[11px] text-muted-foreground font-medium">
+                        {getStatusText(robot.status)}
+                      </span>
+                    </div>
                   </div>
                 </div>
                 <div className="flex gap-4">

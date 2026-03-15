@@ -10,4 +10,7 @@ export interface Telemetry {
   position?: { x: number; y: number };
   battery?: number;
   sensorData?: Record<string, unknown>;
+  temperature?: { casing?: number; winding?: number };
+  communicationQuality?: number;
+  alarms?: string[];
 }
