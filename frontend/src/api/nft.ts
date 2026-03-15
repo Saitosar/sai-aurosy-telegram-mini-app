@@ -66,8 +66,18 @@ export function formatPriceNanoton(nanoton: string): string {
   return ton.toLocaleString("en-US", { maximumFractionDigits: 4 }) + " TON";
 }
 
-export function getNftImageUrl(item: NftItem, resolution = "500x500"): string | undefined {
-  return item.previews?.find((p) => p.resolution === resolution)?.url;
+const NFT_PREVIEW_RESOLUTIONS = ["500x500", "1500x1500", "100x100", "5x5"] as const;
+
+export function getNftImageUrl(item: NftItem, preferredResolution = "500x500"): string | undefined {
+  const order = [
+    preferredResolution,
+    ...NFT_PREVIEW_RESOLUTIONS.filter((r) => r !== preferredResolution),
+  ];
+  for (const res of order) {
+    const url = item.previews?.find((p) => p.resolution === res)?.url;
+    if (url) return url;
+  }
+  return item.metadata?.image;
 }
 
 export function getNftName(item: NftItem): string {

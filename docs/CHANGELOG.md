@@ -1,5 +1,35 @@
 # Changelog
 
+## NFT Marketplace Fixes (2025-03)
+
+### Summary
+
+Fixed NFT Marketplace: Getgems links now work for non-sale NFTs; NFT images display correctly with multi-resolution fallback and metadata.image support.
+
+### Changes
+
+**BuyButton**
+- Removed `disabled={!isForSale}` — button is always clickable
+- "View on Getgems" now opens Getgems for NFTs not listed for sale
+
+**getNftImageUrl**
+- Multi-resolution fallback: tries 500x500, 1500x1500, 100x100, 5x5 in order
+- Fallback to `metadata.image` when no preview URL found
+- Improves image display for NFTs with empty or partial previews
+
+**Documentation**
+- Updated `docs/implementation/nft-marketplace-api.md` with getNftImageUrl and BuyButton behavior
+
+### Files Modified
+
+- `frontend/src/components/nft/BuyButton.tsx`
+- `frontend/src/api/nft.ts`
+- `frontend/src/components/nft/NFTDetailSheet.tsx` (simplified image URL logic)
+- `docs/implementation/nft-marketplace-api.md`
+- `docs/CHANGELOG.md`
+
+---
+
 ## NFT Marketplace MVP (Read-Only) (2025-03)
 
 ### Summary

@@ -80,5 +80,8 @@ Location: `frontend/src/api/nft.ts`
 | `getNftCollection(address)` | Fetch collection metadata |
 | `getNftCollectionItems(address, limit, offset)` | Fetch paginated items |
 | `getNftItem(address)` | Fetch single NFT |
+| `getNftImageUrl(item, preferredResolution?)` | Get image URL with multi-resolution fallback (500x500, 1500x1500, 100x100, 5x5) and `metadata.image` fallback |
 | `buildGetgemsUrl(item)` | Build Getgems Deep Link for Buy button |
 | `formatPriceNanoton(nanoton)` | Convert nanotons to "X.XX TON" string |
+
+**BuyButton** (`frontend/src/components/nft/BuyButton.tsx`): Always enabled. Opens Getgems for both "Buy on Getgems" (when NFT has sale) and "View on Getgems" (when not for sale).
