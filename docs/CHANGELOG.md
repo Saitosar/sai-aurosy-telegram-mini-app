@@ -1,5 +1,25 @@
 # Changelog
 
+## NFT Marketplace: TON DNS + Dog Collections (2025-03)
+
+### Summary
+
+Added TON Doge USSR (dog NFTs) to the default NFT collection whitelist alongside TON DNS. Users can now switch between TON DNS domains and dog NFTs in the NFT Marketplace.
+
+### Changes
+
+- **.env**: Set `NFT_COLLECTION_WHITELIST` with TON DNS and TON Doge USSR collection addresses
+- **.env.example**: Updated example to show multi-collection setup (TON DNS + dog NFTs)
+
+### Collections
+
+| Collection | Address | Description |
+|------------|---------|-------------|
+| TON DNS | `EQC3dNlesgVD8YbAazcauIrXBPfiVhMMr5YYk2in0Mtsz0Bz` | .ton domain names |
+| TON Doge USSR | `EQD89Dn8t9oRmzzIuqLAWkqmO5Kdgq5AdxPL68mOxfHiykPb` | Dog NFT collectibles |
+
+---
+
 ## NFT Marketplace Fixes (2025-03)
 
 ### Summary

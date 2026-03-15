@@ -61,7 +61,7 @@ Returns TonAPI collection object: `address`, `metadata`, `previews`, etc.
 
 | Variable | Description |
 |----------|-------------|
-| `NFT_COLLECTION_WHITELIST` | Comma-separated collection addresses. Empty = demo collection (TON DNS). |
+| `NFT_COLLECTION_WHITELIST` | Comma-separated collection addresses. Empty = TON DNS only. Example: TON DNS + TON Doge USSR (dog NFTs). |
 | `TON_API_BASE_URL` | TonAPI base URL (default: `https://tonapi.io`) |
 | `TON_API_KEY` | Optional; for higher rate limits |
 
