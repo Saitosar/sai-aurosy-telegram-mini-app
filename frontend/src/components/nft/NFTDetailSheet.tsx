@@ -19,7 +19,7 @@ interface NFTDetailSheetProps {
 export function NFTDetailSheet({ item, open, onClose }: NFTDetailSheetProps) {
   if (!item) return null;
 
-  const imageUrl = getNftImageUrl(item, "1500x1500") ?? getNftImageUrl(item);
+  const imageUrl = getNftImageUrl(item, "1500x1500");
   const name = getNftName(item);
   const description = item.metadata?.description;
   const price = item.sale?.price?.value;

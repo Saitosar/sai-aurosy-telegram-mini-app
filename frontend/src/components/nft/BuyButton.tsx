@@ -39,7 +39,6 @@ export function BuyButton({ item, className, size = "md", showIcon = true }: Buy
       onClick={() => openGetgems(url)}
       className={`${sizeClasses[size]} bg-primary text-primary-foreground font-medium rounded-2xl hover:opacity-90 transition-opacity flex items-center justify-center gap-2 ${className ?? ""}`}
       whileTap={{ scale: 0.98 }}
-      disabled={!isForSale}
     >
       {showIcon && <ExternalLink className="w-4 h-4 flex-shrink-0" />}
       {isForSale ? "Buy on Getgems" : "View on Getgems"}
