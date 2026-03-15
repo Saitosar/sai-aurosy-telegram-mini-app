@@ -11,14 +11,37 @@ export interface Robot {
   model: string;
   status: RobotStatus;
   scenario?: string;
+  battery?: number; // 0–100
+  warnings?: string[]; // platform warnings
 }
 
 export interface RobotDetail extends Robot {
   position?: { x: number; y: number };
-  battery?: number;
 }
 
 export interface RobotCommandRequest {
   command: string;
   params?: Record<string, unknown>;
+}
+
+/** Known robot command types for manual control and basic operations */
+export type RobotCommandType =
+  | "safe_stop"
+  | "go_home"
+  | "move"
+  | "walk"
+  | "run"
+  | "posture"
+  | "head_rotate"
+  | "waist_rotate";
+
+/** Param schemas for commands (documented for API consumers) */
+export interface MoveCommandParams {
+  direction?: number; // degrees 0-360 (0=forward, 90=right)
+  speed?: number; // 0-1
+}
+
+export interface RotateCommandParams {
+  direction?: "left" | "right";
+  amount?: number;
 }
