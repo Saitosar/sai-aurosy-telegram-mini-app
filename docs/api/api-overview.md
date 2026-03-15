@@ -45,6 +45,7 @@ The SAI AUROSY Telegram Mini App calls the **NestJS backend** at `VITE_API_BASE_
 
 | Command | Params | Purpose |
 |---------|--------|---------|
+| `release_control` | — | Switch robot to manual mode; stop automation, transfer control to operator |
 | `safe_stop` | — | Emergency stop |
 | `go_home` | — | Return to home position |
 | `move` | `{ direction?: number, speed?: number }` | Movement: direction 0–360° (0=forward, 90=right), speed 0–1 |

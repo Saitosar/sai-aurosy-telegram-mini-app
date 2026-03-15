@@ -15,6 +15,7 @@ View robot data (telemetry, status) and send commands. Monitor robot state in re
 |--------|-------------|---------|
 | View robot info | See name, model, status | Info displayed |
 | View telemetry | See position, sensors, status | Live or polled data |
+| Take manual control | Stop scenario (if any), send release_control, switch to Manage tab | Robot in manual mode; operator controls via joystick |
 | Send command | Execute command (move, stop, custom) | Command sent; status updated |
 | Manual control | Joystick, mode buttons, body control | Movement and rotation commands sent |
 | Start scenario | Launch scenario (e.g., Mall Guide) | Navigate to scenario or start inline |
@@ -24,7 +25,7 @@ View robot data (telemetry, status) and send commands. Monitor robot state in re
 
 - **Robot header** — Name, model, status indicator
 - **Info / Manage tabs** — Switch between Info (telemetry, commands, scenario) and Manage (manual control)
-- **Info tab:** Robot card, RobotMetricsPanel (telemetry: communication quality, casing/winding temperature, location, battery, alarms), command buttons (Stop, Go Home), scenario blocks. Tap a metric row to highlight and focus; alarms show "No current anomalies" when none.
+- **Info tab:** Robot card, RobotMetricsPanel (telemetry: communication quality, casing/winding temperature, location, battery, alarms), Manual control block (Take manual control button), command buttons (Stop, Go Home), scenario blocks. Tap a metric row to highlight and focus; alarms show "No current anomalies" when none.
 - **Manage tab:** Manual control with robot avatar (center), virtual joystick (left), red alert/stop button, movement modes (Posture above, Walk/Run below), body control (Head/Waist rotation as circular buttons), REMOTE OPERATION MODE indicator
 
 ## Expected Outcomes
@@ -47,6 +48,8 @@ View robot data (telemetry, status) and send commands. Monitor robot state in re
 | Location: x, y            |
 | Battery: 85%              |
 | Alarms: No anomalies      |
++---------------------------+
+| [Take manual control] |
 +---------------------------+
 | [Stop] [Go Home] [Custom] |
 +---------------------------+

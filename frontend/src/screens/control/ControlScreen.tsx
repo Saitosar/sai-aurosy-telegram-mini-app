@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowLeft, Bot, Square, Home, Zap } from "lucide-react";
+import { ArrowLeft, Bot, Hand, Square, Home, Zap } from "lucide-react";
 import type { RobotDetail } from "shared";
 import { getRobot, sendCommand } from "../../api/robots";
 import { ScreenHeader } from "../../components/ui/ScreenHeader";
@@ -120,6 +120,31 @@ export function ControlScreen() {
     }
   };
 
+  const handleTakeManualControl = async () => {
+    if (!robotId || commandPending) return;
+    haptic.impact("medium");
+    setCommandPending(true);
+    setCommandError(null);
+    setCommandSuccess(false);
+    setScenarioStopError(null);
+    try {
+      if (displayScenario && executionId && !scenarioStopped) {
+        await stopExecution(scenarioId, executionId);
+        setScenarioStopped(true);
+      }
+      await sendCommand(robotId, { command: "release_control" });
+      haptic.success();
+      setCommandSuccess(true);
+      setTimeout(() => setCommandSuccess(false), 3000);
+      handleTabChange("manage");
+    } catch (err) {
+      haptic.error();
+      setCommandError(err instanceof Error ? err.message : "Failed to take manual control");
+    } finally {
+      setCommandPending(false);
+    }
+  };
+
   const displayScenario = robot?.scenario ?? (executionId && !scenarioStopped ? "Mall Guide" : null);
   const showScenarioStopped = scenarioStopped || (executionId && !displayScenario);
   const displayRobot = robot ?? (telemetry ? { id: robotId!, name: "Robot", model: "", status: telemetry.status as "online" | "offline" | "busy" | "error" } : null);
@@ -231,6 +256,22 @@ export function ControlScreen() {
           lastUpdated={lastUpdated}
           isStale={isStale}
         />
+
+        <div className="glass-card rounded-3xl p-6 mb-6">
+          <h3 className="text-[13px] font-semibold text-foreground mb-4">Manual control</h3>
+          <p className="text-muted-foreground text-sm mb-4">
+            Stop automation and take control via joystick. Stops any running scenario.
+          </p>
+          <motion.button
+            onClick={handleTakeManualControl}
+            disabled={commandPending}
+            className="w-full min-h-[44px] px-4 py-4 bg-primary text-primary-foreground rounded-2xl flex items-center justify-center gap-2 font-semibold hover:opacity-90 transition-opacity disabled:opacity-50"
+            whileTap={commandPending ? undefined : { scale: 0.98 }}
+          >
+            <Hand className="w-5 h-5" />
+            <span>Take manual control</span>
+          </motion.button>
+        </div>
 
         <div className="glass-card rounded-3xl p-6 mb-6">
           <h3 className="text-[13px] font-semibold text-foreground mb-5">Commands</h3>

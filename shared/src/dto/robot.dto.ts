@@ -26,6 +26,7 @@ export interface RobotCommandRequest {
 
 /** Known robot command types for manual control and basic operations */
 export type RobotCommandType =
+  | "release_control"
   | "safe_stop"
   | "go_home"
   | "move"
